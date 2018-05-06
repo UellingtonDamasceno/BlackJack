@@ -1,0 +1,11 @@
+Uellington : 123 : 10 : 5
+Maria : 321 : 10 : 5
+Jose : 258 : 10 : 5
+Cesar : 369 : 0 : 0
+Ivan : 654 : 0 : 0
+Josegino : 789 : 0 : 0
+asdf : assf : 0 : 0
+Joe : 36987 : 0 : 0
+Mariazinha : 123321 : 0 : 0
+Testando : 258258 : 0 : 0
+NetinhoVidaLoka : 321 : 0 : 0
