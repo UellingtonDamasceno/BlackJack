@@ -18,7 +18,7 @@ public class ListaEncadeada implements ILista{
     private Celula inicioDaLista;
     private Celula fimDaLista;
     private int tamanhoDaLista = 0;
-    private int Teste;
+    private int MacacosMeMordam;
     
     private class Celula{
         private Object dados;
