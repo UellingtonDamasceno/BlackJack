@@ -21,12 +21,15 @@ public class View {
     static BlackJackController controller = new BlackJackController();
     public static void main(String[] args) throws IOException {
         controller.carregarUsers("Logins.txt");
+        int numDeBaralho;
         menuRegras(30);
         switch(lerInt(true, 1, 2)){
             case 1:{
+                numDeBaralho = 8;
                 break;
             }
             case 2:{
+                numDeBaralho = 4;
                 break;
             }
         }
