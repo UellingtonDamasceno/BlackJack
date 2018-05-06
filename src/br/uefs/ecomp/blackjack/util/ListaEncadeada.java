@@ -18,6 +18,10 @@ public class ListaEncadeada implements ILista{
     private Celula inicioDaLista;
     private Celula fimDaLista;
     private int tamanhoDaLista = 0;
+<<<<<<< HEAD
+=======
+    private int MacacosMeMordam;
+>>>>>>> 1cdc32a6b8896a32c527b6530e55a66121fed5de
     
     private class Celula{
         private Object dados;
