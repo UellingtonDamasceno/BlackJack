@@ -67,7 +67,7 @@ public class Jogador {
     }
     
     // Ver a questão do Ás aqui.
-    public void adicionarCartas(Carta carta){
+    public void addCartas(Carta carta){
         ListaEncadeada aux = cartas.getCartas();
         if(!estourou()){
             if(aux.estaVazia()){
@@ -80,7 +80,7 @@ public class Jogador {
         
     }
     
-    public void limparMao(){
+    public void limparMaoDeCartas(){
         ListaEncadeada aux = cartas.getCartas();
         
         while(aux.estaVazia() != true){
