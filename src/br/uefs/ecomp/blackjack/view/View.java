@@ -189,15 +189,15 @@ public class View {
         barra(tamanho);
     }
     
-    private static void barra(int tamanhoDaBarra) {
+    private static void barra(int tamanho) {
         System.out.print("+");
-        for (int i = 0; i < tamanhoDaBarra; i++) {
+        for (int i = 0; i < tamanho; i++) {
             System.out.print("=");
         }
         System.out.println("+");
     }
-    private static void textoSimples(int tamanhoDoMenu, String texto, boolean centralizar) {
-        int tamanhoDaBarra = tamanhoDoMenu - texto.length();
+    private static void textoSimples(int tamanho, String texto, boolean centralizar) {
+        int tamanhoDaBarra = tamanho - texto.length();
         int espacosDaEsquerda, espacosDaDireita;
         espacosDaEsquerda = centralizar ? tamanhoDaBarra / 2 : 1;   
         espacosDaDireita = tamanhoDaBarra - espacosDaEsquerda;
@@ -205,9 +205,9 @@ public class View {
         System.out.print(texto);
         fazTraco(espacosDaDireita, ' ', false, true);
     }
-    private static void textoDuplo(int tamanhoDoMenu, String texto01, String texto02){
+    private static void textoDuplo(int tamanho, String texto01, String texto02){
         int totalDeTexto = texto01.length() + texto02.length();
-        int novoTamanhoDoMenu = tamanhoDoMenu - totalDeTexto;
+        int novoTamanhoDoMenu = tamanho - totalDeTexto;
         int espacosLaterais = novoTamanhoDoMenu/3;
         
         fazTraco(espacosLaterais, ' ', true, false);
@@ -216,19 +216,19 @@ public class View {
         System.out.print(texto02);
         fazTraco(espacosLaterais, ' ', false, true);
     }
-    private static void separador(int tamanhoDoMenu, boolean comTraco) {
+    private static void separador(int tamanho, boolean comTraco) {
         char lateral = '|', meio = ' ';
         if (comTraco == true) {
             lateral = '+';
             meio = '=';
         }
         System.out.print(lateral);
-        fazTraco(tamanhoDoMenu, meio, false, false);
+        fazTraco(tamanho, meio, false, false);
         System.out.println(lateral);
     }
-    private static void novoItem(int tamanhoDoMenu, String item, int pesoDoItem) {
+    private static void novoItem(int tamanho, String item, int pesoDoItem) {
         String strItem = Integer.toString(pesoDoItem);
-        int qtdDeTracos = ((tamanhoDoMenu - item.length()) - (strItem.length() + 4));
+        int qtdDeTracos = ((tamanho - item.length()) - (strItem.length() + 4));
         if(strItem.length() == 1){
            qtdDeTracos--;
         }
@@ -238,23 +238,23 @@ public class View {
         System.out.print(strItem);
         System.out.println(" |");
     }
-    private static void mensagem(int tamanhoDoMenu, String mensagem, boolean poemEscolha){
-        barra(tamanhoDoMenu); 
-        textoSimples(tamanhoDoMenu, mensagem, true);
+    private static void mensagem(int tamanho, String mensagem, boolean poemEscolha){
+        barra(tamanho); 
+        textoSimples(tamanho, mensagem, true);
         if(poemEscolha){
-            textoDuplo(tamanhoDoMenu, "Sim__(01)", "Não__(02)");
-            barra(tamanhoDoMenu);
+            textoDuplo(tamanho, "Sim__(01)", "Não__(02)");
+            barra(tamanho);
         }
         else{
-            barra(tamanhoDoMenu);
+            barra(tamanho);
         }
     }
-    private static void fazTraco(int tamanhoDoTraco, char TipoDeTraco, boolean bordaE, boolean bordaD) {
+    private static void fazTraco(int tamanho, char tipoDeTraco, boolean bordaE, boolean bordaD) {
         if(bordaE){
             System.out.print("|");
         }
-        for (int i = 0; i < tamanhoDoTraco; i++) {
-            System.out.print(TipoDeTraco);
+        for (int i = 0; i < tamanho; i++) {
+            System.out.print(tipoDeTraco);
         }
         if(bordaD){
             System.out.println("|");
