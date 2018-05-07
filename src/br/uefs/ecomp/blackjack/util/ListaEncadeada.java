@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.blackjack.util;
 
 /**
- *Classe responsavel por gerenciar os métodos de construção de uma Lista encadeada.
- * Está classe tem seus métodos baseados na interface IList. ou seja, ListaEncadeada
- * implementou os metodos abstratos de IList.
+ * Classe responsável por gerenciar os métodos de construção de uma lista encadeada.
+ * Esta classe implementa a interface ILista. Sendo assim, ela sobrescreve as assinaturas
+ * dos métodos de ILista, e dá um corpo a cada um desses métodos. 
  * 
  * @author Uellington Damasceno
  */
@@ -18,12 +13,12 @@ public class ListaEncadeada implements ILista{
     private Celula inicioDaLista;
     private Celula fimDaLista;
     private int tamanhoDaLista = 0;
-    
+
     private class Celula{
         private Object dados;
         private Celula Proximo;
         /**
-         * Consturtor da classe Celula que possui um argumento to dipo Object.
+         * Construtor da classe Celula que possui um argumento to tipo Object.
          * @param dados Corresponde ao objeto que será encapsulado e inserido 
          * posteriomente na lista.
          */
@@ -62,6 +57,23 @@ public class ListaEncadeada implements ILista{
             this.Proximo = Proximo;
         }
     }
+    /**
+     * Método que auxilia na manipulação da lista.
+     * @param index
+     * @return Célula situada no index se o index passado for válido, null se não.
+     */
+    private Celula pegarCelula(int indice){
+        if(indice >= 0 && indice < tamanho()){
+            Celula aux = inicioDaLista;
+            for (int i = 0; i < indice; i++) {
+                aux = aux.getProximo();
+            }
+            
+            return aux;
+        }
+        return null;
+    }
+    
     /**
      * Verifica se a lista está vazia;
      * @return true se lista vazia e false caso possua algum elemento na lista.
@@ -153,7 +165,34 @@ public class ListaEncadeada implements ILista{
         }
         
     }
-
+    /**
+     * Método que passado um determinado indice e um dado, altera o conteúdo da célula contida no índice.
+     * @param indice
+     * @param dado 
+     */
+    @Override
+    public void set(int indice, Object dado) {
+        Celula aux = pegarCelula(indice);
+       
+        if(aux != null){
+           aux.setDados(dado);
+        }
+    }
+    /**
+     * Método que passado um determinado indice, retorna o conteúdo da célula contida no índice.
+     * @param indice
+     * @return Dado da célula, ou nulo se o indice for inválido.
+     */
+    @Override
+    public Object get(int indice) {
+        Celula aux = pegarCelula(indice);
+        if(aux != null){
+            return aux.getDados();
+        }
+        
+        return null;
+    }
+    
     @Override
     public boolean contem(Object o) {
         Celula temp = inicioDaLista;

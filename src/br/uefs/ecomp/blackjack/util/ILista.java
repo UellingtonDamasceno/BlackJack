@@ -16,6 +16,10 @@ public interface ILista {
 	
         public boolean contem(Object o);
         
+        public void set(int indice, Object dado);
+        
+        public Object get(int indice);
+        
 	public Iterador iterador();
 	
 }
