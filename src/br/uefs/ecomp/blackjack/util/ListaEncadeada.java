@@ -153,33 +153,8 @@ public class ListaEncadeada implements ILista{
         }
         
     }
-    /**
-     * Dado um index o método pecorrer a lista a qual foi submetido e devolve o 
-     * objeto que esta naquela dada posição.
-     * @param index Utilizado para comparação e indicação da posição desejada.
-     * @return Objeto que existe naquela posição ou null caso não exista. 
-     */
+
     @Override
-    public Object recupera(int index) {
-        if(estaVazia() || index > tamanho()){
-            return null;
-        }
-        else if(index == 0){
-            return inicioDaLista.getDados();
-        }
-        else if(index == tamanho()){
-            return fimDaLista.getDados();
-        }
-        else{
-            Iterador apontador = new MyIterador(); 
-            Celula celulaRecuperada = null;
-            for(int i = 0; i <= index; i++){
-                celulaRecuperada = (Celula) apontador.next();
-            }
-            return celulaRecuperada.getDados();
-        }
-    }
-     @Override
     public boolean contem(Object o) {
         Celula temp = inicioDaLista;
         while(temp != null){

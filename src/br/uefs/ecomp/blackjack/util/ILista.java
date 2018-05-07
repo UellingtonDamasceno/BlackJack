@@ -13,8 +13,6 @@ public interface ILista {
 	public Object removeInicio();
 
 	public Object removeUltimo();
-
-	public Object recupera(int index);
 	
         public boolean contem(Object o);
         
