@@ -25,5 +25,5 @@ public class MaoDeCarta {
     public ListaEncadeada getCartas(){
         return cartas;
     }
-
+       
 }
