@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  *
- * @author Uellington Damasceno
+ * @author Uellington Damasceno e Anésio Sousa
  */
 public class Jogador {
     
@@ -18,6 +18,7 @@ public class Jogador {
     private int pontos;
     private int partidas;
     private MaoDeCarta cartas;
+    private static final int BLACKJACK = 21;
     
     public Jogador(String user, String senha){
         this.user = user;
@@ -57,6 +58,27 @@ public class Jogador {
     public int getPartidas(){
         return partidas;
     }
+    
+    public boolean estourou(){
+        return pontosEmMao() > BLACKJACK;
+    }
+    
+    // Ver a questão do Ás aqui.
+    public void addCartas(Carta carta){
+        ListaEncadeada aux = cartas.getCartas();
+        if(!estourou()){
+            aux.insereFinal(carta);    
+        }
+    }
+    
+    public void limparMaoDeCartas(){
+        ListaEncadeada aux = cartas.getCartas();
+        
+        while(!aux.estaVazia()){
+            aux.removeInicio();
+        }
+    }
+    
     @Override
     public String toString(){
         return user + ", " + pontos + ", " + partidas+"\n";
