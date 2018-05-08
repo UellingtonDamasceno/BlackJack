@@ -188,7 +188,10 @@ public class View {
         novoItem(tamanho, "Voltar", 3);
         barra(tamanho);
     }
-    
+    /**
+     * Método responsavel por inserir uma bara de inicialização ou finalização de menu e ou mensagem. 
+     * @param tamanho Define o tamanho da barra. 
+     */
     private static void barra(int tamanho) {
         System.out.print("+");
         for (int i = 0; i < tamanho; i++) {
@@ -196,6 +199,13 @@ public class View {
         }
         System.out.println("+");
     }
+    /**
+     * Método responsavel por exibir um texto simples entre bordas. 
+     * 
+     * @param tamanho Define espaço disponivel para a inserção do texto. 
+     * @param texto Mensagem que será exibida. 
+     * @param centralizar Define se a mensagem terá o alinhamento centralizado ou a esquerda. 
+     */
     private static void textoSimples(int tamanho, String texto, boolean centralizar) {
         int tamanhoDaBarra = tamanho - texto.length();
         int espacosDaEsquerda, espacosDaDireita;
@@ -205,6 +215,16 @@ public class View {
         System.out.print(texto);
         fazTraco(espacosDaDireita, ' ', false, true);
     }
+    /**
+     * Método responsavel por inserir exibir uma mensagem com dois conteudos separados 
+     * de forma que o conteudo não utrapasse o espaço disponivel. 
+     * 
+     * PS: O espaço deve ser maior do que as mensagens. 
+     * 
+     * @param tamanho Determina o espaço disponivel para a adequação dos textos. 
+     * @param texto01 Mensagem que será exibida do lado direito. 
+     * @param texto02 Mensagem que será exibida do lado esquerdo. 
+     */
     private static void textoDuplo(int tamanho, String texto01, String texto02){
         int totalDeTexto = texto01.length() + texto02.length();
         int novoTamanhoDoMenu = tamanho - totalDeTexto;
@@ -216,6 +236,12 @@ public class View {
         System.out.print(texto02);
         fazTraco(espacosLaterais, ' ', false, true);
     }
+    /**
+     * Método responsavel por separar uma opções de um menu ou mensagem.
+     * 
+     * @param tamanho determina o tamanho do separador. 
+     * @param comTraco Define a visibilidade do separador. 
+     */
     private static void separador(int tamanho, boolean comTraco) {
         char lateral = '|', meio = ' ';
         if (comTraco == true) {
@@ -226,6 +252,12 @@ public class View {
         fazTraco(tamanho, meio, false, false);
         System.out.println(lateral);
     }
+    /**
+     * Método utilizado para inserir um novo item/opção em determinado menu seguindo a "formatação".
+     * @param tamanho Define o tamanho disponivel para a inserção do item e do peso.
+     * @param item Nome do item/opção que será inserido. 
+     * @param pesoDoItem Valor correspondente ao peso do item inserido. 
+     */
     private static void novoItem(int tamanho, String item, int pesoDoItem) {
         String strItem = Integer.toString(pesoDoItem);
         int qtdDeTracos = ((tamanho - item.length()) - (strItem.length() + 4));
@@ -238,6 +270,12 @@ public class View {
         System.out.print(strItem);
         System.out.println(" |");
     }
+    /**
+     * Método responsavel por exibir uma mensagem simples ou composta com duas escolhas (Sim ou Não) formatados.
+     * @param tamanho Determina o tamanho do limite das bordas. 
+     * @param mensagem Mensagem a ser exibida. 
+     * @param poemEscolha Determina se deve exitir opções na mensagem. 
+     */
     private static void mensagem(int tamanho, String mensagem, boolean poemEscolha){
         barra(tamanho); 
         textoSimples(tamanho, mensagem, true);
@@ -249,17 +287,32 @@ public class View {
             barra(tamanho);
         }
     }
-    private static void fazTraco(int tamanho, char tipoDeTraco, boolean bordaE, boolean bordaD) {
+    /**
+     * Método responsavel por fazer um traço. 
+     * @param tamanho Determina o tamanho do traço. 
+     * @param estilo Determina o traço que deve ser utilizado. 
+     * @param bordaE Determina se o traço deve ser inicado com uma "borda".
+     * @param bordaD Determina se o traço deve ser finalizado com uma "borda". 
+     */
+    private static void fazTraco(int tamanho, char estilo, boolean bordaE, boolean bordaD) {
         if(bordaE){
             System.out.print("|");
         }
         for (int i = 0; i < tamanho; i++) {
-            System.out.print(tipoDeTraco);
+            System.out.print(estilo);
         }
         if(bordaD){
             System.out.println("|");
         }
     }
+    /**
+     * Método utilizado para fazer leitura de valores inteiros, tratando as exeções e possiveis problemas
+     * gerados por causa do buffer do teclado. 
+     * @param limite Define se o valor a ser lido deve está em uma determinada faixa de valores. 
+     * @param min Valor minimo do intervalo de leitura caso limite = true;
+     * @param max Valor Máximo do intervalo de leitura caso limite = true;
+     * @return Valor inteiro. 
+     */
     private static int lerInt(boolean limite, int min, int max){
         Scanner input = new Scanner(System.in);
         int valor;

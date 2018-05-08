@@ -58,8 +58,8 @@ public class ListaEncadeada implements ILista{
         }
     }
     /**
-     * Método que auxilia na manipulação da lista.
-     * @param index
+     * Método reponsavel por pecorrer a lista e pegar um item e uma determinada posição.
+     * @param index posição do item na lista. 
      * @return Célula situada no index se o index passado for válido, null se não.
      */
     private Celula pegarCelula(int indice){
@@ -92,7 +92,6 @@ public class ListaEncadeada implements ILista{
         return tamanho() == 0;
     }
     /**
-     * 
      * @return O tamanho da lista encadeada a qual ele foi submetido. 
      */
     @Override
@@ -176,8 +175,8 @@ public class ListaEncadeada implements ILista{
     }
     /**
      * Método que passado um determinado indice e um dado, altera o conteúdo da célula contida no índice.
-     * @param indice
-     * @param dado 
+     * @param indice Valor correspondente a posição do item na lista. 
+     * @param dado Conteudo que será "setado" no objeto da posição dado pelo indice. 
      */
     @Override
     public void set(int indice, Object dado) {
@@ -189,7 +188,7 @@ public class ListaEncadeada implements ILista{
     }
     /**
      * Método que passado um determinado indice, retorna o conteúdo da célula contida no índice.
-     * @param indice
+     * @param indice Valor correspondente a posição do item.
      * @return Dado da célula, ou nulo se o indice for inválido.
      */
     @Override
@@ -201,7 +200,11 @@ public class ListaEncadeada implements ILista{
         
         return null;
     }
-    
+    /**
+     * Método responsavel por verificar se existe um determinado objeto na lista. 
+     * @param o Objeto base de comparação.
+     * @return true caso o objeto exista e false caso contrario.
+     */
     @Override
     public boolean contem(Object o) {
         Celula temp = inicioDaLista;

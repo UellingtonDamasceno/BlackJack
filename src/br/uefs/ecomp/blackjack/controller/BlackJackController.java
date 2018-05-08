@@ -38,6 +38,13 @@ public class BlackJackController {
     public ListaEncadeada getJogadoresEmPartida(){
         return jogadoresEmPartida;
     }
+    /**
+     * Dado um arquivo de layout (String : String : int : int) este método irá ler pegando as informações 
+     * linha a linha e em seguida inserindo em uma lista encadeada. 
+     * @param arquivo Nome do arquivo que deve ser lido. 
+     * @return return true caso a leitura tenha sido efetuada com sucesso e false caso contrario.
+     * @throws IOException Exeções geradas com entrada e saidas de dados. 
+     */
     public boolean carregarUsers(String arquivo) throws IOException{
         FileInputStream arq = new FileInputStream(arquivo);
         InputStreamReader input = new InputStreamReader(arq);
@@ -59,7 +66,15 @@ public class BlackJackController {
         bf.close();
         return false;
     }
-    
+    /**
+     * Método responsavel por cadastrar um novo jogador inserido-o em uma lista e ao final 
+     * colocando no arquivo de usuarios cadastrados. 
+     * @param user Nome do usuario a ser cadastado. 
+     * @param senha Senha do usuario.
+     * @return true para cadastro efetuado com sucesso e false caso contrario. 
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public boolean cadastrarNovoJogador(String user, String senha) throws FileNotFoundException, IOException{
         Jogador jogador = new Jogador(user, senha);
         if(users.estaVazia()){
@@ -80,9 +95,7 @@ public class BlackJackController {
         }
         return true;
     }
-    /*
-    Verificar se o usuario já foi inserido na partida. 
-    */
+    
     public int inserirJogadorEmPartida(String user, String senha){
         Iterador lJogadores = users.iterador();
         while(lJogadores.hasNext()){
