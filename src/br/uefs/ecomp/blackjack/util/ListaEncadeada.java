@@ -63,9 +63,15 @@ public class ListaEncadeada implements ILista{
      * @return Célula situada no index se o index passado for válido, null se não.
      */
     private Celula pegarCelula(int indice){
-        if(estaVazia())
+        if(estaVazia() || indice > tamanho()){
             return null;
-        
+        }
+        else if(indice == 0){
+            return inicioDaLista;
+        }
+        else if(indice == tamanho()){
+            return fimDaLista;
+        }
         if(indice >= 0 && indice < tamanho()){
             Celula aux = inicioDaLista;
             for (int i = 0; i < indice; i++) {
