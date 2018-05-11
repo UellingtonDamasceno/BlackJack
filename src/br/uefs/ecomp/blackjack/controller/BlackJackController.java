@@ -43,13 +43,14 @@ public class BlackJackController {
      * linha a linha e em seguida inserindo em uma lista encadeada. 
      * @param arquivo Nome do arquivo que deve ser lido. 
      * @return return true caso a leitura tenha sido efetuada com sucesso e false caso contrario.
-     * @throws IOException Exeções geradas com entrada e saidas de dados. 
+     * @throws IOException Exceções geradas com entrada e saidas de dados. 
      */
     public boolean carregarUsers(String arquivo) throws IOException{
         FileInputStream arq = new FileInputStream(arquivo);
         InputStreamReader input = new InputStreamReader(arq);
         BufferedReader bf = new BufferedReader(input);
         String linha;
+        //Fazer verificações relacionadas ao arquivo. 
         do{
             linha = bf.readLine();
             if(linha != null){

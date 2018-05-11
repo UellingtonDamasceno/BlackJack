@@ -18,9 +18,10 @@ public class Jogador {
     private int pontos;
     private int partidas;
     private MaoDeCarta cartas;
-    private static final int BLACKJACK = 21;
+    private final int BLACKJACK;
     
     public Jogador(String user, String senha){
+        this.BLACKJACK = 21;
         this.user = user;
         this.senha = senha;
     }   
@@ -81,7 +82,7 @@ public class Jogador {
     
     @Override
     public String toString(){
-        return user + ", " + pontos + ", " + partidas+"\n";
+        return user + " : " + pontos + " : " + partidas;
     }
     public int pontosEmMao(){
         int pontosEmMao = 0;

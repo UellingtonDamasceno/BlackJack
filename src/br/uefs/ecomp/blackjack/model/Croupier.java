@@ -40,20 +40,27 @@ public class Croupier extends Jogador{
     }
     public Baralho embaralha(Baralho cartas){
         Random gerador = new Random();
-        
-        boolean sortearNovamente;
+        /*
+        Necessario verificar se está no limite do vetor. 
+        */
+        boolean inseriu, vaiParaDireita = true;
         int numGerado;
         Object[] suporte = new Object[52];
         for (Pilha baralho : cartas.getBaralhos()) {
-            for (int i = 0; i < 52; i++) {
+            for (int i = 0; i < suporte.length; i++) {
+                numGerado = gerador.nextInt(51);
                 do {
-                    sortearNovamente = true;
-                    numGerado = gerador.nextInt(52);
+                    inseriu = false;
                     if (suporte[numGerado] == null) {
                         suporte[numGerado] = baralho.pop();
-                        sortearNovamente = false;
+                        inseriu = true;
+                        vaiParaDireita = !vaiParaDireita;
+                    }else if(vaiParaDireita){
+                        numGerado = (numGerado == 51) ? 0 : (numGerado + 1);
+                    }else{
+                        numGerado = (numGerado == 0) ? 51 : (numGerado - 1);
                     }
-                } while (sortearNovamente);
+                } while (!inseriu);
             }
             for(Object carta : suporte){
                 baralho.push(carta);
