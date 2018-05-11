@@ -42,6 +42,7 @@ public class Croupier extends Jogador{
         Random gerador = new Random();
         /*
         Necessario verificar se está no limite do vetor. 
+        Alteração de teste!!!!
         */
         boolean inseriu, vaiParaDireita = true;
         int numGerado;
