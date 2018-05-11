@@ -112,7 +112,7 @@ public class BlackJackController {
         }
         return 0;
     }
-    public void partida(){
+    public void comecarPartida(){
         
     }
     public Iterador verPontuacao(){

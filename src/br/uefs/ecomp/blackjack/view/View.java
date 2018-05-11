@@ -23,7 +23,7 @@ public class View {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         int TAMANHO_MENU = 30;
        /* 
-        Caso queira fazer o teste do novo metodo;
+        //Caso queira fazer o teste do novo metodo;
         Baralho b = new Baralho(10);
         Croupier c = new Croupier("asf", "asdf");
         c.embaralha(b);*/
@@ -92,7 +92,7 @@ public class View {
                             }
                         }
                     } while (repetirMenuSalas);
-                    iniciarPartida(TAMANHO_MENU);
+                    escolherJogadores(TAMANHO_MENU);
                     break;
                 }
                 case 3: {
@@ -183,15 +183,15 @@ public class View {
         return false;
     }
 
-    private static void iniciarPartida(int tamanho) {
+    private static void escolherJogadores(int tamanho) {
         boolean repetirPartida, repetirInserirUser;
         String user, senha;
         Scanner input = new Scanner(System.in);
         do {
             repetirPartida = false;
             barra(tamanho);
-            textoSimples(tamanho, "Quantos jogadores vai jogar?", false);
-            textoDuplo(tamanho, "Min >1<", "Max >5<");
+            textoSimples(tamanho, "Quantos jogadores vão jogar?", false);
+            textoDuplo(tamanho, "Min {1}", "Max {5}");
             barra(tamanho);
             int qtdJogadores = lerInt(true, 1, 5);
             for (int i = 0; i < qtdJogadores; i++) {
