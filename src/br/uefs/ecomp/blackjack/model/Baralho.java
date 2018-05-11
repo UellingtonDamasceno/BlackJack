@@ -10,29 +10,28 @@ import br.uefs.ecomp.blackjack.util.Pilha;
  * @author Uellington Damasceno
  */
 public class Baralho {
-    private Pilha[] baralhos;
-
-    public Baralho(int quantidadeDeBaralho){
-        this.baralhos = new Pilha[quantidadeDeBaralho];
+    private Carta[] cartas;
+    private final int qtdDeCartas;
+    
+    public Baralho(int qtdDeBaralhos){
+        this.qtdDeCartas = 52;
+        this.cartas = new Carta[qtdDeBaralhos*qtdDeCartas];
         gerarBaralho();
-        
     }
-    public Pilha[] getBaralhos(){
-        return baralhos;
+    public Carta[] getCartas(){
+        return cartas;
     }
-    public void setBaralhos(Pilha[] baralhos){
-        this.baralhos = baralhos;
+    public void setCartas(Carta[] cartas){
+        this.cartas = cartas;
     }
     private void gerarBaralho(){
         String[] nipes = {"♥", "♠", "♦", "♣"};
         String[] faces = {"A","2","3","4","5","6","7","8","9","10", "J", "Q", "K"};
         int id = 0;
-        for (int i = 0; i < baralhos.length; i++) {
-            baralhos[i] = new Pilha();
+        for (int i = 0; i < cartas.length/qtdDeCartas; i++) {
             for (String nipe : nipes) {
                 for (String face : faces) {
-                    Carta carta = new Carta(nipe, face, id++);
-                    baralhos[i].push(carta);
+                    cartas[id] = new Carta(nipe, face, id++);
                 }
             }
         }

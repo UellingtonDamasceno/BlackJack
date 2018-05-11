@@ -22,6 +22,11 @@ public class View {
     public static void main(String[] args) {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         int TAMANHO_MENU = 30;
+       /* 
+        Caso queira fazer o teste do novo metodo;
+        Baralho b = new Baralho(10);
+        Croupier c = new Croupier("asf", "asdf");
+        c.embaralha(b);*/
         try {
             controller.carregarUsers("Logins.txt");
         } catch (IOException ex) {
