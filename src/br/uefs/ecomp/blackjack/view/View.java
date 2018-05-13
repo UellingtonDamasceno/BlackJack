@@ -17,18 +17,15 @@ import java.util.Scanner;
  */
 public class View {
 
-    static BlackJackController controller = new BlackJackController();
-    static ControllerPartida controllerPartida = new ControllerPartida();
+    static ControllerArquivo controllerArquivos = new ControllerArquivo();
+    static ControllerPartida controllerPartidas = new ControllerPartida();
     
     public static void main(String[] args) {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         int TAMANHO_MENU = 30;
-    
-        //Caso queira fazer o teste do novo metodo;
-        Baralho b = new Baralho(3);
-        Croupier c = new Croupier("asf", "asdf");
+
         try {
-            controller.carregarUsers("Logins.txt");
+            controllerArquivos.carregarUsers("Logins.txt");
         } catch (IOException ex) {
             do {
                 repetirCarregarArquivo = false;
@@ -38,7 +35,7 @@ public class View {
                         mensagem(TAMANHO_MENU, "Digite o nome do arquivo", false);
                         Scanner input = new Scanner(System.in);
                         try {
-                            controller.carregarUsers(input.nextLine());
+                            controllerArquivos.carregarUsers(input.nextLine());
                         } catch (IOException erro) {
                             repetirCarregarArquivo = true;
                         }
@@ -90,6 +87,7 @@ public class View {
                                 repetirMenuPrincipal = true;
                                 break;
                             }
+                            // Faltou o default
                         }
                     } while (repetirMenuSalas);
                     
@@ -99,7 +97,7 @@ public class View {
                     break;
                 }
                 case 3: {
-                    Iterador lJogadores = controller.listaDeUsers();
+                    Iterador lJogadores = controllerArquivos.listaDeUsers();
                     while (lJogadores.hasNext()) {
                         Jogador jogadorObtido = (Jogador) lJogadores.next();
                         System.out.println(jogadorObtido);
@@ -157,7 +155,7 @@ public class View {
             confirmaSenha = input.nextLine();
             if (senha.equals(confirmaSenha)) {
                 try {
-                    if (controller.cadastrarNovoJogador(user, senha)) {
+                    if (controllerArquivos.cadastrarNovoJogador(user, senha)) {
                         mensagem(tamanho, "Deseja cadastar novo jogador?", true);
                         switch (lerInt(true, 1, 2)) {
                             case 1: {
@@ -189,7 +187,7 @@ public class View {
         boolean repetirPartida, repetirInserirUser;
         String user, senha;
         Scanner input = new Scanner(System.in);
-        Iterador listaDeUser = controller.listaDeUsers();
+        Iterador listaDeUser = controllerArquivos.listaDeUsers();
         do {
             repetirPartida = false;
             barra(tamanho);
@@ -204,7 +202,7 @@ public class View {
                     user = input.nextLine();
                     System.out.print("Senha: ");
                     senha = input.nextLine();
-                    switch (controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser)) {
+                    switch (controllerPartidas.inserirJogadorEmPartida(user, senha, listaDeUser)) {
                         case 0: {
                             barra(tamanho);
                             textoSimples(tamanho, "Usuario ou senha invalido!", true);
