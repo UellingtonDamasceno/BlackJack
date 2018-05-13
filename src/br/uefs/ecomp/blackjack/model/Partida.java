@@ -1,6 +1,7 @@
 package br.uefs.ecomp.blackjack.model;
 
 import br.uefs.ecomp.blackjack.util.*;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -19,14 +20,16 @@ public class Partida {
     }
     public void iniciar(){
         jogadores.insereFinal(croupier);
-        
         // Percorrer a lista de jogadores 2 vezes dando uma carta a cada um.
         Iterador itr = jogadores.iterador();
+        embaralha(baralho);
+        Jogador jogadorAtual;
         
     }
-    
-    
-    public Pilha embaralha(Baralho baralho){
+    public Iterador jogadoresEmPartida(){
+        return jogadores.iterador();
+    }
+    public void embaralha(Baralho baralho){
         Random gerador = new Random();
         Pilha cartasDoBaralho = new Pilha();
         Carta suporte[] = baralho.getCartas();
@@ -37,7 +40,6 @@ public class Partida {
             cartasDoBaralho.push(carta);
             System.out.println(cartasDoBaralho.peek());
         }
-        return cartasDoBaralho;
     }
     private void swap(Object[] c, int posUm, int posDois){
         Object carta = c[posUm];

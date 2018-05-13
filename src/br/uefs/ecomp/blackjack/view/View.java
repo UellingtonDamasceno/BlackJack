@@ -5,7 +5,7 @@
  */
 package br.uefs.ecomp.blackjack.view;
 
-import br.uefs.ecomp.blackjack.controller.BlackJackController;
+import br.uefs.ecomp.blackjack.controller.*;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.Iterador;
 import java.io.IOException;
@@ -18,15 +18,15 @@ import java.util.Scanner;
 public class View {
 
     static BlackJackController controller = new BlackJackController();
-
+    static ControllerPartida controllerPartida = new ControllerPartida();
+    
     public static void main(String[] args) {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         int TAMANHO_MENU = 30;
-       /* 
+    
         //Caso queira fazer o teste do novo metodo;
-        Baralho b = new Baralho(10);
+        Baralho b = new Baralho(3);
         Croupier c = new Croupier("asf", "asdf");
-        c.embaralha(b);*/
         try {
             controller.carregarUsers("Logins.txt");
         } catch (IOException ex) {
@@ -61,7 +61,7 @@ public class View {
             menuPrincipal(30);
             switch (lerInt(true, 1, 5)) {
                 case 1: {
-                    repetirMenuPrincipal = cadastrarUser(30);
+                    repetirMenuPrincipal = cadastrarUser(TAMANHO_MENU);
                     break;
                 }
                 case 2: {
@@ -82,7 +82,7 @@ public class View {
                                 break;
                             }
                             case 4: {
-                                mensagem(30, "Quantos baralhos?", false);
+                                mensagem(TAMANHO_MENU, "Quantos baralhos?", false);
                                 numDeBaralho = lerInt(true, 1, 0);
                                 break;
                             }
@@ -92,11 +92,14 @@ public class View {
                             }
                         }
                     } while (repetirMenuSalas);
-                    escolherJogadores(TAMANHO_MENU);
+                    
+                    if(!repetirMenuPrincipal){
+                        escolherJogadores(TAMANHO_MENU);
+                    }
                     break;
                 }
                 case 3: {
-                    Iterador lJogadores = controller.verPontuacao();
+                    Iterador lJogadores = controller.listaDeUsers();
                     while (lJogadores.hasNext()) {
                         Jogador jogadorObtido = (Jogador) lJogadores.next();
                         System.out.println(jogadorObtido);
@@ -182,11 +185,11 @@ public class View {
         } while (repetirCadastro);
         return false;
     }
-
     private static void escolherJogadores(int tamanho) {
         boolean repetirPartida, repetirInserirUser;
         String user, senha;
         Scanner input = new Scanner(System.in);
+        Iterador listaDeUser = controller.listaDeUsers();
         do {
             repetirPartida = false;
             barra(tamanho);
@@ -201,7 +204,7 @@ public class View {
                     user = input.nextLine();
                     System.out.print("Senha: ");
                     senha = input.nextLine();
-                    switch (controller.inserirJogadorEmPartida(user, senha)) {
+                    switch (controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser)) {
                         case 0: {
                             barra(tamanho);
                             textoSimples(tamanho, "Usuario ou senha invalido!", true);

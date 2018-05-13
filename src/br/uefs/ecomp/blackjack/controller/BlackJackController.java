@@ -6,13 +6,7 @@
 package br.uefs.ecomp.blackjack.controller;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 
 /**
  *
@@ -20,24 +14,17 @@ import java.io.PrintWriter;
  */
 public class BlackJackController {
     private ListaEncadeada users;
-    private ListaEncadeada jogadoresEmPartida;
     
     public BlackJackController(){
         this.users = new ListaEncadeada();
-        this.jogadoresEmPartida = new ListaEncadeada();
     }
     public void setUsers(ListaEncadeada users){
         this.users = users;
     }
-    public void setJogadoresEmPartida(ListaEncadeada jogadoresEmPartida){
-        this.jogadoresEmPartida = jogadoresEmPartida;
-    }
     public ListaEncadeada getUsers(){
         return users;
     }
-    public ListaEncadeada getJogadoresEmPartida(){
-        return jogadoresEmPartida;
-    }
+   
     /**
      * Dado um arquivo de layout (String : String : int : int) este método irá ler pegando as informações 
      * linha a linha e em seguida inserindo em uma lista encadeada. 
@@ -97,29 +84,8 @@ public class BlackJackController {
         return true;
     }
     
-    public int inserirJogadorEmPartida(String user, String senha){
-        Iterador lJogadores = users.iterador();
-        while(lJogadores.hasNext()){
-            Jogador jogadorObtido = (Jogador) lJogadores.next();
-            if(jogadorObtido.getUser().equals(user) && jogadorObtido.getSenha().equals(senha)){
-                if(jogadoresEmPartida.contem(jogadorObtido)){
-                    return 2;
-                }else{
-                    jogadoresEmPartida.insereFinal(jogadorObtido);
-                    return 1;
-                }
-            }
-        }
-        return 0;
-    }
-    public void comecarPartida(){
-        
-    }
-    public Iterador verPontuacao(){
+    public Iterador listaDeUsers(){
         return users.iterador();
-    }
-    public Iterador verJogadoresEmPartida(){
-        return jogadoresEmPartida.iterador();
     }
     public boolean gerarArquivoOrdenado(ListaEncadeada jogadoresOrdenados) throws FileNotFoundException, IOException{
         FileOutputStream arquivo = new FileOutputStream("Pontuação Ordenada.txt");

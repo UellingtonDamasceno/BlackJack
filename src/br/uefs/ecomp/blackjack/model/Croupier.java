@@ -21,6 +21,10 @@ public class Croupier extends Jogador{
     public MaoDeCarta getCartas (){
         return cartas;
     }
+    
+    public Carta DaCarta(Carta carta){
+        return carta;
+    }
     /*
         Pode ser melhorado fazendo verficações sobre a quanitdade de as 
     e qm sabe calcular a as chances de tirar uma carta favoravel.
