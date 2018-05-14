@@ -12,10 +12,10 @@ import java.io.*;
  *
  * @author Uellington Damasceno
  */
-public class BlackJackController {
+public class ControllerArquivo {
     private ListaEncadeada users;
     
-    public BlackJackController(){
+    public ControllerArquivo(){
         this.users = new ListaEncadeada();
     }
     public void setUsers(ListaEncadeada users){

@@ -16,6 +16,5 @@ public interface IStack {
     public boolean isEmpty();
     
     public int size();
-    
-    public Iterador iterador();
+
 }

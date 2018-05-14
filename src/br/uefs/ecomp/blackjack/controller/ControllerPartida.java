@@ -40,7 +40,8 @@ public class ControllerPartida {
         }
         return 0;
     }
-    public void comecarPartida(){
+    public Partida comecarPartida(){
+        return null;
     }
 
     public Iterador verJogadoresEmPartida(){

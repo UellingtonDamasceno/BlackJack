@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 public class View {
 
-    static BlackJackController controller = new BlackJackController();
+    static ControllerArquivo contollerArquivo = new ControllerArquivo();
     static ControllerPartida controllerPartida = new ControllerPartida();
     
     public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class View {
         Baralho b = new Baralho(3);
         Croupier c = new Croupier("asf", "asdf");
         try {
-            controller.carregarUsers("Logins.txt");
+            contollerArquivo.carregarUsers("Logins.txt");
         } catch (IOException ex) {
             do {
                 repetirCarregarArquivo = false;
@@ -38,7 +38,7 @@ public class View {
                         mensagem(TAMANHO_MENU, "Digite o nome do arquivo", false);
                         Scanner input = new Scanner(System.in);
                         try {
-                            controller.carregarUsers(input.nextLine());
+                            contollerArquivo.carregarUsers(input.nextLine());
                         } catch (IOException erro) {
                             repetirCarregarArquivo = true;
                         }
@@ -54,7 +54,6 @@ public class View {
         }
 
         int numDeBaralho = 0;
-
         
         do {
             repetirMenuPrincipal = false;
@@ -91,15 +90,14 @@ public class View {
                                 break;
                             }
                         }
+                        if(!repetirMenuPrincipal){
+                            repetirMenuSalas = !escolherJogadores(TAMANHO_MENU);
+                        }
                     } while (repetirMenuSalas);
-                    
-                    if(!repetirMenuPrincipal){
-                        escolherJogadores(TAMANHO_MENU);
-                    }
                     break;
                 }
                 case 3: {
-                    Iterador lJogadores = controller.listaDeUsers();
+                    Iterador lJogadores = contollerArquivo.listaDeUsers();
                     while (lJogadores.hasNext()) {
                         Jogador jogadorObtido = (Jogador) lJogadores.next();
                         System.out.println(jogadorObtido);
@@ -157,7 +155,7 @@ public class View {
             confirmaSenha = input.nextLine();
             if (senha.equals(confirmaSenha)) {
                 try {
-                    if (controller.cadastrarNovoJogador(user, senha)) {
+                    if (contollerArquivo.cadastrarNovoJogador(user, senha)) {
                         mensagem(tamanho, "Deseja cadastar novo jogador?", true);
                         switch (lerInt(true, 1, 2)) {
                             case 1: {
@@ -185,53 +183,59 @@ public class View {
         } while (repetirCadastro);
         return false;
     }
-    private static void escolherJogadores(int tamanho) {
+    private static boolean escolherJogadores(int tamanho) {
         boolean repetirPartida, repetirInserirUser;
         String user, senha;
         Scanner input = new Scanner(System.in);
-        Iterador listaDeUser = controller.listaDeUsers();
+        Iterador listaDeUser = contollerArquivo.listaDeUsers();
         do {
             repetirPartida = false;
             barra(tamanho);
             textoSimples(tamanho, "Quantos jogadores vão jogar?", false);
-            textoDuplo(tamanho, "Min {1}", "Max {5}");
+            textoDuplo(tamanho, "Min {01}", "Max {05}");
+            separador(tamanho, true);
+            novoItem(tamanho, "Voltar", 6);
             barra(tamanho);
-            int qtdJogadores = lerInt(true, 1, 5);
-            for (int i = 0; i < qtdJogadores; i++) {
-                do {
-                    repetirInserirUser = false;
-                    System.out.print("User: ");
-                    user = input.nextLine();
-                    System.out.print("Senha: ");
-                    senha = input.nextLine();
-                    switch (controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser)) {
-                        case 0: {
-                            barra(tamanho);
-                            textoSimples(tamanho, "Usuario ou senha invalido!", true);
-                            textoSimples(tamanho, "Tente novamente!", true);
-                            barra(tamanho);
-                            repetirInserirUser = true;
-                            break;
+            int qtdJogadores = lerInt(true, 1, 6);
+            if(qtdJogadores == 6){
+                return false;
+            }else{
+                for (int i = 0; i < qtdJogadores; i++) {
+                    do {
+                        repetirInserirUser = false;
+                        System.out.print("User: ");
+                        user = input.nextLine();
+                        System.out.print("Senha: ");
+                        senha = input.nextLine();
+                        switch (controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser)) {
+                            case 0: {
+                                barra(tamanho);
+                                textoSimples(tamanho, "Usuario ou senha invalido!", true);
+                                textoSimples(tamanho, "Tente novamente!", true);
+                                barra(tamanho);
+                                repetirInserirUser = true;
+                                break;
+                            }
+                            case 1: {
+                                barra(tamanho);
+                                textoSimples(tamanho, ("Usuario: " + user + " irá jogar!"), true);
+                                barra(tamanho);
+                                break;
+                            }
+                            case 2: {
+                                barra(tamanho);
+                                textoSimples(tamanho, user + " Já está cadastrado(a)!", true);
+                                textoSimples(tamanho, "Cadastre outro jogador!", true);
+                                barra(tamanho);
+                                repetirInserirUser = true;
+                                break;
+                            }
                         }
-                        case 1: {
-                            barra(tamanho);
-                            textoSimples(tamanho, ("Usuario: " + user + " irá jogar!"), true);
-                            barra(tamanho);
-                            break;
-                        }
-                        case 2: {
-                            barra(tamanho);
-                            textoSimples(tamanho, user + " Já está cadastrado(a)!", true);
-                            textoSimples(tamanho, "Cadastre outro jogador!", true);
-                            barra(tamanho);
-                            repetirInserirUser = true;
-                            break;
-                        }
-
-                    }
-                } while (repetirInserirUser);
+                    } while (repetirInserirUser);
+                }
             }
         } while (repetirPartida);
+        return true;
     }
 
     private static void menuRegras(int tamanho) {

@@ -89,25 +89,4 @@ public class Pilha implements IStack{
     public int size() {
         return tamanho;
     }
-    
-    @Override
-    public Iterador iterador() {
-        return new MyIterador();
-    }
-    
-    public class MyIterador implements Iterador {
-        private Celula elemento = top;
-
-        @Override
-        public boolean hasNext() {
-            return elemento != null;
-        }
-
-        @Override
-        public Object next() {
-            Celula dados = elemento;
-            elemento = elemento.getProximo();
-            return dados.getDados();
-        }
-    }
 }
