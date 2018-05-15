@@ -12,10 +12,10 @@ import java.io.*;
  *
  * @author Uellington Damasceno
  */
-public class ControllerArquivo {
+public class ControllerArquivos {
     private ListaEncadeada users;
     
-    public ControllerArquivo(){
+    public ControllerArquivos(){
         this.users = new ListaEncadeada();
     }
     public void setUsers(ListaEncadeada users){
