@@ -19,14 +19,11 @@ public class View {
 
     static ControllerArquivo contollerArquivo = new ControllerArquivo();
     static ControllerPartida controllerPartida = new ControllerPartida();
-    
+
     public static void main(String[] args) {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         int TAMANHO_MENU = 30;
-    
-        //Caso queira fazer o teste do novo metodo;
-        Baralho b = new Baralho(3);
-        Croupier c = new Croupier("asf", "asdf");
+        
         try {
             contollerArquivo.carregarUsers("Logins.txt");
         } catch (IOException ex) {
@@ -54,7 +51,7 @@ public class View {
         }
 
         int numDeBaralho = 0;
-        
+
         do {
             repetirMenuPrincipal = false;
             menuPrincipal(30);
@@ -90,7 +87,7 @@ public class View {
                                 break;
                             }
                         }
-                        if(!repetirMenuPrincipal){
+                        if (!repetirMenuPrincipal) {
                             repetirMenuSalas = !escolherJogadores(TAMANHO_MENU);
                         }
                     } while (repetirMenuSalas);
@@ -183,7 +180,9 @@ public class View {
         } while (repetirCadastro);
         return false;
     }
+
     private static boolean escolherJogadores(int tamanho) {
+        int qtdJogadores;
         boolean repetirPartida, repetirInserirUser;
         String user, senha;
         Scanner input = new Scanner(System.in);
@@ -192,14 +191,14 @@ public class View {
             repetirPartida = false;
             barra(tamanho);
             textoSimples(tamanho, "Quantos jogadores vão jogar?", false);
-            textoDuplo(tamanho, "Min {01}", "Max {05}");
+            textoDuplo(tamanho, "Min_(01)", "Max_(05)");
             separador(tamanho, true);
             novoItem(tamanho, "Voltar", 6);
             barra(tamanho);
-            int qtdJogadores = lerInt(true, 1, 6);
-            if(qtdJogadores == 6){
+            qtdJogadores = lerInt(true, 1, 6);
+            if (qtdJogadores == 6) {
                 return false;
-            }else{
+            } else {
                 for (int i = 0; i < qtdJogadores; i++) {
                     do {
                         repetirInserirUser = false;

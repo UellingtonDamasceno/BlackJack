@@ -20,9 +20,9 @@ public class PilhaTest {
     @Before
     public void setUp() {
         pilha = new Pilha();
-        data1 = "data1";
-        data2 = "data2";
-        data3 = "data3";
+        data1 = "Data1";
+        data2 = "Data2";
+        data3 = "Data3";
     }
 
     @Test
