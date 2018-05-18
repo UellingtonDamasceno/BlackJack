@@ -35,7 +35,7 @@ public class Partida {
         Carta suporte[] = baralho.getCartas();
         for(int i = 0; i < suporte.length; i++){
             swap(suporte, i, gerador.nextInt(suporte.length -1));
-        }
+            }
         for(Carta carta : suporte){
             cartasDoBaralho.push(carta);
             System.out.println(cartasDoBaralho.peek());
@@ -47,6 +47,10 @@ public class Partida {
         c[posDois] = carta;
     }
     public Pilha ordena(Pilha cartas){
+        Object cartasRestantes[] = new Object[cartas.size()];
+        for (Object carta : cartasRestantes) {
+            carta = cartas.pop();
+        }
         return cartas;
     }
 }

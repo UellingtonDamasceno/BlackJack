@@ -32,9 +32,11 @@ public class ControllerPartida {
             if(jogadorObtido.getUser().equals(user) && jogadorObtido.getSenha().equals(senha)){
                 if(jogadoresEmPartida.contem(jogadorObtido)){
                     return 2;
-                }else{
+                }else if(jogadoresEmPartida.tamanho() < 6){
                     jogadoresEmPartida.insereFinal(jogadorObtido);
                     return 1;
+                }else{
+                    return -1;
                 }
             }
         }

@@ -19,13 +19,13 @@ public class Baralho {
         this.cartas = cartas;
     }
     private void gerarBaralho(){
-        String[] nipes = {"♥", "♠", "♦", "♣"};
+        String[] nipes = {"♦", "♥", "♣", "♠"};
         String[] faces = {"A","2","3","4","5","6","7","8","9","10", "J", "Q", "K"};
-        int id = 0;
+        int posicao = 0;
         for (int i = 0; i < cartas.length/qtdDeCartas; i++) {
             for (String nipe : nipes) {
                 for (String face : faces) {
-                    cartas[id] = new Carta(nipe, face, id++);
+                    cartas[posicao++] = new Carta(nipe, face);
                 }
             }
         }

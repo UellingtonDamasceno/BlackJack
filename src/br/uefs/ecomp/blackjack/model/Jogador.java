@@ -17,19 +17,19 @@ public class Jogador {
     private String senha;
     private int pontos;
     private int partidas;
-    private MaoDeCarta cartas;
+    private MaoDeCarta maoDeCartas;
     private final int BLACKJACK;
     
     public Jogador(String user, String senha){
         this.BLACKJACK = 21;
         this.user = user;
         this.senha = senha;
+        this.maoDeCartas = new MaoDeCarta();
     }   
     public Jogador(String user, String senha, int pontos, int partidas){
         this(user, senha);
         this.pontos = pontos;
         this.partidas = partidas;
-        this.cartas = new MaoDeCarta();
     }
     
     public void setUser(String user){
@@ -45,7 +45,7 @@ public class Jogador {
         this.partidas = partidas;
     }
     public void setMaoDeCarta(MaoDeCarta cartas){
-        this.cartas = cartas;
+        this.maoDeCartas = cartas;
     }
     public String getUser(){
         return user;
@@ -66,14 +66,14 @@ public class Jogador {
     
     // Ver a questão do Ás aqui.
     public void addCartas(Carta carta){
-        ListaEncadeada aux = cartas.getCartas();
+        ListaEncadeada aux = maoDeCartas.getCartas();
         if(!estourou()){
             aux.insereFinal(carta);    
         }
     }
     
     public void limparMaoDeCartas(){
-        ListaEncadeada aux = cartas.getCartas();
+        ListaEncadeada aux = maoDeCartas.getCartas();
         
         while(!aux.estaVazia()){
             aux.removeInicio();
@@ -86,10 +86,10 @@ public class Jogador {
     }
     public int pontosEmMao(){
         int pontosEmMao = 0;
-        Iterador lCartas = (cartas.getCartas()).iterador();
+        Iterador lCartas = (maoDeCartas.getCartas()).iterador();
         while(lCartas.hasNext()){
             Carta cartaObtida = (Carta) lCartas.next();
-            pontosEmMao += cartaObtida.valorReal();
+            pontosEmMao += cartaObtida.valorReal(false);
         }
         return pontosEmMao;
     }
