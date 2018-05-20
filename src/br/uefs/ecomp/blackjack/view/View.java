@@ -5,7 +5,7 @@
  */
 package br.uefs.ecomp.blackjack.view;
 
-import br.uefs.ecomp.blackjack.controller.*;
+import br.uefs.ecomp.blackjack.facade.BlackJackFacade;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.Iterador;
 import java.io.File;
@@ -18,18 +18,17 @@ import java.util.Scanner;
  */
 public class View {
 
-    static ControllerArquivos controllerArquivos = new ControllerArquivos();
-    static ControllerPartida controllerPartida = new ControllerPartida();
+    static BlackJackFacade blackJackFacade = new BlackJackFacade();
 
     public static void main(String[] args) throws IOException {
         final int TAMANHO_MENU = 30;
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
-        boolean repetirQtdJogador, querCadastrar = false;
+        boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
         File arquivo = new File("Logins.txt");
         do {
             repetirCarregarArquivo = false;
             try {
-                if (!controllerArquivos.carregarUsers(arquivo)) {
+                if (!blackJackFacade.carregarUsers(arquivo)) {
                     arquivo.createNewFile();
                     repetirCarregarArquivo = true;
                 }
@@ -65,7 +64,7 @@ public class View {
                 case 2: {
                     do {
                         repetirQtdJogador = false;
-                        if (controllerArquivos.getUsers().estaVazia() || querCadastrar) {
+                        if (blackJackFacade.getUsers().estaVazia() || querCadastrar) {
                             barra(TAMANHO_MENU, true);
                             textoSimples(TAMANHO_MENU, "!!!ERRO!!!", true, true);
                             textoSimples(TAMANHO_MENU, "Nº Jogadores insuficiente", true, true);
@@ -87,7 +86,7 @@ public class View {
                             qtdJogadores = lerInt(true, 1, 6);
                             if (qtdJogadores == 6) {
                                 repetirMenuPrincipal = true;
-                            } else if (controllerArquivos.getUsers().tamanho() < qtdJogadores) {
+                            } else if (blackJackFacade.getUsers().tamanho() < qtdJogadores) {
                                 repetirQtdJogador = true;
                                 querCadastrar = true;
                             } else {
@@ -118,29 +117,74 @@ public class View {
                                         }
                                     }
                                     if (!repetirQtdJogador) {
-                                        boolean repetirPartida;
-                                        escolherJogadores(TAMANHO_MENU, qtdJogadores);
+                                        boolean repetirPartida, inserirNovoJogador;
                                         do {
-                                            repetirPartida = false;
-                                            partida(TAMANHO_MENU, controllerPartida.verJogadoresEmPartida());
-                                            menuFimPartida(TAMANHO_MENU);
-                                            controllerPartida.zerarHistorico();
-                                            switch (lerInt(true, 1, 4)) {
-                                                case 1: {
-                                                    repetirPartida = true;
-                                                    break;
-                                                }
-                                                case 2: {
-                                                    repetirQtdJogador = true;
-                                                }
-                                                case 3: {
-
-                                                }
-                                                case 4: {
-                                                    repetirMenuPrincipal = true;
+                                            inserirNovoJogador = false;
+                                            for (int i = 0; i < qtdJogadores; i++) {
+                                                if (!escolherJogadores(TAMANHO_MENU)) {
+                                                    mensagem(TAMANHO_MENU, "Deseja recarregar?", true);
+                                                    do {
+                                                        repetirRecarga = false;
+                                                        switch (lerInt(true, 1, 2)) {
+                                                            case 1: {
+                                                                switch (menuRecarrega(TAMANHO_MENU)) {
+                                                                    case -1: {
+                                                                        inserirNovoJogador = true;
+                                                                        break;
+                                                                    }
+                                                                    case 0: {
+                                                                        barra(TAMANHO_MENU, true);
+                                                                        textoSimples(TAMANHO_MENU, "Sucesso!", true, true);
+                                                                        mensagem(TAMANHO_MENU, "Recaregar novamente?", true);
+                                                                        switch (lerInt(true, 1, 2)) {
+                                                                            case 1: {
+                                                                                repetirRecarga = true;
+                                                                                break;
+                                                                            }
+                                                                            case 2: {
+                                                                                inserirNovoJogador = true;
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                            case 2: {
+                                                                inserirNovoJogador = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    } while (repetirRecarga);
                                                 }
                                             }
-                                        } while (repetirPartida);
+                                            if (!inserirNovoJogador) {
+                                                do {
+                                                    repetirPartida = false;
+                                                    partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida());
+                                                    menuFimPartida(TAMANHO_MENU);
+                                                    blackJackFacade.zerarHistorico();
+                                                    switch (lerInt(true, 1, 4)) {
+                                                        case 1: {
+                                                            repetirPartida = true;
+                                                            break;
+                                                        }
+                                                        case 2: {
+                                                            repetirQtdJogador = true;
+                                                            break;
+                                                        }
+                                                        case 3: {
+
+                                                        }
+                                                        case 4: {
+                                                            repetirMenuPrincipal = true;
+                                                        }
+                                                    }
+                                                } while (repetirPartida);
+                                            }
+
+                                        } while (inserirNovoJogador);
                                     }
                                 } while (repetirMenuSalas);
                             }
@@ -150,7 +194,7 @@ public class View {
                     break;
                 }
                 case 3: {
-                    Iterador lJogadores = controllerArquivos.listaDeUsers();
+                    Iterador lJogadores = blackJackFacade.listaDeUsers();
                     while (lJogadores.hasNext()) {
                         Jogador jogadorObtido = (Jogador) lJogadores.next();
                         System.out.println(jogadorObtido);
@@ -194,6 +238,73 @@ public class View {
         barra(tamanho, true);
     }
 
+    private static int menuRecarrega(int tamanho) {
+        Scanner input = new Scanner(System.in);
+        boolean repetirRecarga;
+        String user, senha;
+        do {
+            repetirRecarga = false;
+            mensagem(tamanho, "Faça login!", false);
+            System.out.print("User: ");
+            user = input.nextLine();
+            System.out.print("Senha: ");
+            senha = input.nextLine();
+            Jogador jogadorObtido = (Jogador) blackJackFacade.obterJogador(user, senha);
+            if (jogadorObtido == null) {
+                barra(tamanho, true);
+                textoSimples(tamanho, "!!!Erro!!!", true, true);
+                textoSimples(tamanho, "Jogador não encontrado!", true, true);
+                mensagem(tamanho, "Gostaria de tentar novamente?", true);
+                switch (lerInt(true, 1, 2)) {
+                    case 1: {
+                        repetirRecarga = true;
+                        break;
+                    }
+                    case 2: {
+                        return -1;
+                    }
+                }
+            } else {
+                opcoesRecarga(tamanho);
+                switch (lerInt(true, 1, 5)) {
+                    case 1: {
+                        jogadorObtido.setPontos(25);
+                        break;
+                    }
+                    case 2: {
+                        jogadorObtido.setPontos(50);
+                        break;
+                    }
+                    case 3: {
+                        jogadorObtido.setPontos(75);
+                        break;
+                    }
+                    case 4: {
+                        jogadorObtido.setPontos(100);
+                        break;
+                    }
+                    case 5: {
+                        return -1;
+                    }
+                }
+            }
+        } while (repetirRecarga);
+        return 0;
+    }
+
+    private static void opcoesRecarga(int tamanho) {
+        barra(tamanho, true);
+        textoSimples(tamanho, "Opçoes de recarga", true, true);
+        separador(tamanho, true);
+        novoItem(tamanho, "R$ 12,00/25F", "1", true);
+        novoItem(tamanho, "R$ 20,00/50F", "2", true);
+        novoItem(tamanho, "R$ 25,00/75F", "3", true);
+        novoItem(tamanho, "R$ 30,00/100F", "4", true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Voltar", "5", true);
+        barra(tamanho, true);
+    }
+
     private static boolean cadastrarUser(int tamanho, File nomeArq) {
         String user, senha, confirmaSenha;
         boolean repetirCadastro;
@@ -208,7 +319,7 @@ public class View {
             confirmaSenha = input.nextLine();
             if (senha.equals(confirmaSenha)) {
                 try {
-                    if (controllerArquivos.cadastrarNovoJogador(nomeArq, user, senha)) {
+                    if (blackJackFacade.cadastrarNovoJogador(nomeArq, user, senha)) {
                         mensagem(tamanho, "Deseja cadastar novo jogador?", true);
                         switch (lerInt(true, 1, 2)) {
                             case 1: {
@@ -246,51 +357,49 @@ public class View {
         barra(tamanho, true);
     }
 
-    private static boolean escolherJogadores(int tamanho, int qtdJogadores) {
+    private static boolean escolherJogadores(int tamanho) {
         boolean repetirInserirUser;
         Scanner input = new Scanner(System.in);
 
-        for (int i = 0; i < qtdJogadores; i++) {
-            do {
-                repetirInserirUser = false;
-                Iterador listaDeUser = controllerArquivos.listaDeUsers();
-                System.out.print("User: ");
-                String user = input.nextLine();
-                System.out.print("Senha: ");
-                String senha = input.nextLine();
-                switch (controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser)) {
-                    case -1: {
-                        barra(tamanho, true);
-                        textoSimples(tamanho, "Limite alcançado!", true, true);
-                        barra(tamanho, true);
-                        return true;
-                    }
-                    case 0: {
-                        barra(tamanho, true);
-                        textoSimples(tamanho, "Usuario ou senha invalido!", true, true);
-                        textoSimples(tamanho, "Tente novamente!", true, true);
-                        barra(tamanho, true);
-                        repetirInserirUser = true;
-                        break;
-                    }
-                    case 1: {
-                        barra(tamanho, true);
-                        textoSimples(tamanho, ("Usuario: " + user + " irá jogar!"), true, true);
-                        barra(tamanho, true);
-                        repetirInserirUser = false;
-                        break;
-                    }
-                    case 2: {
-                        barra(tamanho, true);
-                        textoSimples(tamanho, user + " Já está cadastrado(a)!", true, true);
-                        textoSimples(tamanho, "Cadastre outro jogador!", true, true);
-                        barra(tamanho, true);
-                        repetirInserirUser = true;
-                        break;
-                    }
+        do {
+            repetirInserirUser = false;
+            Iterador listaDeUser = blackJackFacade.listaDeUsers();
+            System.out.println("Inserir em partida!");
+            System.out.print("User: ");
+            String user = input.nextLine();
+            System.out.print("Senha: ");
+            String senha = input.nextLine();
+            switch (blackJackFacade.inserirJogadorEmPartida(user, senha, listaDeUser)) {
+                case -1: {
+                    barra(tamanho, true);
+                    textoSimples(tamanho, "Pontos insuficiente!", true, true);
+                    barra(tamanho, true);
+                    return false;
                 }
-            } while (repetirInserirUser);
-        }
+                case 0: {
+                    barra(tamanho, true);
+                    textoSimples(tamanho, "Usuario ou senha invalido!", true, true);
+                    textoSimples(tamanho, "Tente novamente!", true, true);
+                    barra(tamanho, true);
+                    repetirInserirUser = true;
+                    break;
+                }
+                case 1: {
+                    barra(tamanho, true);
+                    textoSimples(tamanho, ("Usuario: " + user + " irá jogar!"), true, true);
+                    barra(tamanho, true);
+                    break;
+                }
+                case 2: {
+                    barra(tamanho, true);
+                    textoSimples(tamanho, user + " Já está cadastrado(a)!", true, true);
+                    textoSimples(tamanho, "Cadastre outro jogador!", true, true);
+                    barra(tamanho, true);
+                    repetirInserirUser = true;
+                    break;
+                }
+            }
+        } while (repetirInserirUser);
         return true;
     }
 
@@ -312,7 +421,7 @@ public class View {
         barra((tamanho * numDeJogadores), true);
         textoSimples((tamanho * numDeJogadores), "Rodada Nº: " + numRound, true, true);
         for (int info = 0; info < 5; info++) {
-            Iterador lJogadores = controllerPartida.verJogadoresEmPartida();
+            Iterador lJogadores = blackJackFacade.verJogadoresEmPartida();
             while (lJogadores.hasNext()) {
                 jogadorAtual = (Jogador) lJogadores.next();
                 switch (info) {
@@ -354,7 +463,7 @@ public class View {
         textoDuplo((tamanho * 3), "Opções do Menu", true, "Historico", true);
         barra((tamanho * 3), true);
         for (int i = 9; i != -1; i--) {
-            log = (String) controllerPartida.getInfoHistorico(i);
+            log = (String) blackJackFacade.getInfoHistorico(i);
             if (i <= 3) {
                 switch (3 - i) {
                     case 1: {
@@ -380,17 +489,17 @@ public class View {
 
     private static void rodadaInicial(int tamanho, int rodada) {
         for (int i = 0; i < 2; i++) {
-            Iterador lJogadores = controllerPartida.verJogadoresEmPartida();
-            controllerPartida.addHistorico("Croupier distribuindo " + (i + 1) + "ª rodada de cartas!");
+            Iterador lJogadores = blackJackFacade.verJogadoresEmPartida();
+            blackJackFacade.addHistorico("Croupier distribuindo " + (i + 1) + "ª rodada de cartas!");
             while (lJogadores.hasNext()) {
                 Jogador jogadorAtual = (Jogador) lJogadores.next();
-                controllerPartida.addHistorico(jogadorAtual.getUser() + " Recebeu: " + "NOME da Carta");
+                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Recebeu: " + "NOME da Carta");
             }
         }
     }
 
     private static void atualizarInterface(int tamanho, int rodada) {
-        round(tamanho, rodada++, controllerPartida.getJogadoresEmPartida().tamanho());
+        round(tamanho, rodada++, blackJackFacade.getJogadoresEmPartida().tamanho());
         exibirHistorico(tamanho);
     }
 
@@ -398,25 +507,25 @@ public class View {
         int rodada = 1;
         boolean querCarta;
         Jogador jogadorAtual;
-        controllerPartida.addHistorico("Inicio de Partida");
-        controllerPartida.addHistorico("Baralho Embaralhado!");
+        blackJackFacade.addHistorico("Inicio de Partida");
+        blackJackFacade.addHistorico("Baralho Embaralhado!");
         //Embaralha o baralho!
         rodadaInicial(tamanho, rodada);
         atualizarInterface(tamanho, rodada);
         while (lJogadores.hasNext()) {
             jogadorAtual = (Jogador) lJogadores.next();
-            controllerPartida.addHistorico(jogadorAtual.getUser() + "Está com a vez!");
+            blackJackFacade.addHistorico(jogadorAtual.getUser() + " Está com a vez!");
             atualizarInterface(tamanho, rodada);
             do {
                 querCarta = false;
                 switch (lerInt(true, 1, 3)) {
                     case 1: {
-                        controllerPartida.addHistorico("Jogador: " + jogadorAtual.getUser() + " Pediu carta!");
+                        blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Pediu carta!");
                         if (jogadorAtual.estourou()) {
-                            controllerPartida.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
+                            blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
                             jogadorAtual.setPontos(-5);
                         } else if (jogadorAtual.venceu()) {
-                            controllerPartida.addHistorico(jogadorAtual.getUser() + "Venceu!");
+                            blackJackFacade.addHistorico(jogadorAtual.getUser() + "Venceu!");
                             jogadorAtual.setPontos(10);
                         }
                         querCarta = true;
@@ -426,11 +535,11 @@ public class View {
                     }
                     case 2: {
                         rodada++;
-                        controllerPartida.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
+                        blackJackFacade.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
                         break;
                     }
                     case 3: {
-                        controllerPartida.addHistorico(jogadorAtual.getUser() + " Desistiu!");
+                        blackJackFacade.addHistorico(jogadorAtual.getUser() + " Desistiu!");
                         jogadorAtual.setPontos(-10);
                     }
                 }

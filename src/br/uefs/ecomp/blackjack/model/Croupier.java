@@ -9,7 +9,7 @@ public class Croupier extends Jogador{
     private MaoDeCarta cartas;
     
     public Croupier(String user, String senha){
-        super(user, senha);
+        super(user, senha, 1000);
         cartas = new MaoDeCarta();
     }
     /*Estava funcionando, caso dê erro voltar para a versão do dia 02/05

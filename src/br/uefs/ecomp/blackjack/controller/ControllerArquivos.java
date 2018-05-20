@@ -74,7 +74,7 @@ public class ControllerArquivos {
      * @throws IOException
      */
     public boolean cadastrarNovoJogador(File arquivo, String user, String senha) throws FileNotFoundException, IOException {
-        Jogador jogador = new Jogador(user, senha);       
+        Jogador jogador = new Jogador(user, senha, 100);       
         if(!arquivo.isFile() || users.contem(jogador)){
             return false;
         } else {
@@ -82,7 +82,7 @@ public class ControllerArquivos {
             PrintWriter pr = new PrintWriter(arq);
             pr.print(jogador.getUser() + " : ");
             pr.print(jogador.getSenha() + " : ");
-            pr.print(jogador.getPontos() + " : ");
+            pr.print(100 + " : ");
             pr.println(jogador.getPartidas());
             users.insereFinal(jogador);
             pr.close();
@@ -90,7 +90,18 @@ public class ControllerArquivos {
         }
         return true;
     }
-
+    
+    public Jogador obterJogador(String user, String senha){
+        Iterador lJogadores = users.iterador();
+        while(lJogadores.hasNext()){
+            Jogador obtido = (Jogador) lJogadores.next();
+            if(obtido.getUser().equals(user) && obtido.getSenha().equals(senha)){
+                return obtido;
+            }
+        }
+        return null;
+    }
+    
     public Iterador listaDeUsers() {
         return users.iterador();
     }

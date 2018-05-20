@@ -20,15 +20,15 @@ public class Jogador {
     private MaoDeCarta maoDeCartas;
     private final int BLACKJACK;
     
-    public Jogador(String user, String senha){
+    public Jogador(String user, String senha, int pontos){
         this.BLACKJACK = 21;
         this.user = user;
         this.senha = senha;
+        this.pontos = pontos;
         this.maoDeCartas = new MaoDeCarta();
     }   
     public Jogador(String user, String senha, int pontos, int partidas){
-        this(user, senha);
-        this.pontos = pontos;
+        this(user, senha, pontos);
         this.partidas = partidas;
     }
     

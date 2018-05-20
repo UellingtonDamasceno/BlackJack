@@ -54,7 +54,7 @@ public class ControllerPartida {
             if(jogadorObtido.getUser().equals(user) && jogadorObtido.getSenha().equals(senha)){
                 if(jogadoresEmPartida.contem(jogadorObtido)){
                     return 2;
-                }else if(jogadoresEmPartida.tamanho() < 6){
+                }else if(jogadorObtido.getPontos() >= 10){
                     jogadoresEmPartida.insereFinal(jogadorObtido);
                     return 1;
                 }else{
