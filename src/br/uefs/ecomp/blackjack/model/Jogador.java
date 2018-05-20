@@ -39,7 +39,7 @@ public class Jogador {
         this.senha = senha;
     }
     public void setPontos(int pontos){
-        this.pontos = pontos;
+        this.pontos += pontos;
     }
     public void setPartidas(int partidas){
         this.partidas = partidas;
@@ -71,7 +71,9 @@ public class Jogador {
             aux.insereFinal(carta);    
         }
     }
-    
+    public boolean venceu(){
+        return pontosEmMao() == BLACKJACK;
+    }
     public void limparMaoDeCartas(){
         ListaEncadeada aux = maoDeCartas.getCartas();
         

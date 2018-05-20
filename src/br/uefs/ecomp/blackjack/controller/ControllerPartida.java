@@ -13,9 +13,19 @@ import br.uefs.ecomp.blackjack.util.*;
 public class ControllerPartida {
     private Partida partida;
     private ListaEncadeada jogadoresEmPartida;
+    private ListaEncadeada historico;
     
     public ControllerPartida(){
         this.jogadoresEmPartida = new ListaEncadeada();
+        this.historico = new ListaEncadeada();
+    }
+    
+    public ListaEncadeada getHistorico(){
+        return historico;
+    }
+    
+    public void setHistorico(ListaEncadeada historico){
+        this.historico = historico;
     }
     
     public ListaEncadeada getJogadoresEmPartida(){
@@ -24,6 +34,18 @@ public class ControllerPartida {
     
     public void setJogadoresEmPartida(ListaEncadeada jogadoresEmPartida){
         this.jogadoresEmPartida = jogadoresEmPartida;
+    }
+    
+    public Object getInfoHistorico(int pos){
+        return historico.tamanho() > pos ? historico.get(pos): "";
+    }
+    
+    public void addHistorico(String info){
+        historico.insereInicio(info);
+    }
+    
+    public Iterador baralhoUsado(){
+        return null;
     }
     
     public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser){
@@ -42,10 +64,13 @@ public class ControllerPartida {
         }
         return 0;
     }
-    public Partida comecarPartida(){
-        return null;
+    
+    public void zerarHistorico(){
+        while(!historico.estaVazia()){
+            historico.removeInicio();
+        }
     }
-
+    
     public Iterador verJogadoresEmPartida(){
         return jogadoresEmPartida.iterador();
     }

@@ -67,8 +67,8 @@ public class View {
                         repetirQtdJogador = false;
                         if (controllerArquivos.getUsers().estaVazia() || querCadastrar) {
                             barra(TAMANHO_MENU, true);
-                            textoSimples(TAMANHO_MENU, "!!!ERRO!!!", true);
-                            textoSimples(TAMANHO_MENU, "Nº Jogadores insuficiente", true);
+                            textoSimples(TAMANHO_MENU, "!!!ERRO!!!", true, true);
+                            textoSimples(TAMANHO_MENU, "Nº Jogadores insuficiente", true, true);
                             mensagem(TAMANHO_MENU, "Cadastar novo jogador?", true);
                             switch (lerInt(true, 1, 2)) {
                                 case 1: {
@@ -118,8 +118,29 @@ public class View {
                                         }
                                     }
                                     if (!repetirQtdJogador) {
+                                        boolean repetirPartida;
                                         escolherJogadores(TAMANHO_MENU, qtdJogadores);
-                                        round(TAMANHO_MENU, 1, qtdJogadores);
+                                        do {
+                                            repetirPartida = false;
+                                            partida(TAMANHO_MENU, controllerPartida.verJogadoresEmPartida());
+                                            menuFimPartida(TAMANHO_MENU);
+                                            controllerPartida.zerarHistorico();
+                                            switch (lerInt(true, 1, 4)) {
+                                                case 1: {
+                                                    repetirPartida = true;
+                                                    break;
+                                                }
+                                                case 2: {
+                                                    repetirQtdJogador = true;
+                                                }
+                                                case 3: {
+
+                                                }
+                                                case 4: {
+                                                    repetirMenuPrincipal = true;
+                                                }
+                                            }
+                                        } while (repetirPartida);
                                     }
                                 } while (repetirMenuSalas);
                             }
@@ -162,7 +183,7 @@ public class View {
 
     private static void menuPrincipal(int tamanho) {
         barra(tamanho, true);
-        textoSimples(tamanho, "BlackJack", true);
+        textoSimples(tamanho, "BlackJack", true, true);
         separador(tamanho, true);
         novoItem(tamanho, "Novo jogador", "1", true);
         novoItem(tamanho, "Nova Partida", "2", true);
@@ -200,8 +221,8 @@ public class View {
                         }
                     } else {
                         barra(tamanho, true);
-                        textoSimples(tamanho, "Jogador não cadastrado!", true);
-                        textoSimples(tamanho, "Jogador já existe!", true);
+                        textoSimples(tamanho, "Jogador não cadastrado!", true, true);
+                        textoSimples(tamanho, "Jogador já existe!", true, true);
                         barra(tamanho, true);
                         repetirCadastro = true;
                     }
@@ -218,8 +239,8 @@ public class View {
 
     private static void menuQuantidadeJogadores(int tamanho) {
         barra(tamanho, true);
-        textoSimples(tamanho, "Quantos jogadores vão jogar?", false);
-        textoDuplo(tamanho, "Min_(01)", "Max_(05)");
+        textoSimples(tamanho, "Quantos jogadores vão jogar?", false, true);
+        textoDuplo(tamanho, "Min_(01)", true, "Max_(05)", true);
         separador(tamanho, true);
         novoItem(tamanho, "Voltar", "6", true);
         barra(tamanho, true);
@@ -240,29 +261,29 @@ public class View {
                 switch (controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser)) {
                     case -1: {
                         barra(tamanho, true);
-                        textoSimples(tamanho, "Limite alcançado!", true);
+                        textoSimples(tamanho, "Limite alcançado!", true, true);
                         barra(tamanho, true);
                         return true;
                     }
                     case 0: {
                         barra(tamanho, true);
-                        textoSimples(tamanho, "Usuario ou senha invalido!", true);
-                        textoSimples(tamanho, "Tente novamente!", true);
+                        textoSimples(tamanho, "Usuario ou senha invalido!", true, true);
+                        textoSimples(tamanho, "Tente novamente!", true, true);
                         barra(tamanho, true);
                         repetirInserirUser = true;
                         break;
                     }
                     case 1: {
                         barra(tamanho, true);
-                        textoSimples(tamanho, ("Usuario: " + user + " irá jogar!"), true);
+                        textoSimples(tamanho, ("Usuario: " + user + " irá jogar!"), true, true);
                         barra(tamanho, true);
                         repetirInserirUser = false;
                         break;
                     }
                     case 2: {
                         barra(tamanho, true);
-                        textoSimples(tamanho, user + " Já está cadastrado(a)!", true);
-                        textoSimples(tamanho, "Cadastre outro jogador!", true);
+                        textoSimples(tamanho, user + " Já está cadastrado(a)!", true, true);
+                        textoSimples(tamanho, "Cadastre outro jogador!", true, true);
                         barra(tamanho, true);
                         repetirInserirUser = true;
                         break;
@@ -275,7 +296,7 @@ public class View {
 
     private static void menuRegras(int tamanho) {
         barra(tamanho, true);
-        textoSimples(tamanho, "Menu de regras", true);
+        textoSimples(tamanho, "Menu de regras", true, true);
         separador(tamanho, true);
         novoItem(tamanho, "2 Baralhos", "1", true);
         novoItem(tamanho, "4 Baralhos", "2", true);
@@ -289,7 +310,7 @@ public class View {
     private static void round(int tamanho, int numRound, int numDeJogadores) {
         Jogador jogadorAtual;
         barra((tamanho * numDeJogadores), true);
-        textoSimples((tamanho * numDeJogadores), "Rodada Nº: " + numRound, true);
+        textoSimples((tamanho * numDeJogadores), "Rodada Nº: " + numRound, true, true);
         for (int info = 0; info < 5; info++) {
             Iterador lJogadores = controllerPartida.verJogadoresEmPartida();
             while (lJogadores.hasNext()) {
@@ -315,14 +336,117 @@ public class View {
         }
     }
 
+    private static void menuFimPartida(int tamanho) {
+        barra(tamanho, true);
+        textoSimples(tamanho, "Fim de partida", true, true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Repetir partida", "1", true);
+        novoItem(tamanho, "Nova partida", "2", true);
+        novoItem(tamanho, "VER BARALHO USADO", "3", true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Menu Principal", "4", true);
+        barra(tamanho, true);
+    }
+
+    private static void exibirHistorico(int tamanho) {
+        String opcao = " ", log;
+        barra((tamanho * 3), true);
+        textoDuplo((tamanho * 3), "Opções do Menu", true, "Historico", true);
+        barra((tamanho * 3), true);
+        for (int i = 9; i != -1; i--) {
+            log = (String) controllerPartida.getInfoHistorico(i);
+            if (i <= 3) {
+                switch (3 - i) {
+                    case 1: {
+                        opcao = novoItemSimples(tamanho * 3 / 2, "Pedir Carta", "1");
+                        break;
+                    }
+                    case 2: {
+                        opcao = novoItemSimples(tamanho * 3 / 2, "Finalizar jogada", "2");
+                        break;
+                    }
+                    case 3: {
+                        opcao = novoItemSimples(tamanho * 3 / 2, "Desistir", "3");
+                        break;
+                    }
+                }
+
+            }
+            textoDuplo((tamanho * 3), opcao, false, log, false);
+        }
+        barra((tamanho * 3), true);
+
+    }
+
+    private static void rodadaInicial(int tamanho, int rodada) {
+        for (int i = 0; i < 2; i++) {
+            Iterador lJogadores = controllerPartida.verJogadoresEmPartida();
+            controllerPartida.addHistorico("Croupier distribuindo " + (i + 1) + "ª rodada de cartas!");
+            while (lJogadores.hasNext()) {
+                Jogador jogadorAtual = (Jogador) lJogadores.next();
+                controllerPartida.addHistorico(jogadorAtual.getUser() + " Recebeu: " + "NOME da Carta");
+            }
+        }
+    }
+
+    private static void atualizarInterface(int tamanho, int rodada) {
+        round(tamanho, rodada++, controllerPartida.getJogadoresEmPartida().tamanho());
+        exibirHistorico(tamanho);
+    }
+
+    private static void partida(int tamanho, Iterador lJogadores) {
+        int rodada = 1;
+        boolean querCarta;
+        Jogador jogadorAtual;
+        controllerPartida.addHistorico("Inicio de Partida");
+        controllerPartida.addHistorico("Baralho Embaralhado!");
+        //Embaralha o baralho!
+        rodadaInicial(tamanho, rodada);
+        atualizarInterface(tamanho, rodada);
+        while (lJogadores.hasNext()) {
+            jogadorAtual = (Jogador) lJogadores.next();
+            controllerPartida.addHistorico(jogadorAtual.getUser() + "Está com a vez!");
+            atualizarInterface(tamanho, rodada);
+            do {
+                querCarta = false;
+                switch (lerInt(true, 1, 3)) {
+                    case 1: {
+                        controllerPartida.addHistorico("Jogador: " + jogadorAtual.getUser() + " Pediu carta!");
+                        if (jogadorAtual.estourou()) {
+                            controllerPartida.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
+                            jogadorAtual.setPontos(-5);
+                        } else if (jogadorAtual.venceu()) {
+                            controllerPartida.addHistorico(jogadorAtual.getUser() + "Venceu!");
+                            jogadorAtual.setPontos(10);
+                        }
+                        querCarta = true;
+                        rodada++;
+                        //adiciona cartas na mão do jogador;
+                        break;
+                    }
+                    case 2: {
+                        rodada++;
+                        controllerPartida.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
+                        break;
+                    }
+                    case 3: {
+                        controllerPartida.addHistorico(jogadorAtual.getUser() + " Desistiu!");
+                        jogadorAtual.setPontos(-10);
+                    }
+                }
+                atualizarInterface(tamanho, rodada);
+            } while (querCarta);
+        }
+    }
+
     private static void erroCarregarArquivo(int tamanho) {
         barra(tamanho, true);
-        textoSimples(tamanho, "!!!ERRO!!!", true);
+        textoSimples(tamanho, "!!!ERRO!!!", true, true);
         separador(tamanho, true);
-        textoSimples(tamanho, "Problema ao abrir o arquivo", true);
-        textoSimples(tamanho, "Inserir arquivo manualmente?", true);
+        textoSimples(tamanho, "Problema ao abrir o arquivo", true, true);
+        textoSimples(tamanho, "Inserir arquivo manualmente?", true, true);
         separador(tamanho, true);
-        textoDuplo(tamanho, "Sim__(01)", "Não__(02)");
+        textoDuplo(tamanho, "Sim__(01)", true, "Não__(02)", true);
         barra(tamanho, true);
     }
 
@@ -350,14 +474,14 @@ public class View {
      * @param texto Mensagem que será exibida.
      * @param centralizar Define se a mensagem terá o alinhamento centralizado ou a esquerda.
      */
-    private static void textoSimples(int tamanho, String texto, boolean centralizar) {
+    private static void textoSimples(int tamanho, String texto, boolean centralizar, boolean pulaLinha) {
         int tamanhoDaBarra = tamanho - texto.length();
         int espacosDaEsquerda, espacosDaDireita;
         espacosDaEsquerda = centralizar ? tamanhoDaBarra / 2 : 1;
         espacosDaDireita = tamanhoDaBarra - espacosDaEsquerda;
         fazTraco(espacosDaEsquerda, ' ', true, false);
         System.out.print(texto);
-        fazTraco(espacosDaDireita, ' ', false, true);
+        fazTraco(espacosDaDireita, ' ', false, pulaLinha);
     }
 
     /**
@@ -366,10 +490,21 @@ public class View {
      * PS: O espaço deve ser maior do que as mensagens.
      *
      * @param tamanho Determina o espaço disponivel para a adequação dos textos.
-     * @param texto01 Mensagem que será exibida do lado direito.
-     * @param texto02 Mensagem que será exibida do lado esquerdo.
+     * @param txt1
+     * @param cTxt1
+     * @param txt2
+     * @param cTxt2
      */
-    private static void textoDuplo(int tamanho, String texto01, String texto02) {
+    public static void textoDuplo(int tamanho, String txt1, boolean cTxt1, String txt2, boolean cTxt2) {
+        int totalDeTexto = txt1.length() + txt2.length();
+        int novoTamanhoDoMenu = tamanho - totalDeTexto;
+        int espacosLaterais = novoTamanhoDoMenu / 2;
+
+        textoSimples(tamanho / 2 - 1, txt1, cTxt1, false);
+        textoSimples(tamanho / 2, txt2, cTxt2, true);
+    }
+
+    /*private static void textoDuplo(int tamanho, String texto01, String texto02) {
         int totalDeTexto = texto01.length() + texto02.length();
         int novoTamanhoDoMenu = tamanho - totalDeTexto;
         int espacosLaterais = novoTamanhoDoMenu / 3;
@@ -379,8 +514,7 @@ public class View {
         fazTraco(novoTamanhoDoMenu - (espacosLaterais * 2), ' ', false, false);
         System.out.print(texto02);
         fazTraco(espacosLaterais, ' ', false, true);
-    }
-
+    }*/
     /**
      * Método responsavel por separar uma opções de um menu ou mensagem.
      *
@@ -406,7 +540,7 @@ public class View {
      * @param pesoDoItem Valor correspondente ao peso do item inserido.
      */
     private static void novoItem(int tamanho, String item, String pesoDoItem, boolean pulaLinha) {
-        //String pesoDoItem = Integer.toString(pesoDoItem);
+
         int qtdDeTracos = ((tamanho - item.length()) - (pesoDoItem.length() + 4));
         if (pesoDoItem.length() == 1) {
             qtdDeTracos--;
@@ -420,6 +554,21 @@ public class View {
         } else {
             System.out.print(" |");
         }
+
+    }
+
+    private static String novoItemSimples(int tamanho, String item, String pesoDoItem) {
+        String s = new String();
+
+        int qtdDeTracos = ((tamanho - item.length() - 2) - (pesoDoItem.length() + 4));
+
+        s += item;
+        for (int i = 0; i < qtdDeTracos; i++) {
+            s += '.';
+        }
+        pesoDoItem = (pesoDoItem.length() >= 2) ? "(" + pesoDoItem + ")" : "(0" + pesoDoItem + ")";
+        s += pesoDoItem;
+        return s;
     }
 
     /**
@@ -431,13 +580,12 @@ public class View {
      */
     private static void mensagem(int tamanho, String mensagem, boolean poemEscolha) {
         barra(tamanho, true);
-        textoSimples(tamanho, mensagem, true);
+        textoSimples(tamanho, mensagem, true, true);
         if (poemEscolha) {
-            textoDuplo(tamanho, "Sim__(01)", "Não__(02)");
-            barra(tamanho, true);
-        } else {
-            barra(tamanho, true);
+            textoDuplo(tamanho, "Sim__(01)", true, "Não__(02)", true);
         }
+        barra(tamanho, true);
+
     }
 
     /**
@@ -448,16 +596,19 @@ public class View {
      * @param bordaE Determina se o traço deve ser inicado com uma "borda".
      * @param bordaD Determina se o traço deve ser finalizado com uma "borda".
      */
-    private static void fazTraco(int tamanho, char estilo, boolean bordaE, boolean bordaD) {
+    private static String fazTraco(int tamanho, char estilo, boolean bordaE, boolean bordaD) {
+        String s = "";
         if (bordaE) {
             System.out.print("|");
         }
         for (int i = 0; i < tamanho; i++) {
             System.out.print(estilo);
+            s += estilo;
         }
         if (bordaD) {
             System.out.println("|");
         }
+        return s;
     }
 
     /**
