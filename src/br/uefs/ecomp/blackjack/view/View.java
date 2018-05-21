@@ -117,10 +117,10 @@ public class View {
                                         }
                                     }
                                     if (!repetirQtdJogador) {
-                                        boolean repetirPartida, inserirNovoJogador;
-                                        do {
-                                            inserirNovoJogador = false;
-                                            for (int i = 0; i < qtdJogadores; i++) {
+                                        boolean repetirPartida, inserirNovoJogador, repetirFimPartida;
+                                        for (int i = 0; i < qtdJogadores; i++) {
+                                            do {
+                                                inserirNovoJogador = false;
                                                 if (!escolherJogadores(TAMANHO_MENU)) {
                                                     mensagem(TAMANHO_MENU, "Deseja recarregar?", true);
                                                     do {
@@ -158,33 +158,37 @@ public class View {
                                                         }
                                                     } while (repetirRecarga);
                                                 }
-                                            }
-                                            if (!inserirNovoJogador) {
-                                                do {
-                                                    repetirPartida = false;
-                                                    partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida());
-                                                    menuFimPartida(TAMANHO_MENU);
-                                                    blackJackFacade.zerarHistorico();
-                                                    switch (lerInt(true, 1, 4)) {
-                                                        case 1: {
-                                                            repetirPartida = true;
-                                                            break;
-                                                        }
-                                                        case 2: {
-                                                            repetirQtdJogador = true;
-                                                            break;
-                                                        }
-                                                        case 3: {
-
-                                                        }
-                                                        case 4: {
-                                                            repetirMenuPrincipal = true;
-                                                        }
+                                            } while (inserirNovoJogador);
+                                        }
+                                        do {
+                                            repetirPartida = false;
+                                            partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida());
+                                            do {
+                                                repetirFimPartida = false;
+                                                menuFimPartida(TAMANHO_MENU);
+                                                blackJackFacade.zerarHistorico();
+                                                switch (lerInt(true, 1, 4)) {
+                                                    case 1: {
+                                                        
+                                                        break;
                                                     }
-                                                } while (repetirPartida);
-                                            }
-
-                                        } while (inserirNovoJogador);
+                                                    case 2: {
+                                                        repetirPartida = true;
+                                                        break;
+                                                    }
+                                                    case 3: {
+                                                        repetirQtdJogador = true;
+                                                        blackJackFacade.zerarJogadoresEmPartida();
+                                                        break;
+                                                    }
+                                                    case 4: {
+                                                        blackJackFacade.zerarJogadoresEmPartida();
+                                                        repetirMenuPrincipal = true;
+                                                        break;
+                                                    }
+                                                }
+                                            } while (repetirFimPartida);
+                                        } while (repetirPartida);
                                     }
                                 } while (repetirMenuSalas);
                             }
@@ -449,9 +453,9 @@ public class View {
         barra(tamanho, true);
         textoSimples(tamanho, "Fim de partida", true, true);
         separador(tamanho, true);
-        novoItem(tamanho, "Repetir partida", "1", true);
-        novoItem(tamanho, "Nova partida", "2", true);
-        novoItem(tamanho, "VER BARALHO USADO", "3", true);
+        novoItem(tamanho, "VER BARALHO USADO", "1", true);
+        novoItem(tamanho, "Repetir partida", "2", true);
+        novoItem(tamanho, "Nova partida", "3", true);
         separador(tamanho, true);
         novoItem(tamanho, "Menu Principal", "4", true);
         barra(tamanho, true);
@@ -524,9 +528,11 @@ public class View {
                         if (jogadorAtual.estourou()) {
                             blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
                             jogadorAtual.setPontos(-5);
+                            jogadorAtual.setPartidas(1);
                         } else if (jogadorAtual.venceu()) {
                             blackJackFacade.addHistorico(jogadorAtual.getUser() + "Venceu!");
                             jogadorAtual.setPontos(10);
+                            jogadorAtual.setPartidas(1);
                         }
                         querCarta = true;
                         rodada++;
@@ -536,9 +542,11 @@ public class View {
                     case 2: {
                         rodada++;
                         blackJackFacade.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
+                        jogadorAtual.setPartidas(1);
                         break;
                     }
                     case 3: {
+                        jogadorAtual.setPartidas(1);
                         blackJackFacade.addHistorico(jogadorAtual.getUser() + " Desistiu!");
                         jogadorAtual.setPontos(-10);
                     }

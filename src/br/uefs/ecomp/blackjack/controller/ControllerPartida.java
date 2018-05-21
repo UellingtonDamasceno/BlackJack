@@ -71,6 +71,12 @@ public class ControllerPartida {
         }
     }
     
+    public void zerarJogadoresEmPartida(){
+        while(!jogadoresEmPartida.estaVazia()){
+            jogadoresEmPartida.removeInicio();
+        }
+    }
+    
     public Iterador verJogadoresEmPartida(){
         return jogadoresEmPartida.iterador();
     }
