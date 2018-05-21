@@ -1,30 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.blackjack.model;
 
 /**
- *
- * @author Uellington Damasceno
+ * Classe responsável por criar cartas que irão posteriormente para baralhos.
+ * A classe tem dois atributos: naipe e face;
+ * @author Uellington Damasceno e Anésio Sousa
  */
 public class Carta implements Comparable {
 
-    private String nipe;
+    private String naipe;
     private String face;
 
     public Carta(String nipe, String face) {
-        this.nipe = nipe;
+        this.naipe = nipe;
         this.face = face;
     }
 
-    public String getNipe() {
-        return nipe;
+    public String getNaipe() {
+        return naipe;
     }
 
-    public void setNipe(String nipe) {
-        this.nipe = nipe;
+    public void setNipe(String naipe) {
+        this.naipe = naipe;
     }
 
     public String getFace() {
@@ -37,14 +33,14 @@ public class Carta implements Comparable {
 
     @Override
     public String toString() {
-        return face+ " " + nipe;
+        return face+ " " + naipe;
     }
 
     /*
     Não sei se esse metodo é realmente relevante. --- É NECESSARIO VERIFICAR A LOGICA 
     DOS PONTOS EM MÃO.
      */
-    public boolean isAz() {
+    public boolean ehAs() {
         return face.equals("A");
     }
 
@@ -81,10 +77,10 @@ public class Carta implements Comparable {
         if(this.equals(objeto)){
             return 0;
         }
-        else if(outraCarta.getNipe().equals(this.getNipe())){
+        else if(outraCarta.getNaipe().equals(this.getNaipe())){
             return outraCarta.valorReal(true) > this.valorReal(true) ? 1 : -1; 
         }
-        else if(outraCarta.getNipe().compareTo(this.getNipe())<0){
+        else if(outraCarta.getNaipe().compareTo(this.getNaipe())<0){
             return 1;
         }else{
             return -1;
@@ -95,7 +91,7 @@ public class Carta implements Comparable {
     public boolean equals(Object objeto) {
         if (objeto instanceof Carta){
             Carta outraCarta = (Carta) objeto;
-            return getNipe().equals(outraCarta.getNipe()) && getFace().equals(outraCarta.getFace());
+            return getNaipe().equals(outraCarta.getNaipe()) && getFace().equals(outraCarta.getFace());
         }
        return false;
     }

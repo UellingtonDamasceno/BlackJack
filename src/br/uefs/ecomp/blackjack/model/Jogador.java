@@ -95,7 +95,7 @@ public class Jogador {
         while(lCartas.hasNext()){
             Carta cartaObtida = (Carta) lCartas.next();
             pontosEmMao += cartaObtida.valorReal(false);
-            if(cartaObtida.isAz()){
+            if(cartaObtida.ehAs()){
                 numDeAs++;
             }
         }
