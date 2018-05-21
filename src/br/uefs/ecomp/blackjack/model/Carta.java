@@ -37,7 +37,7 @@ public class Carta implements Comparable {
 
     @Override
     public String toString() {
-        return face + " de " + nipe;
+        return face+ " " + nipe;
     }
 
     /*

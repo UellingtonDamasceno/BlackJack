@@ -73,6 +73,10 @@ public class BlackJackFacade {
         controllerPartida.zerarHistorico();
     }
     
+    public void zerarMaoJogadores(){
+        controllerPartida.zerarMaoJogadores();
+    }
+    
     public void zerarJogadoresEmPartida(){
         controllerPartida.zerarJogadoresEmPartida();
     }

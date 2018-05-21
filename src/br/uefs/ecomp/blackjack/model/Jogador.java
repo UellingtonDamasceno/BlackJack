@@ -42,10 +42,13 @@ public class Jogador {
         this.pontos += pontos;
     }
     public void setPartidas(int partidas){
-        this.partidas = partidas;
+        this.partidas += partidas;
     }
     public void setMaoDeCarta(MaoDeCarta cartas){
         this.maoDeCartas = cartas;
+    }
+    public MaoDeCarta getMaoDeCartas(){
+        return maoDeCartas;
     }
     public String getUser(){
         return user;

@@ -60,11 +60,7 @@ public class ControllerPartida {
     public void addHistorico(String info) {
         historico.insereInicio(info);
     }
-
-    public Iterador baralhoUsado() {
-        return null;
-    }
-
+    
     public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser) {
         while (listaDeUser.hasNext()) {
             Jogador jogadorObtido = (Jogador) listaDeUser.next();
@@ -91,7 +87,6 @@ public class ControllerPartida {
         }
         for (Carta carta : suporte) {
             cartasDoBaralho.push(carta);
-            System.out.println(cartasDoBaralho.peek());
         }
         return cartasDoBaralho;
     }
@@ -119,6 +114,14 @@ public class ControllerPartida {
     public void zerarJogadoresEmPartida() {
         while (!jogadoresEmEspera.estaVazia()) {
             jogadoresEmEspera.removeInicio();
+        }
+    }
+    
+    public void zerarMaoJogadores(){
+        Iterador lJogadores = jogadoresEmEspera.iterador();
+        while(lJogadores.hasNext()){
+            Jogador jogadorAtual = (Jogador) lJogadores.next();
+            jogadorAtual.limparMaoDeCartas();
         }
     }
 

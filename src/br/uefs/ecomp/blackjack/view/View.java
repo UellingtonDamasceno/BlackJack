@@ -123,10 +123,10 @@ public class View {
                                                 inserirNovoJogador = false;
                                                 if (!escolherJogadores(TAMANHO_MENU)) {
                                                     mensagem(TAMANHO_MENU, "Deseja recarregar?", true);
-                                                    do {
-                                                        repetirRecarga = false;
-                                                        switch (lerInt(true, 1, 2)) {
-                                                            case 1: {
+                                                    switch (lerInt(true, 1, 2)) {
+                                                        case 1: {
+                                                            do {
+                                                                repetirRecarga = false;
                                                                 switch (menuRecarrega(TAMANHO_MENU)) {
                                                                     case -1: {
                                                                         inserirNovoJogador = true;
@@ -149,14 +149,15 @@ public class View {
                                                                         break;
                                                                     }
                                                                 }
-                                                                break;
-                                                            }
-                                                            case 2: {
-                                                                inserirNovoJogador = true;
-                                                                break;
-                                                            }
+                                                            } while (repetirRecarga);
+                                                            break;
                                                         }
-                                                    } while (repetirRecarga);
+                                                        case 2: {
+                                                            inserirNovoJogador = true;
+                                                            break;
+                                                        }
+                                                    }
+
                                                 }
                                             } while (inserirNovoJogador);
                                         }
@@ -165,11 +166,12 @@ public class View {
                                             partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida(), numDeBaralho);
                                             do {
                                                 repetirFimPartida = false;
-                                                menuFimPartida(TAMANHO_MENU);
+                                                blackJackFacade.zerarMaoJogadores();
                                                 blackJackFacade.zerarHistorico();
+                                                menuFimPartida(TAMANHO_MENU);
                                                 switch (lerInt(true, 1, 4)) {
                                                     case 1: {
-                                                        
+
                                                         break;
                                                     }
                                                     case 2: {
@@ -179,6 +181,7 @@ public class View {
                                                     case 3: {
                                                         repetirQtdJogador = true;
                                                         blackJackFacade.zerarJogadoresEmPartida();
+
                                                         break;
                                                     }
                                                     case 4: {
@@ -407,6 +410,17 @@ public class View {
         return true;
     }
 
+    private static void texto(int tamanho, String texto) {
+        int tamanhoDaBarra = tamanho - texto.length();
+        for(int i = 0; i <tamanhoDaBarra / 2; i++){
+            System.out.print(' ');
+        }
+        System.out.print(texto);
+        for(int i = 0; i < tamanhoDaBarra - tamanhoDaBarra / 2; i++){
+            System.out.print(' ');
+        }
+    }
+
     private static void menuRegras(int tamanho) {
         barra(tamanho, true);
         textoSimples(tamanho, "Menu de regras", true, true);
@@ -424,7 +438,7 @@ public class View {
         Jogador jogadorAtual;
         barra((tamanho * numDeJogadores), true);
         textoSimples((tamanho * numDeJogadores), "Rodada Nº: " + numRound, true, true);
-        for (int info = 0; info < 5; info++) {
+        for (int info = 0; info < 6; info++) {
             Iterador lJogadores = blackJackFacade.verJogadoresEmPartida();
             while (lJogadores.hasNext()) {
                 jogadorAtual = (Jogador) lJogadores.next();
@@ -436,12 +450,23 @@ public class View {
                         novoItem(tamanho, "Jogador", jogadorAtual.getUser(), false);
                         break;
                     case 2:
-                        novoItem(tamanho, "Senha", jogadorAtual.getSenha(), false);
+                        texto(tamanho, "Cartas Em Mãos");
                         break;
                     case 3:
-                        novoItem(tamanho, "Pontos em mãos", Integer.toString(jogadorAtual.pontosEmMao()), false);
+                        Iterador cartasEmMao = jogadorAtual.getMaoDeCartas().getCartas().iterador();
+                        String cartas = "|";
+                        System.out.print("|");
+                        while (cartasEmMao.hasNext()) {
+                            Carta carta = (Carta) cartasEmMao.next();
+                            cartas = cartas.concat(carta + "|");
+                        }
+                        texto(tamanho, cartas);
+                        System.out.print("|");
                         break;
                     case 4:
+                        novoItem(tamanho, "Pontos em mãos", Integer.toString(jogadorAtual.pontosEmMao()), false);
+                        break;
+                    case 5:
                         barra(tamanho, false);
                 }
             }
@@ -513,7 +538,7 @@ public class View {
         int rodada = 1;
         boolean querCarta;
         //So para Exemplo: 
-        Croupier c = new Croupier ("asfd", "asdf");
+        Croupier c = new Croupier("asfd", "asdf");
         Jogador jogadorAtual;
         Pilha b = blackJackFacade.criarBaralho(qtdBaralho); // Agora já temos um baralho embaralhado <3 kkk vamos ao metodo de dar cartas. 
         blackJackFacade.addHistorico("Inicio de Partida");
@@ -534,13 +559,15 @@ public class View {
                         jogadorAtual.addCartas(c.daCarta(b)); // Aki eu pego o croupier e faço ele dar uma carta para o jogador. 
                         if (jogadorAtual.estourou()) {
                             blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
+                            atualizarInterface(tamanho, rodada);
                             jogadorAtual.setPontos(-5);
                             jogadorAtual.setPartidas(1);
                         } else if (jogadorAtual.venceu()) {
                             blackJackFacade.addHistorico(jogadorAtual.getUser() + "Venceu!");
                             jogadorAtual.setPontos(10);
                             jogadorAtual.setPartidas(1);
-                        }else{
+                            atualizarInterface(tamanho, rodada);
+                        } else {
                             querCarta = true;
                         }
                         //adiciona cartas na mão do jogador;
@@ -619,25 +646,10 @@ public class View {
      * @param cTxt2
      */
     public static void textoDuplo(int tamanho, String txt1, boolean cTxt1, String txt2, boolean cTxt2) {
-        int totalDeTexto = txt1.length() + txt2.length();
-        int novoTamanhoDoMenu = tamanho - totalDeTexto;
-        int espacosLaterais = novoTamanhoDoMenu / 2;
-
         textoSimples(tamanho / 2 - 1, txt1, cTxt1, false);
         textoSimples(tamanho / 2, txt2, cTxt2, true);
     }
 
-    /*private static void textoDuplo(int tamanho, String texto01, String texto02) {
-        int totalDeTexto = texto01.length() + texto02.length();
-        int novoTamanhoDoMenu = tamanho - totalDeTexto;
-        int espacosLaterais = novoTamanhoDoMenu / 3;
-
-        fazTraco(espacosLaterais, ' ', true, false);
-        System.out.print(texto01);
-        fazTraco(novoTamanhoDoMenu - (espacosLaterais * 2), ' ', false, false);
-        System.out.print(texto02);
-        fazTraco(espacosLaterais, ' ', false, true);
-    }*/
     /**
      * Método responsavel por separar uma opções de um menu ou mensagem.
      *
