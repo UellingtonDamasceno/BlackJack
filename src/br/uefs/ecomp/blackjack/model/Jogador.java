@@ -87,18 +87,21 @@ public class Jogador {
         return user + " : " + pontos + " : " + partidas;
     }
     public int pontosEmMao(){
-        int pontosEmMao = 0;
+        int pontosEmMao = 0, numDeAs = 0;
         Iterador lCartas = (maoDeCartas.getCartas()).iterador();
         while(lCartas.hasNext()){
             Carta cartaObtida = (Carta) lCartas.next();
             pontosEmMao += cartaObtida.valorReal(false);
+            if(cartaObtida.isAz()){
+                numDeAs++;
+            }
         }
-        return pontosEmMao;
+        return (pontosEmMao <= 10 && numDeAs >= 1) ? pontosEmMao+10 : pontosEmMao;
     }
     @Override
     public boolean equals(Object obj) {
         final Jogador other = (Jogador) obj;
         return Objects.equals(this.user, other.user);
     }
-    
+
 }

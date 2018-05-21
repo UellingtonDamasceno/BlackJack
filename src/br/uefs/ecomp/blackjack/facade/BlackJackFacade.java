@@ -7,7 +7,7 @@ package br.uefs.ecomp.blackjack.facade;
 
 import br.uefs.ecomp.blackjack.controller.*;
 import br.uefs.ecomp.blackjack.util.Iterador;
-import br.uefs.ecomp.blackjack.util.ListaEncadeada;
+import br.uefs.ecomp.blackjack.util.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -48,9 +48,13 @@ public class BlackJackFacade {
     public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser) {
         return controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser);
     }
-
+    
+    public Pilha criarBaralho(int qtdBaralho){
+       return controllerPartida.criaBaralho(qtdBaralho);
+    }
+    
     public ListaEncadeada getJogadoresEmPartida() {
-        return controllerPartida.getJogadoresEmPartida();
+        return controllerPartida.getJogadoresEmEspera();
     }
 
     public Iterador verJogadoresEmPartida() {

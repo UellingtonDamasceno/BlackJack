@@ -7,7 +7,7 @@ package br.uefs.ecomp.blackjack.view;
 
 import br.uefs.ecomp.blackjack.facade.BlackJackFacade;
 import br.uefs.ecomp.blackjack.model.*;
-import br.uefs.ecomp.blackjack.util.Iterador;
+import br.uefs.ecomp.blackjack.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -51,7 +51,7 @@ public class View {
                 }
             }
         } while (repetirCarregarArquivo);
-        int numDeBaralho;
+        int numDeBaralho = 0;
         int qtdJogadores;
         do {
             repetirMenuPrincipal = false;
@@ -162,7 +162,7 @@ public class View {
                                         }
                                         do {
                                             repetirPartida = false;
-                                            partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida());
+                                            partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida(), numDeBaralho);
                                             do {
                                                 repetirFimPartida = false;
                                                 menuFimPartida(TAMANHO_MENU);
@@ -491,13 +491,15 @@ public class View {
 
     }
 
-    private static void rodadaInicial(int tamanho, int rodada) {
+    private static void rodadaInicial(Croupier c, Pilha b) {
         for (int i = 0; i < 2; i++) {
             Iterador lJogadores = blackJackFacade.verJogadoresEmPartida();
             blackJackFacade.addHistorico("Croupier distribuindo " + (i + 1) + "ª rodada de cartas!");
             while (lJogadores.hasNext()) {
                 Jogador jogadorAtual = (Jogador) lJogadores.next();
-                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Recebeu: " + "NOME da Carta");
+                Carta carta = c.daCarta(b);
+                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Recebeu: " + carta);
+                jogadorAtual.addCartas(carta);
             }
         }
     }
@@ -507,17 +509,21 @@ public class View {
         exibirHistorico(tamanho);
     }
 
-    private static void partida(int tamanho, Iterador lJogadores) {
+    private static void partida(int tamanho, Iterador lJogadores, int qtdBaralho) {
         int rodada = 1;
         boolean querCarta;
+        //So para Exemplo: 
+        Croupier c = new Croupier ("asfd", "asdf");
         Jogador jogadorAtual;
+        Pilha b = blackJackFacade.criarBaralho(qtdBaralho); // Agora já temos um baralho embaralhado <3 kkk vamos ao metodo de dar cartas. 
         blackJackFacade.addHistorico("Inicio de Partida");
         blackJackFacade.addHistorico("Baralho Embaralhado!");
         //Embaralha o baralho!
-        rodadaInicial(tamanho, rodada);
+        rodadaInicial(c, b);
         atualizarInterface(tamanho, rodada);
         while (lJogadores.hasNext()) {
             jogadorAtual = (Jogador) lJogadores.next();
+            rodada++;
             blackJackFacade.addHistorico(jogadorAtual.getUser() + " Está com a vez!");
             atualizarInterface(tamanho, rodada);
             do {
@@ -525,6 +531,7 @@ public class View {
                 switch (lerInt(true, 1, 3)) {
                     case 1: {
                         blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Pediu carta!");
+                        jogadorAtual.addCartas(c.daCarta(b)); // Aki eu pego o croupier e faço ele dar uma carta para o jogador. 
                         if (jogadorAtual.estourou()) {
                             blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
                             jogadorAtual.setPontos(-5);
@@ -533,14 +540,13 @@ public class View {
                             blackJackFacade.addHistorico(jogadorAtual.getUser() + "Venceu!");
                             jogadorAtual.setPontos(10);
                             jogadorAtual.setPartidas(1);
+                        }else{
+                            querCarta = true;
                         }
-                        querCarta = true;
-                        rodada++;
                         //adiciona cartas na mão do jogador;
                         break;
                     }
                     case 2: {
-                        rodada++;
                         blackJackFacade.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
                         jogadorAtual.setPartidas(1);
                         break;

@@ -1,5 +1,7 @@
 package br.uefs.ecomp.blackjack.model;
 
+import br.uefs.ecomp.blackjack.util.Pilha;
+
 /**
  *
  * @author Uellington Damasceno e Anésio Sousa
@@ -21,16 +23,17 @@ public class Croupier extends Jogador{
     public MaoDeCarta getCartas (){
         return cartas;
     }
-    
-    public Carta DaCarta(Carta carta){
-        return carta;
-    }
+   
     /*
         Pode ser melhorado fazendo verficações sobre a quanitdade de as 
     e qm sabe calcular a as chances de tirar uma carta favoravel.
     */
     public boolean querCarta(){
         return Croupier.super.pontosEmMao() < 21;
+    }
+    
+    public Carta daCarta(Pilha b){
+        return (Carta) b.pop();
     }
     
 }
