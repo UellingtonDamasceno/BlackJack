@@ -51,8 +51,10 @@ public class View {
                 }
             }
         } while (repetirCarregarArquivo);
+        
         int numDeBaralho = 0;
         int qtdJogadores;
+        
         do {
             repetirMenuPrincipal = false;
             menuPrincipal(30);
@@ -68,7 +70,7 @@ public class View {
                             barra(TAMANHO_MENU, true);
                             textoSimples(TAMANHO_MENU, "!!!ERRO!!!", true, true);
                             textoSimples(TAMANHO_MENU, "Nº Jogadores insuficiente", true, true);
-                            mensagem(TAMANHO_MENU, "Cadastar novo jogador?", true);
+                            mensagem(TAMANHO_MENU, "Deseja cadastar novo jogador?", true);
                             switch (lerInt(true, 1, 2)) {
                                 case 1: {
                                     cadastrarUser(TAMANHO_MENU, arquivo);
@@ -118,6 +120,7 @@ public class View {
                                     }
                                     if (!repetirQtdJogador) {
                                         boolean repetirPartida, inserirNovoJogador, repetirFimPartida;
+                                        
                                         for (int i = 0; i < qtdJogadores; i++) {
                                             do {
                                                 inserirNovoJogador = false;
@@ -135,7 +138,7 @@ public class View {
                                                                     case 0: {
                                                                         barra(TAMANHO_MENU, true);
                                                                         textoSimples(TAMANHO_MENU, "Sucesso!", true, true);
-                                                                        mensagem(TAMANHO_MENU, "Recaregar novamente?", true);
+                                                                        mensagem(TAMANHO_MENU, "Recarregar novamente?", true);
                                                                         switch (lerInt(true, 1, 2)) {
                                                                             case 1: {
                                                                                 repetirRecarga = true;
@@ -161,6 +164,8 @@ public class View {
                                                 }
                                             } while (inserirNovoJogador);
                                         }
+                                        
+                                        
                                         do {
                                             repetirPartida = false;
                                             partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida(), numDeBaralho);
