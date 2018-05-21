@@ -51,16 +51,20 @@ public class View {
                 }
             }
         } while (repetirCarregarArquivo);
-        
+
         int numDeBaralho = 0;
         int qtdJogadores;
-        
+
         do {
             repetirMenuPrincipal = false;
             menuPrincipal(30);
             switch (lerInt(true, 1, 5)) {
                 case 1: {
-                    repetirMenuPrincipal = cadastrarUser(TAMANHO_MENU, arquivo);
+                    if(!cadastrarUser(TAMANHO_MENU, arquivo)){
+                        repetirMenuPrincipal = true;
+                    }else{
+                        mensagem(TAMANHO_MENU, "Sucesso!", false);
+                    }
                     break;
                 }
                 case 2: {
@@ -73,8 +77,11 @@ public class View {
                             mensagem(TAMANHO_MENU, "Deseja cadastar novo jogador?", true);
                             switch (lerInt(true, 1, 2)) {
                                 case 1: {
-                                    cadastrarUser(TAMANHO_MENU, arquivo);
-                                    repetirMenuPrincipal = true;
+                                    if(!cadastrarUser(TAMANHO_MENU, arquivo)){
+                                        repetirMenuPrincipal = true;
+                                    }else{
+                                        mensagem(TAMANHO_MENU, "Sucesso!", false);
+                                    }
                                     break;
                                 }
                                 case 2: {
@@ -120,7 +127,7 @@ public class View {
                                     }
                                     if (!repetirQtdJogador) {
                                         boolean repetirPartida, inserirNovoJogador, repetirFimPartida;
-                                        
+
                                         for (int i = 0; i < qtdJogadores; i++) {
                                             do {
                                                 inserirNovoJogador = false;
@@ -164,8 +171,7 @@ public class View {
                                                 }
                                             } while (inserirNovoJogador);
                                         }
-                                        
-                                        
+
                                         do {
                                             repetirPartida = false;
                                             partida(TAMANHO_MENU, blackJackFacade.verJogadoresEmPartida(), numDeBaralho);
@@ -323,38 +329,43 @@ public class View {
         Scanner input = new Scanner(System.in);
         do {
             repetirCadastro = false;
+            mensagem(tamanho, "Para voltar user = sair", false);
             System.out.print("Usuario: ");
             user = input.nextLine();
-            System.out.print("Senha: ");
-            senha = input.nextLine();
-            System.out.print("Confirma Senha: ");
-            confirmaSenha = input.nextLine();
-            if (senha.equals(confirmaSenha)) {
-                try {
-                    if (blackJackFacade.cadastrarNovoJogador(nomeArq, user, senha)) {
-                        mensagem(tamanho, "Deseja cadastar novo jogador?", true);
-                        switch (lerInt(true, 1, 2)) {
-                            case 1: {
-                                repetirCadastro = true;
-                                break;
-                            }
-                            case 2: {
-                                return true;
-                            }
-                        }
-                    } else {
-                        barra(tamanho, true);
-                        textoSimples(tamanho, "Jogador não cadastrado!", true, true);
-                        textoSimples(tamanho, "Jogador já existe!", true, true);
-                        barra(tamanho, true);
-                        repetirCadastro = true;
-                    }
-                } catch (IOException ex) {
-                    return false;
-                }
+            if (user.equals("sair")) {
+                return false;
             } else {
-                mensagem(tamanho, "Senha não confere!", false);
-                repetirCadastro = true;
+                System.out.print("Senha: ");
+                senha = input.nextLine();
+                System.out.print("Confirma Senha: ");
+                confirmaSenha = input.nextLine();
+                if (senha.equals(confirmaSenha)) {
+                    try {
+                        if (blackJackFacade.cadastrarNovoJogador(nomeArq, user, senha)) {
+                            mensagem(tamanho, "Deseja cadastar novo jogador?", true);
+                            switch (lerInt(true, 1, 2)) {
+                                case 1: {
+                                    repetirCadastro = true;
+                                    break;
+                                }
+                                case 2: {
+                                    return true;
+                                }
+                            }
+                        } else {
+                            barra(tamanho, true);
+                            textoSimples(tamanho, "Jogador não cadastrado!", true, true);
+                            textoSimples(tamanho, "Jogador já existe!", true, true);
+                            barra(tamanho, true);
+                            repetirCadastro = true;
+                        }
+                    } catch (IOException ex) {
+                        return false;
+                    }
+                } else {
+                    mensagem(tamanho, "Senha não confere!", false);
+                    repetirCadastro = true;
+                }
             }
         } while (repetirCadastro);
         return false;
@@ -417,11 +428,11 @@ public class View {
 
     private static void texto(int tamanho, String texto) {
         int tamanhoDaBarra = tamanho - texto.length();
-        for(int i = 0; i <tamanhoDaBarra / 2; i++){
+        for (int i = 0; i < tamanhoDaBarra / 2; i++) {
             System.out.print(' ');
         }
         System.out.print(texto);
-        for(int i = 0; i < tamanhoDaBarra - tamanhoDaBarra / 2; i++){
+        for (int i = 0; i < tamanhoDaBarra - tamanhoDaBarra / 2; i++) {
             System.out.print(' ');
         }
     }
@@ -542,13 +553,11 @@ public class View {
     private static void partida(int tamanho, Iterador lJogadores, int qtdBaralho) {
         int rodada = 1;
         boolean querCarta;
-        //So para Exemplo: 
         Croupier c = new Croupier("asfd", "asdf");
         Jogador jogadorAtual;
-        Pilha b = blackJackFacade.criarBaralho(qtdBaralho); // Agora já temos um baralho embaralhado <3 kkk vamos ao metodo de dar cartas. 
+        Pilha b = blackJackFacade.criarBaralho(qtdBaralho);
         blackJackFacade.addHistorico("Inicio de Partida");
         blackJackFacade.addHistorico("Baralho Embaralhado!");
-        //Embaralha o baralho!
         rodadaInicial(c, b);
         atualizarInterface(tamanho, rodada);
         while (lJogadores.hasNext()) {
