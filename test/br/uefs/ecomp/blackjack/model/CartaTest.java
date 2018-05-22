@@ -38,6 +38,5 @@ public class CartaTest{
         
         assertSame(10, helper);
         
-        
     }
 }
