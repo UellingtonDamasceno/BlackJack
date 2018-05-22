@@ -93,8 +93,8 @@ public class ControllerPartida {
         return cartasDoBaralho;
     }
 
-    public Object[] ordena(Pilha baralho) {
-        Object cartas[] = new Object[baralho.size()];
+    public Carta[] ordena(Pilha baralho) {
+        Carta cartas[] = new Carta[baralho.size()];
         for (int i = 0; i < baralho.size(); i++) {
             cartas[i] = (Carta) baralho.pop();
         }

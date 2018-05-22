@@ -24,8 +24,7 @@ public class View {
         final int TAMANHO_MENU = 30;
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
-        Pilha baralho = blackJackFacade.criarBaralho(2);
-        blackJackFacade.ordena(baralho);
+
         File arquivo = new File("Logins.txt");
         do {
             repetirCarregarArquivo = false;

@@ -61,7 +61,8 @@ public class BlackJackFacade {
         return controllerPartida.jogadoresEmPartida();
     }
     
-    public Object[] ordena(Pilha baralho){
+    public Carta[] ordena(Pilha baralho){
+        
         return controllerPartida.ordena(baralho);
     }
 
