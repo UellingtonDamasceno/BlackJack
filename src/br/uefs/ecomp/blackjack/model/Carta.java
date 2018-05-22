@@ -9,16 +9,25 @@ public class Carta implements Comparable {
 
     private String naipe;
     private String face;
-
+    private boolean status;
+    
     public Carta(String nipe, String face) {
         this.naipe = nipe;
         this.face = face;
+        this.status = true;
     }
 
     public String getNaipe() {
         return naipe;
     }
-
+    
+    public void setStatus(boolean status){
+        this.status = status;
+    }
+    
+    public boolean getStatus(){
+        return status;
+    }
     public void setNipe(String naipe) {
         this.naipe = naipe;
     }
@@ -33,7 +42,10 @@ public class Carta implements Comparable {
 
     @Override
     public String toString() {
-        return face+ " " + naipe;
+        if(status){
+            return face+ " " + naipe;
+        }
+        return "X X";
     }
 
     /*

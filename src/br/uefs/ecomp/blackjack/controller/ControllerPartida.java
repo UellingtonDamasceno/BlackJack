@@ -14,27 +14,26 @@ import java.util.Random;
  * @author Uellington Damasceno e Anésio Sousa
  */
 public class ControllerPartida {
-
-    private Partida partida;
+    
     private ListaEncadeada jogadoresEmEspera;
     private ListaEncadeada historico;
     private final Croupier croupier;
-    private Pilha baralho;
-
+    private Baralho baralho;
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
         this.historico = new ListaEncadeada();
         this.croupier = new Croupier("Croupier", "123");
-        this.baralho = new Pilha();
     }
 
     public Croupier getCroupier() {
         return croupier;
     }
-
-    public Pilha criaBaralho(int qtdBaralho) {
-        Baralho b = new Baralho(qtdBaralho);
-        return embaralha(b);
+    public Baralho getBaralho(){
+        return baralho;
+    }
+    public Baralho criaBaralho(int qtdBaralho) {
+        baralho = new Baralho(qtdBaralho);
+        return baralho;
     }
 
     public ListaEncadeada getHistorico() {
@@ -93,39 +92,47 @@ public class ControllerPartida {
         return cartasDoBaralho;
     }
 
-    public Object[] ordena(Pilha baralho) {
-        Object cartas[] = new Object[baralho.size()];
-        for (int i = 0; i < baralho.size(); i++) {
-            cartas[i] = (Carta) baralho.pop();
-        }
-        quickSort(cartas, 0, baralho.size());
-        return cartas;
+    public void ordena(Baralho baralho) {
+        quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
+        //insertionSort(cartas);
     }
 
-    private void quickSort(Object p[], int esquerda, int direita) {
-        int esq = esquerda;
-        int dir = direita;
-        Carta v[] = (Carta[]) p;
-        Carta pivo = v[(esq + dir) / 2];
-        while (esq <= dir) {
-            while (v[esq].compareTo(pivo) == -1) {
-                esq++;
+    public void insertionSort(Carta[] cartas) {
+        for (int i = 1; i < cartas.length; i++) {
+            Carta aux = cartas[i];
+            int j = i;
+            while ((j > 0) && (cartas[j - 1].compareTo(aux) < 0)) {
+                cartas[j] = cartas[j - 1];
+                j--;
             }
-            while (v[dir].compareTo(pivo) == 1) {
-                dir--;
+            cartas[j] = aux;
+        }
+
+    }
+
+    private void quickSort(Carta dataset[], int inicio, int fim) {
+        if (inicio < fim) {
+            int pe = inicio;
+            int pivo = fim;
+            int pd = fim - 1;
+            while (pe <= pd) {
+                while (pe <= pd && dataset[pe].compareTo(dataset[pivo]) < 0) {
+                    pe++;
+                }
+                while (pe <= pd && dataset[pd].compareTo(dataset[pivo]) > 0) {
+                    pd--;
+                }
+                if (pe <= pd) {
+                    swap(dataset, pe, pd);
+                    pe++;
+                    pd--;
+                }
             }
-            if (esq <= dir) {
-                swap(v, esq, dir);
-                esq += 1;
-                dir -= 1;
-            }
+            swap(dataset, pe, pivo);
+            quickSort(dataset, inicio, pe - 1);
+            quickSort(dataset, pe + 1, fim);
         }
-        if (dir > esquerda) {
-            quickSort(v, esquerda, dir);
-        }
-        if (esq < direita) {
-            quickSort(v, esq, direita);
-        }
+
     }
 
     private void swap(Object[] c, int posUm, int posDois) {

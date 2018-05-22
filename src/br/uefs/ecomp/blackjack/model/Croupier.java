@@ -14,9 +14,7 @@ public class Croupier extends Jogador{
         super(user, senha, 1000);
         cartas = new MaoDeCarta();
     }
-    /*Estava funcionando, caso dê erro voltar para a versão do dia 02/05
-    - Modificação: antes uma variavel armazenava a pilha de cartas, 
-        agora ela é acessada diretamente*/
+    
     public void setCartas(MaoDeCarta carta){
         this.cartas = carta;
     }
@@ -24,12 +22,12 @@ public class Croupier extends Jogador{
         return cartas;
     }
    
-    /*
-        Pode ser melhorado fazendo verficações sobre a quanitdade de as 
-    e qm sabe calcular a as chances de tirar uma carta favoravel.
-    */
     public boolean querCarta(){
-        return Croupier.super.pontosEmMao() < 21;
+        return Croupier.super.pontosEmMao() <= 17;
+    }
+    
+    public void pegarCarta(Pilha baralho){
+        Croupier.super.addCartas((Carta) baralho.pop());
     }
     
     public Carta daCarta(Pilha b){

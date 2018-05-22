@@ -94,12 +94,13 @@ public class Jogador {
         Iterador lCartas = (maoDeCartas.getCartas()).iterador();
         while(lCartas.hasNext()){
             Carta cartaObtida = (Carta) lCartas.next();
-            pontosEmMao += cartaObtida.valorReal(false);
-            if(cartaObtida.ehAs()){
+            if(cartaObtida.getStatus() && cartaObtida.ehAs()){
                 numDeAs++;
+            } else if(cartaObtida.getStatus()){
+                pontosEmMao += cartaObtida.valorReal(false);
             }
         }
-        return (pontosEmMao <= 10 && numDeAs >= 1) ? pontosEmMao+10 : pontosEmMao;
+        return (pontosEmMao <= 10 && numDeAs >= 1) ? pontosEmMao+11 : pontosEmMao;
     }
     @Override
     public boolean equals(Object obj) {

@@ -10,6 +10,7 @@ import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -24,8 +25,7 @@ public class View {
         final int TAMANHO_MENU = 30;
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
-        Pilha baralho = blackJackFacade.criarBaralho(2);
-        blackJackFacade.ordena(baralho);
+        int numDeBaralho = 0, qtdJogadores;
         File arquivo = new File("Logins.txt");
         do {
             repetirCarregarArquivo = false;
@@ -53,9 +53,6 @@ public class View {
                 }
             }
         } while (repetirCarregarArquivo);
-
-        int numDeBaralho = 0;
-        int qtdJogadores;
 
         do {
             repetirMenuPrincipal = false;
@@ -176,18 +173,22 @@ public class View {
 
                                         do {
                                             repetirPartida = false;
-                                            Pilha baralho = blackJackFacade.criarBaralho(numDeBaralho);
+                                            Baralho baralho = blackJackFacade.criarBaralho(numDeBaralho);
                                             partida(TAMANHO_MENU, blackJackFacade.jogadoresEmPartida(), baralho);
+                                            repetirFimPartida = false;
+                                            blackJackFacade.zerarMaoJogadores();
+                                            blackJackFacade.zerarHistorico();
+                                            Carta[] baralhoTemp = Arrays.copyOf(baralho.getCartas(), baralho.getCartas().length);
+                                            blackJackFacade.ordena(baralho);
                                             do {
-                                                repetirFimPartida = false;
-                                                blackJackFacade.zerarMaoJogadores();
-                                                blackJackFacade.zerarHistorico();
                                                 menuFimPartida(TAMANHO_MENU);
                                                 switch (lerInt(true, 1, 4)) {
                                                     case 1: {
-                                                        for (Carta carta : blackJackFacade.ordena(baralho)) {
-                                                            System.out.println(carta);
-                                                        }
+                                                        textoSimples(TAMANHO_MENU, "Baralho na ordem de saida >>>", true, true);
+                                                        mostrarBaralho(baralhoTemp);
+                                                        textoSimples(TAMANHO_MENU, "Baralho ordenado>>>", true, true);
+                                                        mostrarBaralho((blackJackFacade.getBaralho()).getCartas());
+                                                        repetirFimPartida = true;
                                                         break;
                                                     }
                                                     case 2: {
@@ -197,7 +198,6 @@ public class View {
                                                     case 3: {
                                                         repetirQtdJogador = true;
                                                         blackJackFacade.zerarJogadoresEmPartida();
-
                                                         break;
                                                     }
                                                     case 4: {
@@ -246,6 +246,22 @@ public class View {
                 }
             }
         } while (repetirMenuPrincipal);
+    }
+
+    private static void mostrarBaralho(Carta[] cartas) {
+        String naipeAnt = "♥";
+        int limite = 0;
+        for (Carta carta : cartas) {
+            if (naipeAnt.equals(carta.getNaipe()) || limite <= 10) {
+                System.out.print(carta + " ");
+                limite++;
+            } else {
+                System.out.print("\n" + carta);
+                naipeAnt = carta.getNaipe();
+                limite = 0;
+            }
+        }
+        System.out.println("");
     }
 
     private static void menuPrincipal(int tamanho) {
@@ -544,8 +560,8 @@ public class View {
             while (lJogadores.hasNext()) {
                 Jogador jogadorAtual = (Jogador) lJogadores.next();
                 Carta carta = c.daCarta(b);
-                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Recebeu: " + carta);
                 jogadorAtual.addCartas(carta);
+                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Recebeu: " + carta);
             }
         }
     }
@@ -555,12 +571,13 @@ public class View {
         exibirHistorico(tamanho);
     }
 
-    private static void partida(int tamanho, Iterador lJogadores, Pilha b) {
+    private static void partida(int tamanho, Iterador lJogadores, Baralho baralho) {
         int rodada = 1;
         boolean querCarta;
         Croupier c = new Croupier("asfd", "asdf");
         Jogador jogadorAtual;
         blackJackFacade.addHistorico("Inicio de Partida");
+        Pilha b = blackJackFacade.embaralha(baralho);
         blackJackFacade.addHistorico("Baralho Embaralhado!");
         rodadaInicial(c, b);
         atualizarInterface(tamanho, rodada);
@@ -573,15 +590,16 @@ public class View {
                 querCarta = false;
                 switch (lerInt(true, 1, 3)) {
                     case 1: {
-                        blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Pediu carta!");
-                        jogadorAtual.addCartas(c.daCarta(b)); // Aki eu pego o croupier e faço ele dar uma carta para o jogador. 
+                        Carta carta = c.daCarta(b);
+                        blackJackFacade.addHistorico(jogadorAtual.getUser() + " Pediu carta e recebeu: " + carta);
+                        jogadorAtual.addCartas(carta); // Aki eu pego o croupier e faço ele dar uma carta para o jogador. 
                         if (jogadorAtual.estourou()) {
-                            blackJackFacade.addHistorico("Jogador: " + jogadorAtual.getUser() + " Estorou!");
+                            blackJackFacade.addHistorico(jogadorAtual.getUser() + " Estorou com: " + jogadorAtual.pontosEmMao() + " Pontos");
                             atualizarInterface(tamanho, rodada);
                             jogadorAtual.setPontos(-5);
                             jogadorAtual.setPartidas(1);
                         } else if (jogadorAtual.venceu()) {
-                            blackJackFacade.addHistorico(jogadorAtual.getUser() + "Venceu!");
+                            blackJackFacade.addHistorico(jogadorAtual.getUser() + "!!!VENCEU!!!");
                             jogadorAtual.setPontos(10);
                             jogadorAtual.setPartidas(1);
                             atualizarInterface(tamanho, rodada);
