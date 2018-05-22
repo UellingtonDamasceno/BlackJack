@@ -97,40 +97,36 @@ public class ControllerPartida {
         //insertionSort(cartas);
     }
 
-    public void insertionSort(Carta[] cartas) {
-        for (int i = 1; i < cartas.length; i++) {
-            Carta aux = cartas[i];
-            int j = i;
-            while ((j > 0) && (cartas[j - 1].compareTo(aux) < 0)) {
-                cartas[j] = cartas[j - 1];
-                j--;
-            }
-            cartas[j] = aux;
+    public Carta[] ordena(Pilha baralho) {
+        Carta cartas[] = new Carta[baralho.size()];
+        for (int i = 0; i < baralho.size(); i++) {
+            cartas[i] = (Carta) baralho.pop();
         }
-
+        quickSort(cartas, 0, baralho.size());
+        return cartas;
     }
 
-    private void quickSort(Carta dataset[], int inicio, int fim) {
+    private void quickSort(Carta vetor[], int inicio, int fim) {
         if (inicio < fim) {
             int pe = inicio;
             int pivo = fim;
             int pd = fim - 1;
             while (pe <= pd) {
-                while (pe <= pd && dataset[pe].compareTo(dataset[pivo]) < 0) {
+                while (pe <= pd && vetor[pe].compareTo(vetor[pivo]) < 0) {
                     pe++;
                 }
-                while (pe <= pd && dataset[pd].compareTo(dataset[pivo]) > 0) {
+                while (pe <= pd && vetor[pd].compareTo(vetor[pivo]) > 0) {
                     pd--;
                 }
                 if (pe <= pd) {
-                    swap(dataset, pe, pd);
+                    swap(vetor, pe, pd);
                     pe++;
                     pd--;
                 }
             }
-            swap(dataset, pe, pivo);
-            quickSort(dataset, inicio, pe - 1);
-            quickSort(dataset, pe + 1, fim);
+            swap(vetor, pe, pivo);
+            quickSort(vetor, inicio, pe - 1);
+            quickSort(vetor, pe + 1, fim);
         }
 
     }

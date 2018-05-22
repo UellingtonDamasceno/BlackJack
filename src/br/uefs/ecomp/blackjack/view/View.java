@@ -26,6 +26,7 @@ public class View {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
         int numDeBaralho = 0, qtdJogadores;
+
         File arquivo = new File("Logins.txt");
         do {
             repetirCarregarArquivo = false;

@@ -11,8 +11,8 @@ public class Carta implements Comparable {
     private String face;
     private boolean status;
     
-    public Carta(String nipe, String face) {
-        this.naipe = nipe;
+    public Carta(String naipe, String face) {
+        this.naipe = naipe;
         this.face = face;
         this.status = true;
     }
@@ -20,7 +20,7 @@ public class Carta implements Comparable {
     public String getNaipe() {
         return naipe;
     }
-    
+
     public void setStatus(boolean status){
         this.status = status;
     }
@@ -28,7 +28,9 @@ public class Carta implements Comparable {
     public boolean getStatus(){
         return status;
     }
-    public void setNipe(String naipe) {
+
+    public void setNaipe(String naipe) {
+
         this.naipe = naipe;
     }
 
@@ -51,11 +53,11 @@ public class Carta implements Comparable {
     /*
     Não sei se esse metodo é realmente relevante. --- É NECESSARIO VERIFICAR A LOGICA 
     DOS PONTOS EM MÃO.
-     */
+    */
     public boolean ehAs() {
         return face.equals("A");
     }
-
+    
     public int valorReal(boolean paraComparar) {
         switch (face) {
             case "K":{
