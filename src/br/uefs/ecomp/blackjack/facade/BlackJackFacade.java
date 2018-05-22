@@ -6,7 +6,7 @@
 package br.uefs.ecomp.blackjack.facade;
 
 import br.uefs.ecomp.blackjack.controller.*;
-import br.uefs.ecomp.blackjack.util.Iterador;
+import br.uefs.ecomp.blackjack.model.Carta;
 import br.uefs.ecomp.blackjack.util.*;
 import java.io.File;
 import java.io.IOException;
@@ -57,8 +57,12 @@ public class BlackJackFacade {
         return controllerPartida.getJogadoresEmEspera();
     }
 
-    public Iterador verJogadoresEmPartida() {
-        return controllerPartida.verJogadoresEmPartida();
+    public Iterador jogadoresEmPartida() {
+        return controllerPartida.jogadoresEmPartida();
+    }
+    
+    public Object[] ordena(Pilha baralho){
+        return controllerPartida.ordena(baralho);
     }
 
     public void addHistorico(String info) {

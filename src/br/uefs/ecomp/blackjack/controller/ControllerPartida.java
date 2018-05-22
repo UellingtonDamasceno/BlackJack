@@ -18,25 +18,25 @@ public class ControllerPartida {
     private Partida partida;
     private ListaEncadeada jogadoresEmEspera;
     private ListaEncadeada historico;
-    private Croupier croupier;
-    private Pilha baralho; 
-    
+    private final Croupier croupier;
+    private Pilha baralho;
+
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
         this.historico = new ListaEncadeada();
         this.croupier = new Croupier("Croupier", "123");
         this.baralho = new Pilha();
     }
-    
-    public Croupier getCroupier(){
+
+    public Croupier getCroupier() {
         return croupier;
     }
-    
-    public Pilha criaBaralho(int qtdBaralho){
+
+    public Pilha criaBaralho(int qtdBaralho) {
         Baralho b = new Baralho(qtdBaralho);
         return embaralha(b);
     }
-    
+
     public ListaEncadeada getHistorico() {
         return historico;
     }
@@ -60,7 +60,7 @@ public class ControllerPartida {
     public void addHistorico(String info) {
         historico.insereInicio(info);
     }
-    
+
     public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser) {
         while (listaDeUser.hasNext()) {
             Jogador jogadorObtido = (Jogador) listaDeUser.next();
@@ -82,8 +82,10 @@ public class ControllerPartida {
         Random gerador = new Random();
         Pilha cartasDoBaralho = new Pilha();
         Carta suporte[] = baralho.getCartas();
-        for (int i = 0; i < suporte.length; i++) {
-            swap(suporte, i, gerador.nextInt(suporte.length - 1));
+        for (int i = 0; i <= suporte.length / 52; i++) {
+            for (int j = 0; j < suporte.length; j++) {
+                swap(suporte, j, gerador.nextInt(suporte.length));
+            }
         }
         for (Carta carta : suporte) {
             cartasDoBaralho.push(carta);
@@ -91,18 +93,45 @@ public class ControllerPartida {
         return cartasDoBaralho;
     }
 
+    public Object[] ordena(Pilha baralho) {
+        Object cartas[] = new Object[baralho.size()];
+        for (int i = 0; i < baralho.size(); i++) {
+            cartas[i] = (Carta) baralho.pop();
+        }
+        quickSort(cartas, 0, baralho.size());
+        return cartas;
+    }
+
+    private void quickSort(Object p[], int esquerda, int direita) {
+        int esq = esquerda;
+        int dir = direita;
+        Carta v[] = (Carta[]) p;
+        Carta pivo = v[(esq + dir) / 2];
+        while (esq <= dir) {
+            while (v[esq].compareTo(pivo) == -1) {
+                esq++;
+            }
+            while (v[dir].compareTo(pivo) == 1) {
+                dir--;
+            }
+            if (esq <= dir) {
+                swap(v, esq, dir);
+                esq += 1;
+                dir -= 1;
+            }
+        }
+        if (dir > esquerda) {
+            quickSort(v, esquerda, dir);
+        }
+        if (esq < direita) {
+            quickSort(v, esq, direita);
+        }
+    }
+
     private void swap(Object[] c, int posUm, int posDois) {
         Object carta = c[posUm];
         c[posUm] = c[posDois];
         c[posDois] = carta;
-    }
-
-    public Pilha ordena(Pilha cartas) {
-        Object cartasRestantes[] = new Object[cartas.size()];
-        for (Object carta : cartasRestantes) {
-            carta = cartas.pop();
-        }
-        return cartas;
     }
 
     public void zerarHistorico() {
@@ -116,16 +145,16 @@ public class ControllerPartida {
             jogadoresEmEspera.removeInicio();
         }
     }
-    
-    public void zerarMaoJogadores(){
+
+    public void zerarMaoJogadores() {
         Iterador lJogadores = jogadoresEmEspera.iterador();
-        while(lJogadores.hasNext()){
+        while (lJogadores.hasNext()) {
             Jogador jogadorAtual = (Jogador) lJogadores.next();
             jogadorAtual.limparMaoDeCartas();
         }
     }
 
-    public Iterador verJogadoresEmPartida() {
+    public Iterador jogadoresEmPartida() {
         return jogadoresEmEspera.iterador();
     }
 }

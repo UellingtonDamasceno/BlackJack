@@ -41,7 +41,8 @@ public class Baralho {
         for (int i = 0; i < cartas.length/qtdDeCartas; i++) {
             for (String nipe : nipes) {
                 for (String face : faces) {
-                    cartas[posicao++] = new Carta(nipe, face);
+                    cartas[posicao] = new Carta(nipe, face);
+                    posicao++;
                 }
             }
         }
