@@ -57,12 +57,20 @@ public class BlackJackFacade {
        return controllerPartida.criaBaralho(qtdBaralho);
     }
     
+    public Partida iniciarPartida(){
+        return controllerPartida.iniciarPartida();
+    }
+    
     public ListaEncadeada getJogadoresEmPartida() {
         return controllerPartida.getJogadoresEmEspera();
     }
-
+    
+    public Carta daCarta(Jogador jogador){
+        return controllerPartida.getPartida().daCarta(jogador);
+    }
+    
     public Iterador jogadoresEmPartida() {
-        return controllerPartida.jogadoresEmPartida();
+        return controllerPartida.getPartida().jogadoresEmPartida();
     }
     
     public Pilha embaralha(Baralho baralho){
@@ -72,25 +80,25 @@ public class BlackJackFacade {
     public void ordena(Baralho baralho){
         controllerPartida.ordena(baralho);
     }
-
+    
     public void addHistorico(String info) {
-        controllerPartida.addHistorico(info);
+        controllerPartida.getPartida().addHistorico(info);
     }
 
     public Object getInfoHistorico(int pos) {
-        return controllerPartida.getInfoHistorico(pos);
+        return controllerPartida.getPartida().getInfoHistorico(pos);
     }
 
     public void zerarHistorico() {
-        controllerPartida.zerarHistorico();
+        controllerPartida.getPartida().zerarHistorico();
     }
     
     public void zerarMaoJogadores(){
         controllerPartida.zerarMaoJogadores();
     }
     
-    public void zerarJogadoresEmPartida(){
-        controllerPartida.zerarJogadoresEmPartida();
+    public void zerarJogadoresEmEspera(){
+        controllerPartida.zerarJogadoresEmEspera();
     }
 
 }

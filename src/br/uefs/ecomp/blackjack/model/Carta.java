@@ -71,30 +71,18 @@ public class Carta implements Comparable {
      */
     public int valorReal(boolean opcao) {
         switch (face) {
-            case "K":{
-                if(!opcao){
-                    return 13;
-                }
-                return 10;
-            }
-            case "Q":{
-                if(!opcao){
-                    return 12;
-                }
-                return 10;
-            }
-            case "J":{
-                if(!opcao){
-                    return 11;
-                }
-                return 10;
-            }// Fazer do Ás.
+            case "K":
+                return opcao ? 10 : 13;
+            case "Q":
+                return opcao ? 10 : 12;
+            case "J":
+                return opcao ? 10 : 11;
+            // Fazer do Ás.
             case "A":{
                 return 1;
             }   
-            default:{
+            default:
                 return Integer.parseInt(face);
-            }
         }
     }
     

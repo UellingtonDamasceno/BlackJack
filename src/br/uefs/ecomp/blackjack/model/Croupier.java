@@ -8,26 +8,28 @@ import br.uefs.ecomp.blackjack.util.Pilha;
  */
 
 public class Croupier extends Jogador{
-    private MaoDeCarta cartas;
+    private MaoDeCarta maoDeCarta;
     
     public Croupier(String user, String senha){
         super(user, senha, 1000);
-        cartas = new MaoDeCarta();
+        maoDeCarta = new MaoDeCarta();
     }
     
-    public void setCartas(MaoDeCarta carta){
-        this.cartas = carta;
+    public void setMaoDeCarta(MaoDeCarta carta){
+        this.maoDeCarta = carta;
     }
-    public MaoDeCarta getCartas (){
-        return cartas;
+    public MaoDeCarta getMaoDeCarta (){
+        return maoDeCarta;
     }
    
     public boolean querCarta(){
         return Croupier.super.pontosEmMao() <= 17;
     }
     
-    public void pegarCarta(Pilha baralho){
-        Croupier.super.addCartas((Carta) baralho.pop());
+    public Carta pegarCarta(Pilha baralho){
+        Carta c = (Carta) baralho.pop();
+        Croupier.super.receberCarta(c);
+        return c;
     }
     
     public Carta daCarta(Pilha b){

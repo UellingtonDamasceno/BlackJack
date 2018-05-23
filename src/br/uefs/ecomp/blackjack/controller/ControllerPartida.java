@@ -14,14 +14,13 @@ import java.util.Random;
  * @author Uellington Damasceno e Anésio Sousa
  */
 public class ControllerPartida {
-    
+    private Partida partida;
     private ListaEncadeada jogadoresEmEspera;
-    private ListaEncadeada historico;
     private final Croupier croupier;
     private Baralho baralho;
+    
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
-        this.historico = new ListaEncadeada();
         this.croupier = new Croupier("Croupier", "123");
     }
 
@@ -36,14 +35,10 @@ public class ControllerPartida {
         return baralho;
     }
 
-    public ListaEncadeada getHistorico() {
-        return historico;
+    public Partida getPartida(){
+        return partida;
     }
-
-    public void setHistorico(ListaEncadeada historico) {
-        this.historico = historico;
-    }
-
+    //TIPO MALS PELA DEMORA KKK VAMO LÁ
     public ListaEncadeada getJogadoresEmEspera() {
         return jogadoresEmEspera;
     }
@@ -51,15 +46,16 @@ public class ControllerPartida {
     public void setJogadoresEmEspera(ListaEncadeada jogadoresEmEspera) {
         this.jogadoresEmEspera = jogadoresEmEspera;
     }
-
-    public Object getInfoHistorico(int pos) {
-        return historico.tamanho() > pos ? historico.get(pos) : "";
+    
+    public Partida iniciarPartida(){
+        Pilha baralhoTemp = embaralha(baralho);
+        partida = new Partida(jogadoresEmEspera, croupier, baralhoTemp);
+        partida.addHistorico("Inicio de Partida");
+        partida.addHistorico("Baralho Embaralhado!");
+        zerarJogadoresEmEspera();
+        return partida;
     }
-
-    public void addHistorico(String info) {
-        historico.insereInicio(info);
-    }
-
+    
     public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser) {
         while (listaDeUser.hasNext()) {
             Jogador jogadorObtido = (Jogador) listaDeUser.next();
@@ -94,7 +90,6 @@ public class ControllerPartida {
 
     public void ordena(Baralho baralho) {
         quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
-        //insertionSort(cartas);
     }
 
     public Carta[] ordena(Pilha baralho) {
@@ -137,13 +132,7 @@ public class ControllerPartida {
         c[posDois] = carta;
     }
 
-    public void zerarHistorico() {
-        while (!historico.estaVazia()) {
-            historico.removeInicio();
-        }
-    }
-
-    public void zerarJogadoresEmPartida() {
+    public void zerarJogadoresEmEspera() {
         while (!jogadoresEmEspera.estaVazia()) {
             jogadoresEmEspera.removeInicio();
         }

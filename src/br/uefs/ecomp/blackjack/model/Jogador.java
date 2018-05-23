@@ -68,7 +68,7 @@ public class Jogador {
     }
     
     // Ver a questão do Ás aqui.
-    public void addCartas(Carta carta){
+    public void receberCarta(Carta carta){
         ListaEncadeada aux = maoDeCartas.getCartas();
         if(!estourou()){
             aux.insereFinal(carta);    
@@ -100,7 +100,7 @@ public class Jogador {
                 pontosEmMao += cartaObtida.valorReal(true);
             }
         }
-        return (pontosEmMao <= 10 && numDeAs >= 1) ? pontosEmMao+11 : pontosEmMao;
+        return (pontosEmMao <= 10 && numDeAs >= 1) ? (pontosEmMao+10+numDeAs) : pontosEmMao;
     }
     @Override
     public boolean equals(Object obj) {

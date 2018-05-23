@@ -26,7 +26,28 @@ public class View {
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
         int numDeBaralho = 0, qtdJogadores;
-
+        
+        
+        Carta c2 = new Carta("♣", "A");
+        Carta c = new Carta("♦", "9");
+        Carta c3 = new Carta("♠", "5");
+        Jogador j = new Jogador("123", "123", 100);
+        Croupier c1 = new Croupier("321", "123");
+        Pilha p = new Pilha();
+        System.out.println(j.pontosEmMao());
+        p.push(c2); 
+        j.receberCarta(c1.daCarta(p));
+        System.out.println(j.pontosEmMao());
+        p.push(c);
+        j.receberCarta(c1.daCarta(p));
+        System.out.println(j.pontosEmMao());
+        p.push(c3);
+        j.receberCarta(c1.daCarta(p));
+        
+        //termina aki 
+        
+        
+        System.out.println(j.pontosEmMao());
         File arquivo = new File("Logins.txt");
         do {
             repetirCarregarArquivo = false;
@@ -171,11 +192,17 @@ public class View {
                                                 }
                                             } while (inserirNovoJogador);
                                         }
+// PERA AI, TO PENSANDO E ACREDITO QUE DE CERTO MODO PODEREMOS SIM LIMPARA A LISTA DE JOGADORES EM ESPERA
+// TUDO PQ LÁ EM PARTIDA VAI TER UMA LISTA DE JOGADORES. 
+// ESTOU PENSANDO EM COMO ISSO PODE AJUDAR...
+// SSS! ahhh então podemos sim limpar a lista assim que criamos a partida. 
+// kkk vamos que vamos. 
 
                                         do {
                                             repetirPartida = false;
                                             Baralho baralho = blackJackFacade.criarBaralho(numDeBaralho);
-                                            partida(TAMANHO_MENU, blackJackFacade.jogadoresEmPartida(), baralho);
+                                            //PODEMOS CRIAR A PARTIDA AKI OU DENTRO DO METODO PARTIDA. VAMOS VER DAKI A POUCO. 
+                                            partida(TAMANHO_MENU);
                                             repetirFimPartida = false;
                                             blackJackFacade.zerarMaoJogadores();
                                             blackJackFacade.zerarHistorico();
@@ -198,11 +225,11 @@ public class View {
                                                     }
                                                     case 3: {
                                                         repetirQtdJogador = true;
-                                                        blackJackFacade.zerarJogadoresEmPartida();
+                                                        //AKI ENTRA O METODO QUE LIMPA OS JOGADORES QUE ESTAVAM EM PARTIDA.
                                                         break;
                                                     }
                                                     case 4: {
-                                                        blackJackFacade.zerarJogadoresEmPartida();
+                                                        //AKI ENTRA O METODO QUE LIMPA OS JOGADORES QUE ESTAVAM EM PARTIDA. 
                                                         repetirMenuPrincipal = true;
                                                         break;
                                                     }
@@ -461,11 +488,11 @@ public class View {
 
     private static void menuRegras(int tamanho) {
         barra(tamanho, true);
-        textoSimples(tamanho, "Menu de regras", true, true);
+        textoSimples(tamanho, "Estilo de partida", true, true);
         separador(tamanho, true);
-        novoItem(tamanho, "2 Baralhos", "1", true);
-        novoItem(tamanho, "4 Baralhos", "2", true);
-        novoItem(tamanho, "8 Baralhos", "3", true);
+        novoItem(tamanho, "Rapida: 2 Baralhos", "1", true);
+        novoItem(tamanho, "Media: 4 Baralhos", "2", true);
+        novoItem(tamanho, "Demorada: 8 Baralhos", "3", true);
         novoItem(tamanho, "Personalizado", "4", true);
         separador(tamanho, true);
         novoItem(tamanho, "Voltar", "5", true);
@@ -554,33 +581,18 @@ public class View {
 
     }
 
-    private static void rodadaInicial(Croupier c, Pilha b) {
-        for (int i = 0; i < 2; i++) {
-            Iterador lJogadores = blackJackFacade.jogadoresEmPartida();
-            blackJackFacade.addHistorico("Croupier distribuindo " + (i + 1) + "ª rodada de cartas!");
-            while (lJogadores.hasNext()) {
-                Jogador jogadorAtual = (Jogador) lJogadores.next();
-                Carta carta = c.daCarta(b);
-                jogadorAtual.addCartas(carta);
-                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Recebeu: " + carta);
-            }
-        }
-    }
 
     private static void atualizarInterface(int tamanho, int rodada) {
         round(tamanho, rodada++, blackJackFacade.getJogadoresEmPartida().tamanho());
         exibirHistorico(tamanho);
     }
 
-    private static void partida(int tamanho, Iterador lJogadores, Baralho baralho) {
+    private static void partida(int tamanho) {
         int rodada = 1;
         boolean querCarta;
-        Croupier c = new Croupier("asfd", "asdf");
         Jogador jogadorAtual;
-        blackJackFacade.addHistorico("Inicio de Partida");
-        Pilha b = blackJackFacade.embaralha(baralho);
-        blackJackFacade.addHistorico("Baralho Embaralhado!");
-        rodadaInicial(c, b);
+        Partida p = blackJackFacade.iniciarPartida();
+        Iterador lJogadores = blackJackFacade.jogadoresEmPartida();
         atualizarInterface(tamanho, rodada);
         while (lJogadores.hasNext()) {
             jogadorAtual = (Jogador) lJogadores.next();
@@ -591,9 +603,9 @@ public class View {
                 querCarta = false;
                 switch (lerInt(true, 1, 3)) {
                     case 1: {
-                        Carta carta = c.daCarta(b);
+                        Carta carta = blackJackFacade.daCarta(jogadorAtual);
                         blackJackFacade.addHistorico(jogadorAtual.getUser() + " Pediu carta e recebeu: " + carta);
-                        jogadorAtual.addCartas(carta); // Aki eu pego o croupier e faço ele dar uma carta para o jogador. 
+                        jogadorAtual.receberCarta(carta); 
                         if (jogadorAtual.estourou()) {
                             blackJackFacade.addHistorico(jogadorAtual.getUser() + " Estorou com: " + jogadorAtual.pontosEmMao() + " Pontos");
                             atualizarInterface(tamanho, rodada);
@@ -607,7 +619,6 @@ public class View {
                         } else {
                             querCarta = true;
                         }
-                        //adiciona cartas na mão do jogador;
                         break;
                     }
                     case 2: {
