@@ -2,7 +2,7 @@ package br.uefs.ecomp.blackjack.model;
 
 /**
  * Classe responsável por criar cartas que irão posteriormente para baralhos.
- * A classe tem dois atributos: naipe e face;
+ *
  * @author Uellington Damasceno e Anésio Sousa
  */
 public class Carta implements Comparable {
@@ -16,7 +16,10 @@ public class Carta implements Comparable {
         this.face = face;
         this.status = true;
     }
-
+    /**
+     * Método para retorno de naipe da carta.
+     * @return naipe - Símbolo identificador de um grupo de cartas.
+     */
     public String getNaipe() {
         return naipe;
     }
@@ -24,16 +27,21 @@ public class Carta implements Comparable {
     public void setStatus(boolean status){
         this.status = status;
     }
-    
+    /**
+     * Método para retorno do status da carta.
+     * @return status - Estado da carta(se está virada ou não).
+     */
     public boolean getStatus(){
         return status;
     }
-
+    
     public void setNaipe(String naipe) {
-
         this.naipe = naipe;
     }
-
+    /**
+     * Método para retorno da face da carta.
+     * @return face - Pontuação da carta, sendo um número ou uma letra.
+     */
     public String getFace() {
         return face;
     }
@@ -41,7 +49,10 @@ public class Carta implements Comparable {
     public void setFace(String face) {
         this.face = face;
     }
-
+    /**
+     * Método de identificação do objeto carta. 
+     * @return face e nipe (se a carta estiver virada para cima), ou dois x maiúsculos em seus lugares( se a carta estiver virada para baixo).
+     */
     @Override
     public String toString() {
         if(status){
@@ -50,14 +61,14 @@ public class Carta implements Comparable {
         return "X X";
     }
 
-    /*
-    Não sei se esse metodo é realmente relevante. --- É NECESSARIO VERIFICAR A LOGICA 
-    DOS PONTOS EM MÃO.
-    */
     public boolean ehAs() {
         return face.equals("A");
     }
-    
+    /**
+     * Método que verifica e retorna a pontuação da face da carta, ou retorna sua posição no seu naipe(se sua face for uma letra).
+     * @param paraComparar - Se for true, quer dizer que o chamador desse método quer saber a pontuação da carta atual, e se for false, sua posição no naipe.
+     * @return int - pontuação da carta, ou sua posição no naipe.
+     */
     public int valorReal(boolean paraComparar) {
         switch (face) {
             case "K":{
@@ -77,9 +88,10 @@ public class Carta implements Comparable {
                     return 11;
                 }
                 return 10;
-            }
+            }// Fazer do Ás.
             case "A":
                 return 1;
+                
             default:
                 return Integer.parseInt(face);
         }
