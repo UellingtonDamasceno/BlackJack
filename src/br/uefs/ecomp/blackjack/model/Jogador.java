@@ -97,7 +97,7 @@ public class Jogador {
             if(cartaObtida.getStatus() && cartaObtida.ehAs()){
                 numDeAs++;
             } else if(cartaObtida.getStatus()){
-                pontosEmMao += cartaObtida.valorReal(false);
+                pontosEmMao += cartaObtida.valorReal(true);
             }
         }
         return (pontosEmMao <= 10 && numDeAs >= 1) ? pontosEmMao+11 : pontosEmMao;

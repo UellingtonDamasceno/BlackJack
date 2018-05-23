@@ -34,7 +34,7 @@ public class CartaTest{
     @Test
     public void valorRealTest(){
         aux.setFace("K");
-        int helper = aux.valorReal(false);
+        int helper = aux.valorReal(true);
         
         assertSame(10, helper);
         

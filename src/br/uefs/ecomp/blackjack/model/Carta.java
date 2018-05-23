@@ -66,37 +66,38 @@ public class Carta implements Comparable {
     }
     /**
      * Método que verifica e retorna a pontuação da face da carta, ou retorna sua posição no seu naipe(se sua face for uma letra).
-     * @param paraComparar - Se for true, quer dizer que o chamador desse método quer saber a pontuação da carta atual, e se for false, sua posição no naipe.
+     * @param opcao - se for true, quer dizer que o chamador desse método quer saber a pontuação da carta atual, e se for false, sua posição no naipe.
      * @return int - pontuação da carta, ou sua posição no naipe.
      */
-    public int valorReal(boolean paraComparar) {
+    public int valorReal(boolean opcao) {
         switch (face) {
             case "K":{
-                if(paraComparar){
+                if(!opcao){
                     return 13;
                 }
                 return 10;
             }
             case "Q":{
-                if(paraComparar){
+                if(!opcao){
                     return 12;
                 }
                 return 10;
             }
             case "J":{
-                if(paraComparar){
+                if(!opcao){
                     return 11;
                 }
                 return 10;
             }// Fazer do Ás.
-            case "A":
+            case "A":{
                 return 1;
-                
-            default:
+            }   
+            default:{
                 return Integer.parseInt(face);
+            }
         }
     }
-
+    
     @Override
     public int compareTo(Object objeto) {
         Carta outraCarta = (Carta) objeto;
@@ -104,7 +105,7 @@ public class Carta implements Comparable {
             return 0;
         }
         else if(outraCarta.getNaipe().equals(this.getNaipe())){
-            return outraCarta.valorReal(true) > this.valorReal(true) ? 1 : -1; 
+            return outraCarta.valorReal(false) > this.valorReal(false) ? 1 : -1; 
         }
         else if(outraCarta.getNaipe().compareTo(this.getNaipe())<0){
             return 1;
