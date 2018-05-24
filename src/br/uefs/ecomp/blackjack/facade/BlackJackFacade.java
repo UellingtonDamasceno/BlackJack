@@ -61,8 +61,12 @@ public class BlackJackFacade {
         return controllerPartida.iniciarPartida();
     }
     
+    public Partida getPartida(){
+        return controllerPartida.getPartida();
+    }
+    
     public ListaEncadeada getJogadoresEmPartida() {
-        return controllerPartida.getJogadoresEmEspera();
+        return controllerPartida.getPartida().getJogadores();
     }
     
     public Carta daCarta(Jogador jogador){
@@ -96,9 +100,4 @@ public class BlackJackFacade {
     public void zerarMaoJogadores(){
         controllerPartida.zerarMaoJogadores();
     }
-    
-    public void zerarJogadoresEmEspera(){
-        controllerPartida.zerarJogadoresEmEspera();
-    }
-
 }

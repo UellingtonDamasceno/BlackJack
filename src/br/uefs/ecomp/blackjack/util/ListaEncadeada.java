@@ -197,7 +197,6 @@ public class ListaEncadeada implements ILista{
         if(aux != null){
             return aux.getDados();
         }
-        
         return null;
     }
     /**

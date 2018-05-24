@@ -21,7 +21,7 @@ public class ControllerPartida {
     
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
-        this.croupier = new Croupier("Croupier", "123");
+        this.croupier = new Croupier();
     }
 
     public Croupier getCroupier() {
@@ -38,7 +38,7 @@ public class ControllerPartida {
     public Partida getPartida(){
         return partida;
     }
-    //TIPO MALS PELA DEMORA KKK VAMO LÁ
+    
     public ListaEncadeada getJogadoresEmEspera() {
         return jogadoresEmEspera;
     }
@@ -52,7 +52,6 @@ public class ControllerPartida {
         partida = new Partida(jogadoresEmEspera, croupier, baralhoTemp);
         partida.addHistorico("Inicio de Partida");
         partida.addHistorico("Baralho Embaralhado!");
-        zerarJogadoresEmEspera();
         return partida;
     }
     
@@ -92,25 +91,16 @@ public class ControllerPartida {
         quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
     }
 
-    public Carta[] ordena(Pilha baralho) {
-        Carta cartas[] = new Carta[baralho.size()];
-        for (int i = 0; i < baralho.size(); i++) {
-            cartas[i] = (Carta) baralho.pop();
-        }
-        quickSort(cartas, 0, baralho.size());
-        return cartas;
-    }
-
     private void quickSort(Carta vetor[], int inicio, int fim) {
         if (inicio < fim) {
             int pe = inicio;
             int pivo = fim;
             int pd = fim - 1;
             while (pe <= pd) {
-                while (pe <= pd && vetor[pe].compareTo(vetor[pivo]) < 0) {
+                while (pe <= pd && vetor[pe].compareTo(vetor[pivo]) > 0) {
                     pe++;
                 }
-                while (pe <= pd && vetor[pd].compareTo(vetor[pivo]) > 0) {
+                while (pe <= pd && vetor[pd].compareTo(vetor[pivo]) < 0) {
                     pd--;
                 }
                 if (pe <= pd) {
@@ -132,14 +122,16 @@ public class ControllerPartida {
         c[posDois] = carta;
     }
 
-    public void zerarJogadoresEmEspera() {
+    private ListaEncadeada inserirJogadores() {
+        ListaEncadeada l = new ListaEncadeada();
         while (!jogadoresEmEspera.estaVazia()) {
-            jogadoresEmEspera.removeInicio();
+            l.insereFinal(jogadoresEmEspera.removeInicio());
         }
+        return l;
     }
 
     public void zerarMaoJogadores() {
-        Iterador lJogadores = jogadoresEmEspera.iterador();
+        Iterador lJogadores = partida.jogadoresEmPartida();
         while (lJogadores.hasNext()) {
             Jogador jogadorAtual = (Jogador) lJogadores.next();
             jogadorAtual.limparMaoDeCartas();

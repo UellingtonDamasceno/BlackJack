@@ -25,29 +25,10 @@ public class View {
         final int TAMANHO_MENU = 30;
         boolean repetirMenuPrincipal, repetirMenuSalas, repetirCarregarArquivo;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
+        boolean repetirPartida, inserirNovoJogador, repetirFimPartida;
+
         int numDeBaralho = 0, qtdJogadores;
-        
-        
-        Carta c2 = new Carta("♣", "A");
-        Carta c = new Carta("♦", "9");
-        Carta c3 = new Carta("♠", "5");
-        Jogador j = new Jogador("123", "123", 100);
-        Croupier c1 = new Croupier("321", "123");
-        Pilha p = new Pilha();
-        System.out.println(j.pontosEmMao());
-        p.push(c2); 
-        j.receberCarta(c1.daCarta(p));
-        System.out.println(j.pontosEmMao());
-        p.push(c);
-        j.receberCarta(c1.daCarta(p));
-        System.out.println(j.pontosEmMao());
-        p.push(c3);
-        j.receberCarta(c1.daCarta(p));
-        
-        //termina aki 
-        
-        
-        System.out.println(j.pontosEmMao());
+
         File arquivo = new File("Logins.txt");
         do {
             repetirCarregarArquivo = false;
@@ -147,8 +128,6 @@ public class View {
                                         }
                                     }
                                     if (!repetirQtdJogador) {
-                                        boolean repetirPartida, inserirNovoJogador, repetirFimPartida;
-
                                         for (int i = 0; i < qtdJogadores; i++) {
                                             do {
                                                 inserirNovoJogador = false;
@@ -192,23 +171,19 @@ public class View {
                                                 }
                                             } while (inserirNovoJogador);
                                         }
-// PERA AI, TO PENSANDO E ACREDITO QUE DE CERTO MODO PODEREMOS SIM LIMPARA A LISTA DE JOGADORES EM ESPERA
-// TUDO PQ LÁ EM PARTIDA VAI TER UMA LISTA DE JOGADORES. 
-// ESTOU PENSANDO EM COMO ISSO PODE AJUDAR...
-// SSS! ahhh então podemos sim limpar a lista assim que criamos a partida. 
-// kkk vamos que vamos. 
-
                                         do {
                                             repetirPartida = false;
+                                            System.out.println(repetirPartida);
                                             Baralho baralho = blackJackFacade.criarBaralho(numDeBaralho);
-                                            //PODEMOS CRIAR A PARTIDA AKI OU DENTRO DO METODO PARTIDA. VAMOS VER DAKI A POUCO. 
-                                            partida(TAMANHO_MENU);
-                                            repetirFimPartida = false;
+                                            Partida partida = blackJackFacade.iniciarPartida();
+                                            partida(TAMANHO_MENU, partida);
+                                            System.out.println("Chamou partida");
                                             blackJackFacade.zerarMaoJogadores();
                                             blackJackFacade.zerarHistorico();
                                             Carta[] baralhoTemp = Arrays.copyOf(baralho.getCartas(), baralho.getCartas().length);
                                             blackJackFacade.ordena(baralho);
                                             do {
+                                                repetirFimPartida = false;
                                                 menuFimPartida(TAMANHO_MENU);
                                                 switch (lerInt(true, 1, 4)) {
                                                     case 1: {
@@ -220,21 +195,23 @@ public class View {
                                                         break;
                                                     }
                                                     case 2: {
+                                                        System.out.println(repetirPartida);
                                                         repetirPartida = true;
+                                                        System.out.println(repetirPartida);
                                                         break;
                                                     }
                                                     case 3: {
                                                         repetirQtdJogador = true;
-                                                        //AKI ENTRA O METODO QUE LIMPA OS JOGADORES QUE ESTAVAM EM PARTIDA.
                                                         break;
                                                     }
                                                     case 4: {
-                                                        //AKI ENTRA O METODO QUE LIMPA OS JOGADORES QUE ESTAVAM EM PARTIDA. 
                                                         repetirMenuPrincipal = true;
                                                         break;
                                                     }
                                                 }
+                                                System.out.println("Saiu do switch");
                                             } while (repetirFimPartida);
+                                            System.out.println("Saiu do primeiro laço");
                                         } while (repetirPartida);
                                     }
                                 } while (repetirMenuSalas);
@@ -277,15 +254,13 @@ public class View {
     }
 
     private static void mostrarBaralho(Carta[] cartas) {
-        String naipeAnt = "♥";
         int limite = 0;
         for (Carta carta : cartas) {
-            if (naipeAnt.equals(carta.getNaipe()) || limite <= 10) {
-                System.out.print(carta + " ");
+            if (limite <= 10) {
+                System.out.print("|" + carta + "|");
                 limite++;
             } else {
-                System.out.print("\n" + carta);
-                naipeAnt = carta.getNaipe();
+                System.out.print("\n|" + carta + "|");
                 limite = 0;
             }
         }
@@ -499,14 +474,17 @@ public class View {
         barra(tamanho, true);
     }
 
-    private static void round(int tamanho, int numRound, int numDeJogadores) {
+    private static void round(int tamanho, Jogador croupier) {
         Jogador jogadorAtual;
-        barra((tamanho * numDeJogadores), true);
-        textoSimples((tamanho * numDeJogadores), "Rodada Nº: " + numRound, true, true);
         for (int info = 0; info < 6; info++) {
             Iterador lJogadores = blackJackFacade.jogadoresEmPartida();
-            while (lJogadores.hasNext()) {
-                jogadorAtual = (Jogador) lJogadores.next();
+            while (true) {
+                if (lJogadores.hasNext()) {
+                    jogadorAtual = (Jogador) lJogadores.next();
+                } else {
+                    jogadorAtual = croupier;
+                    break;
+                }
                 switch (info) {
                     case 0:
                         barra(tamanho, false);
@@ -515,11 +493,14 @@ public class View {
                         novoItem(tamanho, "Jogador", jogadorAtual.getUser(), false);
                         break;
                     case 2:
+                        novoItem(tamanho, "Pontos em mãos", Integer.toString(jogadorAtual.pontosEmMao()), false);
+                        break;
+                    case 3:
                         System.out.print('|');
                         texto(tamanho, "Cartas Em Mãos");
                         System.out.print('|');
                         break;
-                    case 3:
+                    case 4:
                         Iterador cartasEmMao = jogadorAtual.getMaoDeCartas().getCartas().iterador();
                         String cartas = "|";
                         while (cartasEmMao.hasNext()) {
@@ -528,11 +509,9 @@ public class View {
                         }
                         texto(tamanho, cartas);
                         break;
-                    case 4:
-                        novoItem(tamanho, "Pontos em mãos", Integer.toString(jogadorAtual.pontosEmMao()), false);
-                        break;
                     case 5:
                         barra(tamanho, false);
+                        break;
                 }
             }
             System.out.println();
@@ -551,89 +530,154 @@ public class View {
         barra(tamanho, true);
     }
 
-    private static void exibirHistorico(int tamanho) {
-        String opcao = " ", log;
-        barra((tamanho * 3), true);
-        textoDuplo((tamanho * 3), "Opções do Menu", true, "Historico", true);
-        barra((tamanho * 3), true);
+    private static void exibirHistorico(Jogador jogador) {
+        String opcao, log;
+        final int tamanho = 90;
+        boolean cTxt1 = false;
+        barra(tamanho, true);
+        textoDuplo(tamanho, "A vez está com o jogador: " + jogador.getUser(), true, "Historico", true);
+        barra(tamanho, true);
         for (int i = 9; i != -1; i--) {
-            log = (String) blackJackFacade.getInfoHistorico(i);
-            if (i <= 3) {
-                switch (3 - i) {
-                    case 1: {
-                        opcao = novoItemSimples(tamanho * 3 / 2, "Pedir Carta", "1");
-                        break;
-                    }
-                    case 2: {
-                        opcao = novoItemSimples(tamanho * 3 / 2, "Finalizar jogada", "2");
-                        break;
-                    }
-                    case 3: {
-                        opcao = novoItemSimples(tamanho * 3 / 2, "Desistir", "3");
-                        break;
-                    }
+            log = (String) blackJackFacade.getInfoHistorico(i+1);
+            switch (i) {
+                case 9: {
+                    opcao = novoItemSimples(tamanho / 2, "Jogador", jogador.getUser());
+                    break;
                 }
-
+                case 8: {
+                    opcao = novoItemSimples(tamanho / 2, "Total de pontos", Integer.toString(jogador.pontosEmMao()));
+                    break;
+                }
+                case 7: {
+                    opcao = "Pontos em mãos";
+                    cTxt1 = true;
+                    break;
+                }
+                case 6: {
+                    Iterador cartasEmMao = jogador.getMaoDeCartas().getCartas().iterador();
+                    String cartas = "|";
+                    while (cartasEmMao.hasNext()) {
+                        Carta carta = (Carta) cartasEmMao.next();
+                        cartas = cartas.concat(carta + "|");
+                    }
+                    opcao = cartas;
+                    cTxt1 = true;
+                    break;
+                }
+                case 5: {
+                    
+                    if (jogador instanceof Croupier) {
+                        opcao = "APERTE UMA TECLA PARA CONTINUAR!";
+                    } else {
+                        opcao = (String) blackJackFacade.getInfoHistorico(0);
+                    }
+                    cTxt1 = true;
+                    break;
+                }
+                case 3: {
+                    opcao = "VV-OPÇÕES DE JOGADA-VV";
+                    cTxt1 = true;
+                    break;
+                }
+                case 2: {
+                    opcao = novoItemSimples(tamanho / 2, "Pedir Carta", "1");
+                    break;
+                }
+                case 1: {
+                    opcao = novoItemSimples(tamanho / 2, "Finalizar jogada", "2");
+                    break;
+                }
+                case 0: {
+                    opcao = novoItemSimples(tamanho / 2, "Desistir", "3");
+                    break;
+                }
+                default: {
+                    opcao = " ";
+                    break;
+                }
             }
-            textoDuplo((tamanho * 3), opcao, false, log, false);
+            textoDuplo(tamanho, opcao, cTxt1, log, false);
+            cTxt1 = false;
         }
-        barra((tamanho * 3), true);
-
+        barra(tamanho, true);
     }
 
-
-    private static void atualizarInterface(int tamanho, int rodada) {
-        round(tamanho, rodada++, blackJackFacade.getJogadoresEmPartida().tamanho());
-        exibirHistorico(tamanho);
+    private static void atualizarInterface(int tamanho, Jogador jogador) {
+        round(tamanho, jogador);
+        exibirHistorico(jogador);
     }
 
-    private static void partida(int tamanho) {
-        int rodada = 1;
+    private static void partida(int tamanho, Partida partida) {
+        Scanner input = new Scanner(System.in);
         boolean querCarta;
-        Jogador jogadorAtual;
-        Partida p = blackJackFacade.iniciarPartida();
+        Carta carta;
         Iterador lJogadores = blackJackFacade.jogadoresEmPartida();
-        atualizarInterface(tamanho, rodada);
+        Pilha baralho = partida.getBaralho();
+        partida.iniciar();
+        Croupier croupier = partida.getCroupier(); //CHAMAR PELO FACADE. 
         while (lJogadores.hasNext()) {
-            jogadorAtual = (Jogador) lJogadores.next();
-            rodada++;
-            blackJackFacade.addHistorico(jogadorAtual.getUser() + " Está com a vez!");
-            atualizarInterface(tamanho, rodada);
-            do {
-                querCarta = false;
-                switch (lerInt(true, 1, 3)) {
-                    case 1: {
-                        Carta carta = blackJackFacade.daCarta(jogadorAtual);
-                        blackJackFacade.addHistorico(jogadorAtual.getUser() + " Pediu carta e recebeu: " + carta);
-                        jogadorAtual.receberCarta(carta); 
-                        if (jogadorAtual.estourou()) {
-                            blackJackFacade.addHistorico(jogadorAtual.getUser() + " Estorou com: " + jogadorAtual.pontosEmMao() + " Pontos");
-                            atualizarInterface(tamanho, rodada);
-                            jogadorAtual.setPontos(-5);
-                            jogadorAtual.setPartidas(1);
-                        } else if (jogadorAtual.venceu()) {
-                            blackJackFacade.addHistorico(jogadorAtual.getUser() + "!!!VENCEU!!!");
-                            jogadorAtual.setPontos(10);
-                            jogadorAtual.setPartidas(1);
-                            atualizarInterface(tamanho, rodada);
-                        } else {
-                            querCarta = true;
-                        }
+           Jogador jogadorAtual = (Jogador) lJogadores.next();
+            if (jogadorAtual instanceof Croupier) {
+                blackJackFacade.addHistorico("Vez do Croupier!");
+                carta = croupier.virarCarta();
+                atualizarInterface(tamanho, croupier);
+                input.next();
+                blackJackFacade.addHistorico("O Croupier desvirou a carta: " + carta);
+                atualizarInterface(tamanho, croupier);
+                input.next();
+                blackJackFacade.addHistorico("Agora Croupier possui: " + croupier.pontosEmMao() + "pontos!");
+                atualizarInterface(tamanho, croupier);
+                input.next();
+                while (true) {
+                    if (croupier.querCarta()) {
+                        carta = croupier.pegarCarta(baralho);
+                        blackJackFacade.addHistorico("Croupier pegou: " + carta + "!");
+
+                    } else {
+                        blackJackFacade.addHistorico("Croupier Finalizou!");
                         break;
                     }
-                    case 2: {
-                        blackJackFacade.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
-                        jogadorAtual.setPartidas(1);
-                        break;
-                    }
-                    case 3: {
-                        jogadorAtual.setPartidas(1);
-                        blackJackFacade.addHistorico(jogadorAtual.getUser() + " Desistiu!");
-                        jogadorAtual.setPontos(-10);
-                    }
+                    atualizarInterface(tamanho, croupier);
+                    input.next();
                 }
-                atualizarInterface(tamanho, rodada);
-            } while (querCarta);
+            } else {
+                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Está com a vez!");
+                atualizarInterface(tamanho, jogadorAtual);
+                do {
+                    querCarta = false;
+                    switch (lerInt(true, 1, 3)) {
+                        case 1: {
+                            carta = blackJackFacade.daCarta(jogadorAtual);
+                            blackJackFacade.addHistorico(jogadorAtual.getUser() + " Pediu carta e recebeu: " + carta);
+                            if (jogadorAtual.estourou()) {
+                                blackJackFacade.addHistorico(jogadorAtual.getUser() + " Estorou com: " + jogadorAtual.pontosEmMao() + " Pontos");
+                                jogadorAtual.setPontos(-5);
+                                jogadorAtual.setPartidas(1);
+                                atualizarInterface(tamanho, jogadorAtual);
+                            } else if (jogadorAtual.venceu()) {
+                                blackJackFacade.addHistorico(jogadorAtual.getUser() + "!!!VENCEU!!!");
+                                jogadorAtual.setPontos(10);
+                                jogadorAtual.setPartidas(1);
+                                atualizarInterface(tamanho, jogadorAtual);
+                            } else {
+                                querCarta = true;
+                            }
+                            break;
+                        }
+                        case 2: {
+                            blackJackFacade.addHistorico("O jogador: " + jogadorAtual.getUser() + " Finalizou!");
+                            jogadorAtual.setPartidas(1);
+                            break;
+                        }
+                        case 3: {
+                            jogadorAtual.setPartidas(1);
+                            blackJackFacade.addHistorico(jogadorAtual.getUser() + " Desistiu!");
+                            jogadorAtual.setPontos(-10);
+                        }
+                    }
+                    atualizarInterface(tamanho, jogadorAtual);
+                } while (querCarta);
+            }
         }
     }
 
