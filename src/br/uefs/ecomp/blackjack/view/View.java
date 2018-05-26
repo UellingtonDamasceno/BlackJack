@@ -882,19 +882,18 @@ public class View {
     }
     
     private static void regras(){
-        //JOptionPane.showInputDialog(null, "Ola");
-        JFileChooser fileChooser = new JFileChooser("/home/anesio/Área de Trabalho/GitWorks/BlackJack");
-        int retorno = fileChooser.showOpenDialog(null);
+        String mensagem = "BlackJack Rules:\n\n"+
+                         "O objetivo do BlackJack é vencer o croupier. Os jogadores ganham se tiverem uma mão de cartas \n" +
+                         "com numeração maior do que a mão de cartas do croupier só que sem estourar(a soma da \n" +
+                         "numeração das cartas não exceder 21). Os jogadores também ganham se o dealer estourar. O \n" +
+                         "baralho do BlackJack contém 52 cartas.As \n" +
+                         "cartas contém um naipe e número ou letra. Um naipe contém 13 cartas e eles não\n" +
+                         "influenciam nos valores das cartas. As cartas que contém números valem em pontos\n" +
+                         "seus respectivos números, as cartas que contém as letras K Q ou J valem 10. A carta que\n" +
+                         "contém a letra A tem um valor especial no jogo. Podem valer 1 ou 11, dependendo do\n" +
+                         "valor que irá fornecer vantagem a mão.";
         
-        if(retorno == JFileChooser.APPROVE_OPTION){
-            File file = fileChooser.getSelectedFile();
-            
-            System.out.println(file.getName());
-            
-        }else{
-             JOptionPane.showInputDialog( "Saindo...");
-        }
-        
+        JOptionPane.showMessageDialog(null, mensagem);
         
     }
 }
