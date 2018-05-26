@@ -61,6 +61,8 @@ public class Partida {
      *
      */
     public void jogadaInicial() {
+        addHistorico("Inicio de Partida");
+        addHistorico("Baralho Embaralhado!");
         for (int i = 0; i < 2; i++) {
             Iterador lJogadores = jogadores.iterador();
             addHistorico("Croupier distribuindo " + (i + 1) + "ª rodada de cartas!");
@@ -77,20 +79,15 @@ public class Partida {
                 carta.setStatus(false);
                 addHistorico("Croupier pegou uma carta virada!");
             }
-        }/*
-            jogadores.insereFinal(croupier);
-            se inserir o croupier na lista de jogadores é necessario zerar a mão dele.
-            estou pensando em umas solução para deixar o jogador que está com a vez com maior 
-            visibildade na partida.  
-            por isso essa parte está comentada. 
-         */
-
+        }
+        jogadores.insereFinal(croupier);
     }
 
     /**
      *
      */
     public void finalizar() {
+        jogadores.removeUltimo();
         zerarHistorico();
         zerarMaoJogadores();
     }
@@ -100,10 +97,10 @@ public class Partida {
      * @param jogador
      * @return
      */
-    public Carta daCarta(Jogador jogador) {
+    public void daCarta(Jogador jogador) {
         Carta carta = croupier.daCarta(baralho);
         jogador.receberCarta(carta);
-        return carta;
+        addHistorico(jogador.getUser() + " Pediu carta e recebeu: " + carta);
     }
 
     /**

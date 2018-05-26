@@ -16,12 +16,16 @@ import java.io.*;
 public class ControllerArquivos {
 
     private ListaEncadeada users;
+    private File logins;
+    private File pontuacao;
 
     /**
      *
      */
     public ControllerArquivos() {
         this.users = new ListaEncadeada();
+        this.logins = new File("Logins.bin");
+        this.pontuacao = new File("Pontuação.txt");
     }
 
     /**
@@ -43,88 +47,99 @@ public class ControllerArquivos {
     /**
      * Dado um arquivo de layout (String : String : int : int) este método irá ler pegando as informações linha a linha e em seguida inserindo em uma lista encadeada.
      *
-     * @param arquivo Nome do arquivo que deve ser lido.
      * @return return true caso a leitura tenha sido efetuada com sucesso e false caso contrario.
      * @throws IOException Exceções geradas com entrada e saidas de dados.
      */
-    public boolean carregarUsers(File arquivo) throws IOException {
-        if (!arquivo.exists() || !arquivo.isFile() || !arquivo.canRead()) {
-            return false;
+    public boolean carregarUsers() throws IOException {
+        if (!logins.exists()) {
+            boolean createNewFile = logins.createNewFile();
+            if (createNewFile) {
+                lerArquivo(logins);
+            } else {
+                return false;
+            }
         } else {
-            FileInputStream arq = new FileInputStream(arquivo);
-            InputStreamReader input = new InputStreamReader(arq);
-            BufferedReader bf = new BufferedReader(input);
-            String linha;
-            do {
-                linha = bf.readLine();
-                if (linha != null) {
-                    String palavras[] = linha.split(" : ");
-                    for (int i = 0; i < palavras.length; i += 4) {
-                        int pontos = Integer.parseInt(palavras[i + 2]);
-                        int partidas = Integer.parseInt(palavras[i + 3]);
-                        Jogador jogador = new Jogador(palavras[i], palavras[i + 1], pontos, partidas);
-                        users.insereFinal(jogador);
-                    }
-                }
-            } while (linha != null);
-            input.close();
-            arq.close();
-            bf.close();
+            lerArquivo(logins);
         }
         return true;
+    }
+
+    private void lerArquivo(File nomeArquivo) throws FileNotFoundException, IOException {
+        FileInputStream arquivo = new FileInputStream(nomeArquivo);
+        InputStreamReader leitor = new InputStreamReader(arquivo);
+        BufferedReader buffer = new BufferedReader(leitor);
+        String linha;
+        do {
+            linha = buffer.readLine();
+            if (linha != null) {
+                String info[] = linha.split(" : ");
+                for (int i = 0; i < info.length; i += 4) {
+                    int pontos = Integer.parseInt(info[i + 2]);
+                    int partidas = Integer.parseInt(info[i + 3]);
+                    Jogador jogador = new Jogador(info[i], info[i + 1], pontos, partidas);
+                    users.insereFinal(jogador);
+                }
+            }
+        } while (linha != null);
+        leitor.close();
+        arquivo.close();
+        buffer.close();
     }
 
     /**
      * Método responsavel por cadastrar um novo jogador inserido-o em uma lista e ao final colocando no arquivo de usuarios cadastrados.
      *
-     * @param arquivo
      * @param user Nome do usuario a ser cadastado.
      * @param senha Senha do usuario.
      * @return true para cadastro efetuado com sucesso e false caso contrario.
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public boolean cadastrarNovoJogador(File arquivo, String user, String senha) throws FileNotFoundException, IOException {
-        Jogador jogador = new Jogador(user, senha, 100);       
-        if(!arquivo.isFile() || users.contem(jogador)){
+    public boolean cadastrarNovoJogador(String user, String senha) throws FileNotFoundException, IOException {
+        Jogador jogador = new Jogador(user, senha, 100);
+        if (users.contem(jogador)) {
             return false;
         } else {
-            FileOutputStream arq = new FileOutputStream(arquivo, true);
-            PrintWriter pr = new PrintWriter(arq);
+            escreverEmArquivo(logins, jogador, true, true);
+            users.insereFinal(jogador);
+        }
+        return true;
+    }
+
+    private void escreverEmArquivo(File nomeArq, Jogador jogador, boolean senha, boolean sobEscreve) throws FileNotFoundException, IOException {
+        FileOutputStream arquivo = new FileOutputStream(nomeArq, sobEscreve);
+        PrintWriter pr = new PrintWriter(arquivo);
+        if (senha) {
             pr.print(jogador.getUser() + " : ");
             pr.print(jogador.getSenha() + " : ");
             pr.print(100 + " : ");
             pr.println(jogador.getPartidas());
-            users.insereFinal(jogador);
-            pr.close();
-            arq.close();
+        } else {
+            pr.print(jogador);
         }
-        return true;
+        pr.close();
+        arquivo.close();
     }
-    
+
     /**
      *
      * @param user
      * @param senha
      * @return
      */
-    public Jogador obterJogador(String user, String senha){
-        Iterador lJogadores = users.iterador();
-        while(lJogadores.hasNext()){
-            Jogador obtido = (Jogador) lJogadores.next();
-            if(obtido.getUser().equals(user) && obtido.getSenha().equals(senha)){
-                return obtido;
+    public Jogador obterJogador(String user, String senha) {
+        if (users.estaVazia()) {
+            return null;
+        } else {
+            Iterador lJogadores = users.iterador();
+            while (lJogadores.hasNext()) {
+                Jogador obtido = (Jogador) lJogadores.next();
+                if (obtido.getUser().equals(user) && obtido.getSenha().equals(senha)) {
+                    return obtido;
+                }
             }
         }
         return null;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Iterador listaDeUsers() {
-        return users.iterador();
     }
 
     /**
@@ -134,25 +149,31 @@ public class ControllerArquivos {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public boolean gravarEmArquivo(ListaEncadeada temp) throws FileNotFoundException, IOException {
-       /* Comparable suporte[] = new Comparable[temp.tamanho()];
+    public boolean atualizarArquivos() throws FileNotFoundException, IOException {
+        /* Comparable suporte[] = new Comparable[temp.tamanho()];
         for(int i = 0; !temp.estaVazia(); i++){
-            suporte[i] = (Comparable) temp.removeInicio();
+            suporte[i] = (Comparable) users.removeInicio();
         }
         QuickSort q = new QuickSort();
         q.quickSort(suporte, 0, suporte.length-1);
         for(int i = 0; i < suporte.length; i++){
             temp.insereFinal(suporte[i]);
         }*/
-        FileOutputStream arquivo = new FileOutputStream("Pontuação Ordenada.txt", true);
-        PrintWriter pr = new PrintWriter(arquivo);
-        Iterador lJogadoresOrdenados = temp.iterador();
-        while (lJogadoresOrdenados.hasNext()) {
-            Jogador jogadorObtido = (Jogador) lJogadoresOrdenados.next();
-            pr.println(jogadorObtido);
+        Iterador lJogadores = users.iterador();
+        while (lJogadores.hasNext()) {
+            Jogador jogadorObtido = (Jogador) lJogadores.next();
+            escreverEmArquivo(logins, jogadorObtido, true, false);
+            escreverEmArquivo(pontuacao, jogadorObtido, false, false);
         }
-        pr.close();
-        arquivo.close();
         return true;
     }
+
+    /**
+     *
+     * @return
+     */
+    public Iterador listaDeUsers() {
+        return users.iterador();
+    }
+
 }

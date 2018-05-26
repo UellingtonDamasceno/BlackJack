@@ -17,21 +17,16 @@ public class ControllerPartida {
     private Partida partida;
     private ListaEncadeada jogadoresEmEspera;
     private Baralho baralho;
+    private final QuickSort ordena;
     
     /**
      *
      */
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
+        this.ordena = new QuickSort();
     }
 
-    /**
-     *
-     * @return
-     */
-    public Baralho getBaralho(){
-        return baralho;
-    }
 
     /**
      *
@@ -43,23 +38,9 @@ public class ControllerPartida {
         return baralho;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Partida getPartida(){
-        return partida;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Partida iniciarPartida(){
+    public void iniciarPartida(){
         partida = new Partida(jogadoresEmEspera, embaralha(baralho));
-        partida.addHistorico("Inicio de Partida");
-        partida.addHistorico("Baralho Embaralhado!");
-        return partida;
+        partida.jogadaInicial();
     }
     
     /**
@@ -106,7 +87,7 @@ public class ControllerPartida {
         Carta suporte[] = baralho.getCartas();
         for (int i = 0; i <= suporte.length / 52; i++) {
             for (int j = 0; j < suporte.length; j++) {
-                swap(suporte, j, gerador.nextInt(suporte.length));
+                ordena.swap(suporte, j, gerador.nextInt(suporte.length));
             }
         }
         for (Carta carta : suporte) {
@@ -120,38 +101,7 @@ public class ControllerPartida {
      * @param baralho
      */
     public void ordena(Baralho baralho) {
-        quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
-    }
-
-    private void quickSort(Carta vetor[], int inicio, int fim) {
-        if (inicio < fim) {
-            int pe = inicio;
-            int pivo = fim;
-            int pd = fim - 1;
-            while (pe <= pd) {
-                while (pe <= pd && vetor[pe].compareTo(vetor[pivo]) > 0) {
-                    pe++;
-                }
-                while (pe <= pd && vetor[pd].compareTo(vetor[pivo]) < 0) {
-                    pd--;
-                }
-                if (pe <= pd) {
-                    swap(vetor, pe, pd);
-                    pe++;
-                    pd--;
-                }
-            }
-            swap(vetor, pe, pivo);
-            quickSort(vetor, inicio, pe - 1);
-            quickSort(vetor, pe + 1, fim);
-        }
-
-    }
-
-    private void swap(Object[] c, int posUm, int posDois) {
-        Object carta = c[posUm];
-        c[posUm] = c[posDois];
-        c[posDois] = carta;
+        ordena.quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
     }
 
     /**
@@ -159,6 +109,30 @@ public class ControllerPartida {
      * @return
      */
     public Iterador jogadoresEmPartida() {
-        return jogadoresEmEspera.iterador();
+        return partida.jogadoresEmPartida();
+    }
+    
+    public void vezDoCroupier(){
+        partida.vezDoCroupier();
+    }
+    
+    public void finalizarPartida(){
+        partida.finalizar();
+    }
+    
+    public void premiacao(){
+        partida.premiacao();
+    }
+    
+    public void addHistorico(String info){
+        partida.addHistorico(info);
+    }
+    
+    public Object getInfoHistorico(int pos){
+        return partida.getInfoHistorico(pos);
+    }
+    
+    public void daCarta(Jogador jogador){
+        partida.daCarta(jogador);
     }
 }

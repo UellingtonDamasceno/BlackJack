@@ -34,20 +34,19 @@ public class BlackJackFacade {
      * @return
      * @throws IOException
      */
-    public boolean carregarUsers(File arquivo) throws IOException {
-        return controllerArquivo.carregarUsers(arquivo);
+    public boolean carregarUsers() throws IOException {
+        return controllerArquivo.carregarUsers();
     }
 
     /**
      *
-     * @param nomeArq
      * @param user
      * @param senha
      * @return
      * @throws IOException
      */
-    public boolean cadastrarNovoJogador(File nomeArq, String user, String senha) throws IOException {
-        return controllerArquivo.cadastrarNovoJogador(nomeArq, user, senha);
+    public boolean cadastrarNovoJogador(String user, String senha) throws IOException {
+        return controllerArquivo.cadastrarNovoJogador(user, senha);
     }
 
     /**
@@ -89,14 +88,6 @@ public class BlackJackFacade {
     
     /**
      *
-     * @return
-     */
-    public Baralho getBaralho(){
-        return controllerPartida.getBaralho();
-    }
-    
-    /**
-     *
      * @param qtdBaralho
      * @return
      */
@@ -104,37 +95,16 @@ public class BlackJackFacade {
        return controllerPartida.criaBaralho(qtdBaralho);
     }
     
-    /**
-     *
-     * @return
-     */
-    public Partida iniciarPartida(){
-        return controllerPartida.iniciarPartida();
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Partida getPartida(){
-        return controllerPartida.getPartida();
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public ListaEncadeada getJogadoresEmPartida() {
-        return controllerPartida.getPartida().getJogadores();
-    }
+    public void iniciarPartida(){
+        controllerPartida.iniciarPartida();
+    }  
     
     /**
      *
      * @param jogador
-     * @return
      */
-    public Carta daCarta(Jogador jogador){
-        return controllerPartida.getPartida().daCarta(jogador);
+    public void daCarta(Jogador jogador){
+        controllerPartida.daCarta(jogador);
     }
     
     /**
@@ -142,16 +112,7 @@ public class BlackJackFacade {
      * @return
      */
     public Iterador jogadoresEmPartida() {
-        return controllerPartida.getPartida().jogadoresEmPartida();
-    }
-    
-    /**
-     *
-     * @param baralho
-     * @return
-     */
-    public Pilha embaralha(Baralho baralho){
-        return controllerPartida.embaralha(baralho);
+        return controllerPartida.jogadoresEmPartida();
     }
     
     /**
@@ -167,7 +128,7 @@ public class BlackJackFacade {
      * @param info
      */
     public void addHistorico(String info) {
-        controllerPartida.getPartida().addHistorico(info);
+        controllerPartida.addHistorico(info);
     }
 
     /**
@@ -176,7 +137,7 @@ public class BlackJackFacade {
      * @return
      */
     public Object getInfoHistorico(int pos) {
-        return controllerPartida.getPartida().getInfoHistorico(pos);
+        return controllerPartida.getInfoHistorico(pos);
     }
 
     /**
@@ -186,7 +147,18 @@ public class BlackJackFacade {
         controllerPartida.zerarSalaDeEspera();
     }
     
-    public void gravarArquivo(ListaEncadeada temp) throws IOException{
-        controllerArquivo.gravarEmArquivo(temp);
+    public void atualizarArquivos() throws IOException{
+        controllerArquivo.atualizarArquivos();
+    }
+    
+    public void vezDoCroupier(){
+        controllerPartida.vezDoCroupier();
+    }
+    
+    public void finalizarPartida(){
+        controllerPartida.finalizarPartida();
+    }
+    public void premiacao(){
+        controllerPartida.premiacao();
     }
 }

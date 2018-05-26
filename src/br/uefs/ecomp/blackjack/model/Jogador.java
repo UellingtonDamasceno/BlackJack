@@ -182,7 +182,10 @@ public class Jogador implements  Comparable{
         }
         return (pontosEmMao <= 10 && numDeAs >= 1) ? (pontosEmMao + 10 + numDeAs) : pontosEmMao + numDeAs;
     }
-
+    
+    public boolean ehCroupier(){
+        return this instanceof Croupier;
+    }
     /**
      *
      * @return

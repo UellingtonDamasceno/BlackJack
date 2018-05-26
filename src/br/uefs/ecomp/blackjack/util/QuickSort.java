@@ -34,7 +34,7 @@ public class QuickSort {
             quickSort(vetor, pe + 1, fim);
         }
     }
-    private void swap(Object[] c, int posUm, int posDois) {
+    public void swap(Object[] c, int posUm, int posDois) {
         Object carta = c[posUm];
         c[posUm] = c[posDois];
         c[posDois] = carta;
