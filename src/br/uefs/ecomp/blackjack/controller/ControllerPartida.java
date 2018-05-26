@@ -156,4 +156,16 @@ public class ControllerPartida {
     public Iterador jogadoresEmPartida() {
         return jogadoresEmEspera.iterador();
     }
+    
+    public Iterador winners(){
+        return partida.getVencedores().iterador();
+    }
+    
+    public Iterador draw(){
+        return partida.getEmpates().iterador();
+    }
+    
+    public Iterador losers(){
+        return partida.getPerdedores().iterador();
+    }
 }

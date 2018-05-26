@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
+import javax.swing.*;
 
 /**
  *
@@ -202,6 +203,7 @@ public class View {
                     break;
                 }
                 case 4: {
+                    regras();
                     blackJackFacade.gravarArquivo(blackJackFacade.getUsers());
                     repetirMenuPrincipal = true;
                     break;
@@ -672,8 +674,16 @@ public class View {
         atualizarInterface(tamanho, -1, croupier, true);
         partida.premiacao();
         atualizarInterface(tamanho, -1, croupier, true);
-        exibirHistorico(croupier, false);
+        //exibirHistorico(croupier, false);
         lerInt(false, 0, 0);
+        
+        Iterador itr = blackJackFacade.Vencedores();
+        
+        while(itr.hasNext()){
+            Jogador aux = (Jogador) itr.next();
+            System.out.println(aux.getUser());
+        }
+        
         // AGORA SÓ E NECESSARIO ATUALIZAR A INTERFACE QUE IRÁ MOSTRAR AS PONTUAÇÕES E TALS. 
     }
 
@@ -869,5 +879,22 @@ public class View {
             }
         } while (repetir);
         return 0;
+    }
+    
+    private static void regras(){
+        //JOptionPane.showInputDialog(null, "Ola");
+        JFileChooser fileChooser = new JFileChooser("/home/anesio/Área de Trabalho/GitWorks/BlackJack");
+        int retorno = fileChooser.showOpenDialog(null);
+        
+        if(retorno == JFileChooser.APPROVE_OPTION){
+            File file = fileChooser.getSelectedFile();
+            
+            System.out.println(file.getName());
+            
+        }else{
+             JOptionPane.showInputDialog( "Saindo...");
+        }
+        
+        
     }
 }

@@ -134,14 +134,6 @@ public class BlackJackFacade {
     
     /**
      *
-     * @return
-     */
-    public Iterador jogadoresEmPartida() {
-        return controllerPartida.getPartida().jogadoresEmPartida();
-    }
-    
-    /**
-     *
      * @param baralho
      * @return
      */
@@ -184,4 +176,25 @@ public class BlackJackFacade {
     public void gravarArquivo(ListaEncadeada temp) throws IOException{
         controllerArquivo.gravarEmArquivo(temp);
     }
+
+    /**
+     *
+     * @return
+     */
+    public Iterador jogadoresEmPartida() {
+        return controllerPartida.getPartida().jogadoresEmPartida();
+    }
+    
+    public Iterador Vencedores(){
+        return controllerPartida.winners();
+    }
+    
+    public Iterador Empates(){
+        return controllerPartida.draw();
+    }
+    
+    public Iterador Perdedores(){
+        return controllerPartida.losers();
+    }
+    
 }

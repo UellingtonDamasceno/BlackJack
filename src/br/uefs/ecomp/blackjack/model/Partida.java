@@ -120,7 +120,7 @@ public class Partida {
         addHistorico("Vez do Croupier!");
         carta = croupier.virarCarta();
         addHistorico("O Croupier desvirou a carta: " + carta);
-        addHistorico("Agora Croupier possui: " + croupier.pontosEmMao() + "pontos!");
+        addHistorico("Agora Croupier possui: " + croupier.pontosEmMao() + " pontos!");
         while (true) {
             if (croupier.querCarta()) {
                 carta = croupier.pegarCarta(baralho);
@@ -215,4 +215,17 @@ public class Partida {
     public Iterador jogadoresEmPartida() {
         return jogadores.iterador();
     }
+
+    public ListaEncadeada getVencedores() {
+        return vencedores;
+    }
+
+    public ListaEncadeada getPerdedores() {
+        return perdedores;
+    }
+
+    public ListaEncadeada getEmpates() {
+        return empates;
+    }
+  
 }
