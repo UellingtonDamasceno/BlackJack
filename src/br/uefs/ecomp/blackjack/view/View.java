@@ -6,6 +6,7 @@ import br.uefs.ecomp.blackjack.util.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,6 +22,7 @@ public class View {
      * @param args
      */
     public static void main(String[] args) {
+        regras();
         final int TAMANHO_MENU = 30;
         boolean repetirMenuPrincipal, repetirMenuSalas;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
@@ -205,6 +207,7 @@ public class View {
                     break;
                 }
                 case 4: {
+                    regras();
                     repetirMenuPrincipal = true;
                     break;
                 }
@@ -828,5 +831,21 @@ public class View {
             }
         } while (repetir);
         return 0;
+    }
+
+    
+    private static void regras(){
+        String mensagem = "BlackJack Rules:\n\n"+
+                         "O objetivo do BlackJack é vencer o croupier. Os jogadores ganham se tiverem uma mão de cartas \n" +
+                         "com numeração maior do que a mão de cartas do croupier só que sem estourar(a soma da \n" +
+                         "numeração das cartas não exceder 21). Os jogadores também ganham se o dealer estourar. O \n" +
+                         "baralho do BlackJack contém 52 cartas.As \n" +
+                         "cartas contém um naipe e número ou letra. Um naipe contém 13 cartas e eles não\n" +
+                         "influenciam nos valores das cartas. As cartas que contém números valem em pontos\n" +
+                         "seus respectivos números, as cartas que contém as letras K Q ou J valem 10. A carta que\n" +
+                         "contém a letra A tem um valor especial no jogo. Podem valer 1 ou 11, dependendo do\n" +
+                         "valor que irá fornecer vantagem a mão.";
+        
+        JOptionPane.showMessageDialog(null, mensagem);
     }
 }
