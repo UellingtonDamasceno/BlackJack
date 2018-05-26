@@ -26,6 +26,9 @@ public class Partida {
         this.croupier = new Croupier();
         this.baralho = baralho;
         this.historico = new ListaEncadeada();
+        vencedores = new ListaEncadeada();
+        perdedores = new ListaEncadeada();
+        empates = new ListaEncadeada();
     }
 
     /**
