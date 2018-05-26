@@ -9,6 +9,9 @@ import br.uefs.ecomp.blackjack.util.*;
 public class Partida {
 
     private ListaEncadeada jogadores;
+    private ListaEncadeada vencedores;
+    private ListaEncadeada perdedores;
+    private ListaEncadeada empates;
     private final Croupier croupier;
     private Pilha baralho;
     private ListaEncadeada historico;
@@ -23,6 +26,9 @@ public class Partida {
         this.croupier = new Croupier();
         this.baralho = baralho;
         this.historico = new ListaEncadeada();
+        vencedores = new ListaEncadeada();
+        perdedores = new ListaEncadeada();
+        empates = new ListaEncadeada();
     }
 
     /**
@@ -160,32 +166,48 @@ public class Partida {
 
     public void premiacao() {
         Iterador lJogadores = jogadores.iterador();
-        while (lJogadores.hasNext()) {
-            Jogador jogadorAtual = (Jogador) lJogadores.next();
-            System.out.println(jogadorAtual);
-            if (croupier.venceu()) {
-                addHistorico("!!!O CROUPIER ganhou a partida!!!");
-                jogadorAtual.setPontos(-5);
-            } else if (croupier.estourou() && !jogadorAtual.estourou()) {
-                jogadorAtual.setPontos(10);
-                addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
-            } else if(!croupier.estourou() && jogadorAtual.pontosEmMao() > croupier.pontosEmMao()){
-                jogadorAtual.setPontos(10);
-                addHistorico(jogadorAtual.getUser() + "Ganhou: 10 pontos");
-            } else if (jogadorAtual.estourou()) {
-                addHistorico(jogadorAtual.getUser() + " Estorou e perdeu: 5 pontos");
-                jogadorAtual.setPontos(-5);
-            } else {
-                addHistorico(jogadorAtual.getUser() + "Venceu do Croupier e ganhou: 10 pontos");
-                jogadorAtual.setPontos(10);
+        int pontosC = croupier.pontosEmMao();
+
+        if (croupier.estourou()) {
+            while (lJogadores.hasNext()) {
+                Jogador jogadorAtual = (Jogador) lJogadores.next();
+                if (jogadorAtual.estourou()) {
+                    empates.insereFinal(jogadorAtual);
+                } else {
+                    jogadorAtual.setScore(10);
+                    jogadorAtual.setPartidas(1);
+                    addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
+                    vencedores.insereFinal(jogadorAtual);
+                }
             }
-            jogadorAtual.setPartidas(1);
+        } else {
+            while (lJogadores.hasNext()) {
+                Jogador jogadorAtual = (Jogador) lJogadores.next();
+
+                int pontosJ = jogadorAtual.pontosEmMao();
+
+                if (jogadorAtual.estourou()) { // Aqui poderia usar pontosC > 21, e pontosJ > 21. Mas quis usar o estourou só por ter.
+                    jogadorAtual.setScore(-10);
+                    perdedores.insereFinal(jogadorAtual);
+                } else if (pontosJ < pontosC) {
+                    jogadorAtual.setScore(-10);
+                    perdedores.insereFinal(jogadorAtual);
+                } else if (pontosJ > pontosC) {
+                    jogadorAtual.setScore(10);
+                    jogadorAtual.setPartidas(1);
+                    addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
+                    vencedores.insereFinal(jogadorAtual);
+                } else {
+                    empates.insereFinal(jogadorAtual);
+                }
+            }
         }
     }
 
     /**
+     * Método que retorna o iterador da lista de jogadores que estão em partida.
      *
-     * @return
+     * @return jogadores.iterador
      */
     public Iterador jogadoresEmPartida() {
         return jogadores.iterador();

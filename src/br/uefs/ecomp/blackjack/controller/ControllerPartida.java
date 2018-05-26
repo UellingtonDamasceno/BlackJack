@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.blackjack.controller;
 
 import br.uefs.ecomp.blackjack.model.*;
@@ -56,7 +51,7 @@ public class ControllerPartida {
             if (jogadorObtido.getUser().equals(user) && jogadorObtido.getSenha().equals(senha)) {
                 if (jogadoresEmEspera.contem(jogadorObtido)) {
                     return 2;
-                } else if (jogadorObtido.getPontos() >= 10) {
+                } else if (jogadorObtido.getScore() >= 10) {
                     jogadoresEmEspera.insereFinal(jogadorObtido);
                     return 1;
                 } else {
