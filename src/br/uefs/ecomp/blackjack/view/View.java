@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.blackjack.view;
 
 import br.uefs.ecomp.blackjack.facade.BlackJackFacade;
@@ -320,19 +315,19 @@ public class View {
                 opcoesRecarrga(tamanho);
                 switch (lerInt(true, 1, 5)) {
                     case 1: {
-                        jogadorObtido.setPontos(25);
+                        jogadorObtido.setScore(25);
                         break;
                     }
                     case 2: {
-                        jogadorObtido.setPontos(50);
+                        jogadorObtido.setScore(50);
                         break;
                     }
                     case 3: {
-                        jogadorObtido.setPontos(75);
+                        jogadorObtido.setScore(75);
                         break;
                     }
                     case 4: {
-                        jogadorObtido.setPontos(100);
+                        jogadorObtido.setScore(100);
                         break;
                     }
                     case 5: {

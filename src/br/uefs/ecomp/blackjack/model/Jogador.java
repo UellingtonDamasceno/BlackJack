@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.blackjack.model;
 
 import br.uefs.ecomp.blackjack.util.*;
@@ -16,7 +11,7 @@ public class Jogador implements  Comparable{
 
     private String user;
     private String senha;
-    private int pontos;
+    private int score;
     private int partidas;
     private MaoDeCarta maoDeCartas;
     private final int BLACKJACK;
@@ -25,13 +20,13 @@ public class Jogador implements  Comparable{
      *
      * @param user
      * @param senha
-     * @param pontos
+     * @param score
      */
-    public Jogador(String user, String senha, int pontos) {
+    public Jogador(String user, String senha, int score) {
         this.BLACKJACK = 21;
         this.user = user;
         this.senha = senha;
-        this.pontos = pontos;
+        this.score = score;
         this.maoDeCartas = new MaoDeCarta();
     }
 
@@ -39,11 +34,11 @@ public class Jogador implements  Comparable{
      *
      * @param user
      * @param senha
-     * @param pontos
+     * @param score
      * @param partidas
      */
-    public Jogador(String user, String senha, int pontos, int partidas) {
-        this(user, senha, pontos);
+    public Jogador(String user, String senha, int score, int partidas) {
+        this(user, senha, score);
         this.partidas = partidas;
     }
 
@@ -65,10 +60,10 @@ public class Jogador implements  Comparable{
 
     /**
      *
-     * @param pontos
+     * @param score
      */
-    public void setPontos(int pontos) {
-        this.pontos += pontos;
+    public void setScore(int score) {
+        this.score += score;
     }
 
     /**
@@ -115,8 +110,8 @@ public class Jogador implements  Comparable{
      *
      * @return
      */
-    public int getPontos() {
-        return pontos;
+    public int getScore() {
+        return score;
     }
 
     /**
@@ -162,7 +157,7 @@ public class Jogador implements  Comparable{
 
     @Override
     public String toString() {
-        return user + " : " + pontos + " : " + partidas;
+        return user + " : " + score + " : " + partidas;
     }
 
     /**
@@ -208,7 +203,7 @@ public class Jogador implements  Comparable{
     @Override
     public int compareTo(Object o) {
         Jogador outro = (Jogador) o;
-        return this.pontos - outro.pontos;
+        return this.score - outro.score;
     }
 
 }
