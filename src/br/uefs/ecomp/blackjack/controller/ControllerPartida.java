@@ -16,46 +16,60 @@ import java.util.Random;
 public class ControllerPartida {
     private Partida partida;
     private ListaEncadeada jogadoresEmEspera;
-    private final Croupier croupier;
     private Baralho baralho;
     
+    /**
+     *
+     */
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
-        this.croupier = new Croupier();
     }
 
-    public Croupier getCroupier() {
-        return croupier;
-    }
+    /**
+     *
+     * @return
+     */
     public Baralho getBaralho(){
         return baralho;
     }
+
+    /**
+     *
+     * @param qtdBaralho
+     * @return
+     */
     public Baralho criaBaralho(int qtdBaralho) {
         baralho = new Baralho(qtdBaralho);
         return baralho;
     }
 
+    /**
+     *
+     * @return
+     */
     public Partida getPartida(){
         return partida;
     }
     
-    public ListaEncadeada getJogadoresEmEspera() {
-        return jogadoresEmEspera;
-    }
-
-    public void setJogadoresEmEspera(ListaEncadeada jogadoresEmEspera) {
-        this.jogadoresEmEspera = jogadoresEmEspera;
-    }
-    
+    /**
+     *
+     * @return
+     */
     public Partida iniciarPartida(){
-        Pilha baralhoTemp = embaralha(baralho);
-        partida = new Partida(jogadoresEmEspera, croupier, baralhoTemp);
+        partida = new Partida(jogadoresEmEspera, embaralha(baralho));
         partida.addHistorico("Inicio de Partida");
         partida.addHistorico("Baralho Embaralhado!");
         return partida;
     }
     
-    public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser) {
+    /**
+     *
+     * @param user
+     * @param senha
+     * @param listaDeUser
+     * @return
+     */
+    public int salaDeEspera(String user, String senha, Iterador listaDeUser) {
         while (listaDeUser.hasNext()) {
             Jogador jogadorObtido = (Jogador) listaDeUser.next();
             if (jogadorObtido.getUser().equals(user) && jogadorObtido.getSenha().equals(senha)) {
@@ -72,6 +86,20 @@ public class ControllerPartida {
         return 0;
     }
 
+    /**
+     *
+     */
+    public void zerarSalaDeEspera(){
+        while(!jogadoresEmEspera.estaVazia()){
+            jogadoresEmEspera.removeInicio();
+        }
+    }
+    
+    /**
+     *
+     * @param baralho
+     * @return
+     */
     public Pilha embaralha(Baralho baralho) {
         Random gerador = new Random();
         Pilha cartasDoBaralho = new Pilha();
@@ -87,6 +115,10 @@ public class ControllerPartida {
         return cartasDoBaralho;
     }
 
+    /**
+     *
+     * @param baralho
+     */
     public void ordena(Baralho baralho) {
         quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
     }
@@ -122,22 +154,10 @@ public class ControllerPartida {
         c[posDois] = carta;
     }
 
-    private ListaEncadeada inserirJogadores() {
-        ListaEncadeada l = new ListaEncadeada();
-        while (!jogadoresEmEspera.estaVazia()) {
-            l.insereFinal(jogadoresEmEspera.removeInicio());
-        }
-        return l;
-    }
-
-    public void zerarMaoJogadores() {
-        Iterador lJogadores = partida.jogadoresEmPartida();
-        while (lJogadores.hasNext()) {
-            Jogador jogadorAtual = (Jogador) lJogadores.next();
-            jogadorAtual.limparMaoDeCartas();
-        }
-    }
-
+    /**
+     *
+     * @return
+     */
     public Iterador jogadoresEmPartida() {
         return jogadoresEmEspera.iterador();
     }

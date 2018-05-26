@@ -11,6 +11,11 @@ public class Carta implements Comparable {
     private String face;
     private boolean status;
     
+    /**
+     *
+     * @param naipe
+     * @param face
+     */
     public Carta(String naipe, String face) {
         this.naipe = naipe;
         this.face = face;
@@ -24,6 +29,10 @@ public class Carta implements Comparable {
         return naipe;
     }
 
+    /**
+     *
+     * @param status
+     */
     public void setStatus(boolean status){
         this.status = status;
     }
@@ -35,6 +44,10 @@ public class Carta implements Comparable {
         return status;
     }
     
+    /**
+     *
+     * @param naipe
+     */
     public void setNaipe(String naipe) {
         this.naipe = naipe;
     }
@@ -46,6 +59,10 @@ public class Carta implements Comparable {
         return face;
     }
 
+    /**
+     *
+     * @param face
+     */
     public void setFace(String face) {
         this.face = face;
     }
@@ -61,6 +78,10 @@ public class Carta implements Comparable {
         return "X X";
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean ehAs() {
         return face.equals("A");
     }

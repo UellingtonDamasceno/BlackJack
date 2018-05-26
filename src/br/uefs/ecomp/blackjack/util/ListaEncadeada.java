@@ -223,7 +223,9 @@ public class ListaEncadeada implements ILista{
         return new MyIterador();
     }
     
- 
+    /**
+     *
+     */
     public class MyIterador implements Iterador {
         private Celula elemento = inicioDaLista;
         /**

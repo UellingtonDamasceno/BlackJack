@@ -20,84 +20,173 @@ public class BlackJackFacade {
     ControllerArquivos controllerArquivo;
     ControllerPartida controllerPartida;
 
+    /**
+     *
+     */
     public BlackJackFacade() {
         this.controllerArquivo = new ControllerArquivos();
         this.controllerPartida = new ControllerPartida();
     }
 
+    /**
+     *
+     * @param arquivo
+     * @return
+     * @throws IOException
+     */
     public boolean carregarUsers(File arquivo) throws IOException {
         return controllerArquivo.carregarUsers(arquivo);
     }
 
+    /**
+     *
+     * @param nomeArq
+     * @param user
+     * @param senha
+     * @return
+     * @throws IOException
+     */
     public boolean cadastrarNovoJogador(File nomeArq, String user, String senha) throws IOException {
         return controllerArquivo.cadastrarNovoJogador(nomeArq, user, senha);
     }
 
+    /**
+     *
+     * @return
+     */
     public ListaEncadeada getUsers() {
         return controllerArquivo.getUsers();
     }
     
+    /**
+     *
+     * @param user
+     * @param senha
+     * @return
+     */
     public Object obterJogador(String user, String senha){
         return controllerArquivo.obterJogador(user, senha);
     }
     
+    /**
+     *
+     * @return
+     */
     public Iterador listaDeUsers() {
         return controllerArquivo.listaDeUsers();
     }
 
+    /**
+     *
+     * @param user
+     * @param senha
+     * @param listaDeUser
+     * @return
+     */
     public int inserirJogadorEmPartida(String user, String senha, Iterador listaDeUser) {
-        return controllerPartida.inserirJogadorEmPartida(user, senha, listaDeUser);
+        return controllerPartida.salaDeEspera(user, senha, listaDeUser);
     }
     
+    /**
+     *
+     * @return
+     */
     public Baralho getBaralho(){
         return controllerPartida.getBaralho();
     }
     
+    /**
+     *
+     * @param qtdBaralho
+     * @return
+     */
     public Baralho criarBaralho(int qtdBaralho){
        return controllerPartida.criaBaralho(qtdBaralho);
     }
     
+    /**
+     *
+     * @return
+     */
     public Partida iniciarPartida(){
         return controllerPartida.iniciarPartida();
     }
     
+    /**
+     *
+     * @return
+     */
     public Partida getPartida(){
         return controllerPartida.getPartida();
     }
     
+    /**
+     *
+     * @return
+     */
     public ListaEncadeada getJogadoresEmPartida() {
         return controllerPartida.getPartida().getJogadores();
     }
     
+    /**
+     *
+     * @param jogador
+     * @return
+     */
     public Carta daCarta(Jogador jogador){
         return controllerPartida.getPartida().daCarta(jogador);
     }
     
+    /**
+     *
+     * @return
+     */
     public Iterador jogadoresEmPartida() {
         return controllerPartida.getPartida().jogadoresEmPartida();
     }
     
+    /**
+     *
+     * @param baralho
+     * @return
+     */
     public Pilha embaralha(Baralho baralho){
         return controllerPartida.embaralha(baralho);
     }
     
+    /**
+     *
+     * @param baralho
+     */
     public void ordena(Baralho baralho){
         controllerPartida.ordena(baralho);
     }
     
+    /**
+     *
+     * @param info
+     */
     public void addHistorico(String info) {
         controllerPartida.getPartida().addHistorico(info);
     }
 
+    /**
+     *
+     * @param pos
+     * @return
+     */
     public Object getInfoHistorico(int pos) {
         return controllerPartida.getPartida().getInfoHistorico(pos);
     }
 
-    public void zerarHistorico() {
-        controllerPartida.getPartida().zerarHistorico();
+    /**
+     *
+     */
+    public void zerarSalaDeEspera(){
+        controllerPartida.zerarSalaDeEspera();
     }
     
-    public void zerarMaoJogadores(){
-        controllerPartida.zerarMaoJogadores();
+    public void gravarArquivo(ListaEncadeada temp) throws IOException{
+        controllerArquivo.gravarEmArquivo(temp);
     }
 }

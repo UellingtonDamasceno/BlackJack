@@ -17,14 +17,25 @@ public class ControllerArquivos {
 
     private ListaEncadeada users;
 
+    /**
+     *
+     */
     public ControllerArquivos() {
         this.users = new ListaEncadeada();
     }
 
+    /**
+     *
+     * @param users
+     */
     public void setUsers(ListaEncadeada users) {
         this.users = users;
     }
 
+    /**
+     *
+     * @return
+     */
     public ListaEncadeada getUsers() {
         return users;
     }
@@ -91,6 +102,12 @@ public class ControllerArquivos {
         return true;
     }
     
+    /**
+     *
+     * @param user
+     * @param senha
+     * @return
+     */
     public Jogador obterJogador(String user, String senha){
         Iterador lJogadores = users.iterador();
         while(lJogadores.hasNext()){
@@ -102,17 +119,37 @@ public class ControllerArquivos {
         return null;
     }
     
+    /**
+     *
+     * @return
+     */
     public Iterador listaDeUsers() {
         return users.iterador();
     }
 
-    public boolean gerarArquivoOrdenado(ListaEncadeada jogadoresOrdenados) throws FileNotFoundException, IOException {
-        FileOutputStream arquivo = new FileOutputStream("Pontuação Ordenada.txt");
+    /**
+     *
+     * @param users
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public boolean gravarEmArquivo(ListaEncadeada temp) throws FileNotFoundException, IOException {
+       /* Comparable suporte[] = new Comparable[temp.tamanho()];
+        for(int i = 0; !temp.estaVazia(); i++){
+            suporte[i] = (Comparable) temp.removeInicio();
+        }
+        QuickSort q = new QuickSort();
+        q.quickSort(suporte, 0, suporte.length-1);
+        for(int i = 0; i < suporte.length; i++){
+            temp.insereFinal(suporte[i]);
+        }*/
+        FileOutputStream arquivo = new FileOutputStream("Pontuação Ordenada.txt", true);
         PrintWriter pr = new PrintWriter(arquivo);
-        Iterador lJogadoresOrdenados = jogadoresOrdenados.iterador();
+        Iterador lJogadoresOrdenados = temp.iterador();
         while (lJogadoresOrdenados.hasNext()) {
             Jogador jogadorObtido = (Jogador) lJogadoresOrdenados.next();
-            pr.print(jogadorObtido);
+            pr.println(jogadorObtido);
         }
         pr.close();
         arquivo.close();
