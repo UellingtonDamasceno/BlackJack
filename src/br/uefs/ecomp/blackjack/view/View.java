@@ -603,7 +603,7 @@ public class View {
 
     private static void partidaMecanica(int tamanho) {
         boolean querCarta;
-        Jogador jogadorAtual = null;
+        Jogador jogadorAtual;
         Iterador lJogadores = blackJackFacade.jogadoresEmPartida();
         while (lJogadores.hasNext()) {
             jogadorAtual = (Jogador) lJogadores.next();

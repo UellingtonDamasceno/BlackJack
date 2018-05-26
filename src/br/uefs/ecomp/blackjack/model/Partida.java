@@ -167,40 +167,35 @@ public class Partida {
     public void premiacao() {
         Iterador lJogadores = jogadores.iterador();
         int pontosC = croupier.pontosEmMao();
-
-        if (croupier.estourou()) {
-            while (lJogadores.hasNext()) {
-                Jogador jogadorAtual = (Jogador) lJogadores.next();
-                if (jogadorAtual.estourou()) {
-                    empates.insereFinal(jogadorAtual);
-                } else {
-                    jogadorAtual.setScore(10);
-                    jogadorAtual.setPartidas(1);
-                    addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
-                    vencedores.insereFinal(jogadorAtual);
-                }
+        Jogador jogadorAtual;
+        while (lJogadores.hasNext()) {
+            jogadorAtual = (Jogador) lJogadores.next();
+            int pontosJ = jogadorAtual.pontosEmMao();
+            if (croupier.estourou() && jogadorAtual.estourou()) {
+                empates.insereFinal(jogadorAtual);
             }
-        } else {
-            while (lJogadores.hasNext()) {
-                Jogador jogadorAtual = (Jogador) lJogadores.next();
-
-                int pontosJ = jogadorAtual.pontosEmMao();
-
-                if (jogadorAtual.estourou()) { // Aqui poderia usar pontosC > 21, e pontosJ > 21. Mas quis usar o estourou só por ter.
-                    jogadorAtual.setScore(-10);
-                    perdedores.insereFinal(jogadorAtual);
-                } else if (pontosJ < pontosC) {
-                    jogadorAtual.setScore(-10);
-                    perdedores.insereFinal(jogadorAtual);
-                } else if (pontosJ > pontosC) {
-                    jogadorAtual.setScore(10);
-                    jogadorAtual.setPartidas(1);
-                    addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
-                    vencedores.insereFinal(jogadorAtual);
-                } else {
-                    empates.insereFinal(jogadorAtual);
-                }
+            else if (croupier.estourou() && !jogadorAtual.estourou()) {
+                jogadorAtual.setScore(10);
+                addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
+                vencedores.insereFinal(jogadorAtual);
+            } 
+            else if (!croupier.estourou() && jogadorAtual.estourou()) {
+                jogadorAtual.setScore(-10);
+                perdedores.insereFinal(jogadorAtual);
             }
+            else if (pontosJ < pontosC) {
+                jogadorAtual.setScore(-10);
+                perdedores.insereFinal(jogadorAtual);
+            } 
+            else if (pontosJ > pontosC) {
+                jogadorAtual.setScore(10);
+                addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
+                vencedores.insereFinal(jogadorAtual);
+            } 
+            else {
+                empates.insereFinal(jogadorAtual);
+            }
+            jogadorAtual.setPartidas(1);
         }
     }
 
