@@ -1,6 +1,6 @@
 package br.uefs.ecomp.blackjack.view;
 
-import br.uefs.ecomp.blackjack.facade.BlackJackFacade;
+import br.uefs.ecomp.blackjack.facade.Facade;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class View {
 
-    static BlackJackFacade blackJackFacade = new BlackJackFacade();
+    static Facade blackJackFacade = new Facade();
 
     /**
      * Método principal, utilizado como referencia para execução do programa.
