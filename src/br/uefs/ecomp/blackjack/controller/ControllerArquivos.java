@@ -110,7 +110,7 @@ public class ControllerArquivos {
             pr.print(jogador.getUser() + " : ");
             pr.print(jogador.getSenha() + " : ");
             pr.print(jogador.getScore() + " : ");
-            pr.println(jogador.getPartidas());
+            pr.println(jogador.getPartidasVencidas());
         } else {
             pr.println(jogador);
         }

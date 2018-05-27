@@ -41,12 +41,11 @@ public class View {
             menuPrincipal(TAMANHO_MENU);
             switch (lerInt(true, 1, 6)) {
                 case 1: {
-                    if (!cadastrarUser(TAMANHO_MENU)) {
-                        repetirMenuPrincipal = true;
-                    } else {
+                    if (cadastrarUser(TAMANHO_MENU)) {
                         mensagem(TAMANHO_MENU, "Sucesso!", false);
-                        repetirMenuPrincipal = true;
                     }
+                    repetirMenuPrincipal = true;
+                    blackJackFacade.atualizarArquivos();
                     break;
                 }
                 case 2: {
@@ -263,7 +262,7 @@ public class View {
         novoItem(tamanho, "Novo jogador", "1", true);
         novoItem(tamanho, "Iniciar partida", "2", true);
         novoItem(tamanho, "Recarregar", "3", true);
-        novoItem(tamanho, "Recodes", "4", true);
+        novoItem(tamanho, "Recordes", "4", true);
         novoItem(tamanho, "Regras", "5", true);
         separador(tamanho, true);
         novoItem(tamanho, "Sair", "6", true);

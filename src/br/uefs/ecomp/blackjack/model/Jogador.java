@@ -12,7 +12,7 @@ public class Jogador implements  Comparable{
     private String user;
     private String senha;
     private int score;
-    private int partidas;
+    private int partidasVencidas;
     private MaoDeCarta maoDeCartas;
     private final int BLACKJACK;
 
@@ -39,7 +39,7 @@ public class Jogador implements  Comparable{
      */
     public Jogador(String user, String senha, int score, int partidas) {
         this(user, senha, score);
-        this.partidas = partidas;
+        this.partidasVencidas = partidas;
     }
 
     /**
@@ -68,10 +68,10 @@ public class Jogador implements  Comparable{
 
     /**
      *
-     * @param partidas
+     * @param partidasVencidas
      */
-    public void setPartidas(int partidas) {
-        this.partidas += partidas;
+    public void setPartidasVencidas(int partidasVencidas) {
+        this.partidasVencidas += partidasVencidas;
     }
 
     /**
@@ -118,8 +118,8 @@ public class Jogador implements  Comparable{
      *
      * @return
      */
-    public int getPartidas() {
-        return partidas;
+    public int getPartidasVencidas() {
+        return partidasVencidas;
     }
 
     /**
@@ -157,7 +157,7 @@ public class Jogador implements  Comparable{
 
     @Override
     public String toString() {
-        return user + " : " + score + " : " + partidas;
+        return user + " : " + score + " : " + partidasVencidas;
     }
 
     /**

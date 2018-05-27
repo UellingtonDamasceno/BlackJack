@@ -116,7 +116,7 @@ public class Partida {
         addHistorico("Vez do Croupier!");
         carta = croupier.virarCarta();
         addHistorico("O Croupier desvirou a carta: " + carta);
-        addHistorico("Agora Croupier possui: " + croupier.pontosEmMao() + "pontos!");
+        addHistorico("Agora Croupier possui: " + croupier.pontosEmMao() + " pontos!");
         while (true) {
             if (croupier.querCarta()) {
                 carta = croupier.pegarCarta(baralho);
@@ -221,6 +221,7 @@ public class Partida {
                 empates.insereFinal(jogadorAtual);
             } else if (croupier.estourou() && !jogadorAtual.estourou()) {
                 jogadorAtual.setScore(10);
+                jogadorAtual.setPartidasVencidas(1);
                 addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
                 vencedores.insereFinal(jogadorAtual);
             } else if (!croupier.estourou() && jogadorAtual.estourou()) {
@@ -231,13 +232,13 @@ public class Partida {
                 perdedores.insereFinal(jogadorAtual);
             } else if (pontosJ > pontosC) {
                 jogadorAtual.setScore(10);
+                jogadorAtual.setPartidasVencidas(1);
                 addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
                 vencedores.insereFinal(jogadorAtual);
             } else {
                 addHistorico("Entrou aki");
                 empates.insereFinal(jogadorAtual);
             }
-            jogadorAtual.setPartidas(1);
         }
     }
 
