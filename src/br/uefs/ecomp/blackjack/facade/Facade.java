@@ -26,7 +26,7 @@ public class Facade {
     }
 
     /**
-     *
+     * Método responsável por chamar o método do controller de arquivos responsável por carregar os usuários em 
      * @return
      * @throws IOException
      */
