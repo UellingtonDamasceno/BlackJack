@@ -130,4 +130,8 @@ public class ControllerPartida {
     public void daCarta(Jogador jogador){
         partida.daCarta(jogador);
     }
+    
+    public void consideracoes(){
+        partida.consideracoes();
+    }
 }

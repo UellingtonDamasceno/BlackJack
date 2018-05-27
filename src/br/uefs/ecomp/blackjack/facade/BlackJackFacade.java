@@ -142,8 +142,8 @@ public class BlackJackFacade {
         controllerPartida.zerarSalaDeEspera();
     }
     
-    public void atualizarArquivos() throws IOException{
-        controllerArquivo.atualizarArquivos();
+    public boolean atualizarArquivos() {
+        return controllerArquivo.atualizarArquivos();
     }
     
     public void vezDoCroupier(){
@@ -155,5 +155,9 @@ public class BlackJackFacade {
     }
     public void premiacao(){
         controllerPartida.premiacao();
+    }
+ 
+    public void consideracoes(){
+        controllerPartida.consideracoes();
     }
 }

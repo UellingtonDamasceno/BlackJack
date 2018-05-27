@@ -6,6 +6,8 @@ import br.uefs.ecomp.blackjack.util.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,13 +24,12 @@ public class View {
      * @param args
      */
     public static void main(String[] args) {
-        regras();
         final int TAMANHO_MENU = 30;
         boolean repetirMenuPrincipal, repetirMenuSalas;
         boolean repetirQtdJogador, repetirRecarga, querCadastrar = false;
         boolean repetirPartida, inserirNovoJogador, repetirFimPartida;
-
         int numDeBaralho = 0, qtdJogadores;
+
         try {
             blackJackFacade.carregarUsers();
         } catch (IOException e) {
@@ -37,8 +38,8 @@ public class View {
         }
         do {
             repetirMenuPrincipal = false;
-            menuPrincipal(30);
-            switch (lerInt(true, 1, 5)) {
+            menuPrincipal(TAMANHO_MENU);
+            switch (lerInt(true, 1, 6)) {
                 case 1: {
                     if (!cadastrarUser(TAMANHO_MENU)) {
                         repetirMenuPrincipal = true;
@@ -58,12 +59,10 @@ public class View {
                             mensagem(TAMANHO_MENU, "Deseja cadastar novo jogador?", true);
                             switch (lerInt(true, 1, 2)) {
                                 case 1: {
-                                    if (!cadastrarUser(TAMANHO_MENU)) {
-                                        repetirMenuPrincipal = true;
-                                    } else {
+                                    if (cadastrarUser(TAMANHO_MENU)) {
                                         mensagem(TAMANHO_MENU, "Sucesso!", false);
-                                        repetirMenuPrincipal = true;
                                     }
+                                    repetirMenuPrincipal = true;
                                     break;
                                 }
                                 case 2: {
@@ -157,7 +156,10 @@ public class View {
                                             blackJackFacade.iniciarPartida();
                                             partidaMecanica(TAMANHO_MENU);
                                             blackJackFacade.finalizarPartida();
-
+                                            if (!blackJackFacade.atualizarArquivos()) {
+                                                mensagem(TAMANHO_MENU, "Erro ao atualizar arquivos", false);
+                                                System.exit(0);
+                                            }
                                             Carta[] baralhoTemp = Arrays.copyOf(baralho.getCartas(), baralho.getCartas().length);
                                             blackJackFacade.ordena(baralho);
                                             do {
@@ -182,7 +184,7 @@ public class View {
                                                         break;
                                                     }
                                                     case 4: {
-
+                                                        blackJackFacade.zerarSalaDeEspera();
                                                         repetirMenuPrincipal = true;
                                                         break;
                                                     }
@@ -194,24 +196,48 @@ public class View {
                             }
                         }
                     } while (repetirQtdJogador);
-
                     break;
                 }
                 case 3: {
-                    Iterador lJogadores = blackJackFacade.listaDeUsers();
-                    while (lJogadores.hasNext()) {
-                        Jogador jogadorObtido = (Jogador) lJogadores.next();
-                        System.out.println(jogadorObtido);
-                    }
-                    repetirMenuPrincipal = true;
+                    do {
+                        repetirRecarga = false;
+                        switch (menuRecarrega(TAMANHO_MENU)) {
+                            case -1: {
+                                repetirMenuPrincipal = true;
+                                break;
+                            }
+                            case 0: {
+                                barra(TAMANHO_MENU, true);
+                                textoSimples(TAMANHO_MENU, "Sucesso!", true, true);
+                                mensagem(TAMANHO_MENU, "Recarregar novamente?", true);
+                                switch (lerInt(true, 1, 2)) {
+                                    case 1: {
+                                        repetirRecarga = true;
+                                        break;
+                                    }
+                                    case 2: {
+                                        repetirMenuPrincipal = true;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    } while (repetirRecarga);
+                    blackJackFacade.atualizarArquivos();
                     break;
                 }
                 case 4: {
-                    regras();
+                    exibirRecord(TAMANHO_MENU);
                     repetirMenuPrincipal = true;
                     break;
                 }
                 case 5: {
+                    regras();
+                    repetirMenuPrincipal = true;
+                    break;
+                }
+                case 6: {
                     mensagem(TAMANHO_MENU, "Realmente deseja sair?", true);
                     switch (lerInt(true, 1, 2)) {
                         case 1: {
@@ -230,6 +256,47 @@ public class View {
         } while (repetirMenuPrincipal);
     }
 
+    private static void menuPrincipal(int tamanho) {
+        barra(tamanho, true);
+        textoSimples(tamanho, "BlackJack", true, true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Novo jogador", "1", true);
+        novoItem(tamanho, "Iniciar partida", "2", true);
+        novoItem(tamanho, "Recarregar", "3", true);
+        novoItem(tamanho, "Recodes", "4", true);
+        novoItem(tamanho, "Regras", "5", true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Sair", "6", true);
+        barra(tamanho, true);
+    }
+
+    private static void exibirRecord(int tamanho) {
+        if (!blackJackFacade.getUsers().estaVazia()) {
+            barra(tamanho, true);
+            Iterador lJogadores = blackJackFacade.listaDeUsers();
+            while (lJogadores.hasNext()) {
+                Jogador jogadorObtido = (Jogador) lJogadores.next();
+                System.out.println(jogadorObtido);
+            }
+            barra(tamanho, true);
+        } else {
+            mensagem(tamanho, "Sem records!", false);
+        }
+    }
+
+    private static void opcoesRecarrga(int tamanho) {
+        barra(tamanho, true);
+        textoSimples(tamanho, "Opçoes de recarga", true, true);
+        separador(tamanho, true);
+        novoItem(tamanho, "R$ 12,00::25F", "1", true);
+        novoItem(tamanho, "R$ 20,00::50F", "2", true);
+        novoItem(tamanho, "R$ 25,00::75F", "3", true);
+        novoItem(tamanho, "R$ 30,00::100F", "4", true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Voltar", "5", true);
+        barra(tamanho, true);
+    }
+
     private static void mostrarBaralho(Carta[] cartas) {
         int limite = 0;
         for (Carta carta : cartas) {
@@ -244,84 +311,112 @@ public class View {
         System.out.println("");
     }
 
-    private static void menuPrincipal(int tamanho) {
+    private static void menuQuantidadeJogadores(int tamanho) {
         barra(tamanho, true);
-        textoSimples(tamanho, "BlackJack", true, true);
+        textoSimples(tamanho, "Quantos jogadores vão jogar?", false, true);
+        textoDuplo(tamanho, "Min_(01)", true, "Max_(05)", true);
         separador(tamanho, true);
-        novoItem(tamanho, "Novo jogador", "1", true);
-        novoItem(tamanho, "Iniciar partida", "2", true);
-        novoItem(tamanho, "Recodes", "3", true);
-        novoItem(tamanho, "Regras", "4", true);
-        separador(tamanho, true);
-        novoItem(tamanho, "Sair", "5", true);
+        novoItem(tamanho, "Voltar", "6", true);
         barra(tamanho, true);
+    }
+
+    private static void menuRegras(int tamanho) {
+        barra(tamanho, true);
+        textoSimples(tamanho, "Estilo de partida", true, true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Rapida: 2 Baralhos", "1", true);
+        novoItem(tamanho, "Media: 4 Baralhos", "2", true);
+        novoItem(tamanho, "Demorada: 8 Baralhos", "3", true);
+        novoItem(tamanho, "Personalizado", "4", true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Voltar", "5", true);
+        barra(tamanho, true);
+    }
+
+    private static void menuFimPartida(int tamanho) {
+        barra(tamanho, true);
+        textoSimples(tamanho, "Fim de partida", true, true);
+        separador(tamanho, true);
+        novoItem(tamanho, "VER BARALHO USADO", "1", true);
+        novoItem(tamanho, "Repetir partida", "2", true);
+        novoItem(tamanho, "Nova partida", "3", true);
+        separador(tamanho, true);
+        novoItem(tamanho, "Menu Principal", "4", true);
+        barra(tamanho, true);
+    }
+
+    private static void regras() {
+        String mensagem = "BlackJack Rules:\n\n"
+                + "O objetivo do BlackJack é vencer o croupier. Os jogadores ganham se tiverem uma mão de cartas \n"
+                + "com numeração maior do que a mão de cartas do croupier só que sem estourar(a soma da \n"
+                + "numeração das cartas não exceder 21). Os jogadores também ganham se o dealer estourar. O \n"
+                + "baralho do BlackJack contém 52 cartas.As \n"
+                + "cartas contém um naipe e número ou letra. Um naipe contém 13 cartas e eles não\n"
+                + "influenciam nos valores das cartas. As cartas que contém números valem em pontos\n"
+                + "seus respectivos números, as cartas que contém as letras K Q ou J valem 10. A carta que\n"
+                + "contém a letra A tem um valor especial no jogo. Podem valer 1 ou 11, dependendo do\n"
+                + "valor que irá fornecer vantagem a mão.";
+
+        JOptionPane.showMessageDialog(null, mensagem);
     }
 
     private static int menuRecarrega(int tamanho) {
         Scanner input = new Scanner(System.in);
         boolean repetirRecarga;
         String user, senha;
-        do {
-            repetirRecarga = false;
-            mensagem(tamanho, "Faça login!", false);
-            System.out.print("User: ");
-            user = input.nextLine();
-            System.out.print("Senha: ");
-            senha = input.nextLine();
-            Jogador jogadorObtido = (Jogador) blackJackFacade.obterJogador(user, senha);
-            if (jogadorObtido == null) {
-                barra(tamanho, true);
-                textoSimples(tamanho, "!!!Erro!!!", true, true);
-                textoSimples(tamanho, "Jogador não encontrado!", true, true);
-                mensagem(tamanho, "Gostaria de tentar novamente?", true);
-                switch (lerInt(true, 1, 2)) {
-                    case 1: {
-                        repetirRecarga = true;
-                        break;
+        if (blackJackFacade.getUsers().estaVazia()) {
+            mensagem(tamanho, "Não existe jogadores!", false);
+            return -1;
+        } else {
+            do {
+                repetirRecarga = false;
+                mensagem(tamanho, "Faça login!", false);
+                System.out.print("User: ");
+                user = input.nextLine();
+                System.out.print("Senha: ");
+                senha = input.nextLine();
+                Jogador jogadorObtido = (Jogador) blackJackFacade.obterJogador(user, senha);
+                if (jogadorObtido == null) {
+                    barra(tamanho, true);
+                    textoSimples(tamanho, "!!!Erro!!!", true, true);
+                    textoSimples(tamanho, "Jogador não encontrado!", true, true);
+                    mensagem(tamanho, "Gostaria de tentar novamente?", true);
+                    switch (lerInt(true, 1, 2)) {
+                        case 1: {
+                            repetirRecarga = true;
+                            break;
+                        }
+                        case 2: {
+                            return -1;
+                        }
                     }
-                    case 2: {
-                        return -1;
+                } else {
+                    opcoesRecarrga(tamanho);
+                    switch (lerInt(true, 1, 5)) {
+                        case 1: {
+                            jogadorObtido.setScore(25);
+                            break;
+                        }
+                        case 2: {
+                            jogadorObtido.setScore(50);
+                            break;
+                        }
+                        case 3: {
+                            jogadorObtido.setScore(75);
+                            break;
+                        }
+                        case 4: {
+                            jogadorObtido.setScore(100);
+                            break;
+                        }
+                        case 5: {
+                            return -1;
+                        }
                     }
                 }
-            } else {
-                opcoesRecarrga(tamanho);
-                switch (lerInt(true, 1, 5)) {
-                    case 1: {
-                        jogadorObtido.setScore(25);
-                        break;
-                    }
-                    case 2: {
-                        jogadorObtido.setScore(50);
-                        break;
-                    }
-                    case 3: {
-                        jogadorObtido.setScore(75);
-                        break;
-                    }
-                    case 4: {
-                        jogadorObtido.setScore(100);
-                        break;
-                    }
-                    case 5: {
-                        return -1;
-                    }
-                }
-            }
-        } while (repetirRecarga);
+            } while (repetirRecarga);
+        }
         return 0;
-    }
-
-    private static void opcoesRecarrga(int tamanho) {
-        barra(tamanho, true);
-        textoSimples(tamanho, "Opçoes de recarga", true, true);
-        separador(tamanho, true);
-        novoItem(tamanho, "R$ 12,00/25F", "1", true);
-        novoItem(tamanho, "R$ 20,00/50F", "2", true);
-        novoItem(tamanho, "R$ 25,00/75F", "3", true);
-        novoItem(tamanho, "R$ 30,00/100F", "4", true);
-        separador(tamanho, true);
-        novoItem(tamanho, "Voltar", "5", true);
-        barra(tamanho, true);
     }
 
     private static boolean cadastrarUser(int tamanho) {
@@ -373,15 +468,6 @@ public class View {
         return false;
     }
 
-    private static void menuQuantidadeJogadores(int tamanho) {
-        barra(tamanho, true);
-        textoSimples(tamanho, "Quantos jogadores vão jogar?", false, true);
-        textoDuplo(tamanho, "Min_(01)", true, "Max_(05)", true);
-        separador(tamanho, true);
-        novoItem(tamanho, "Voltar", "6", true);
-        barra(tamanho, true);
-    }
-
     private static boolean escolherJogadores(int tamanho) {
         boolean repetirInserirUser;
         Scanner input = new Scanner(System.in);
@@ -427,31 +513,7 @@ public class View {
         return true;
     }
 
-    private static void texto(int tamanho, String texto) {
-        int tamanhoDaBarra = tamanho - texto.length();
-        for (int i = 0; i < tamanhoDaBarra / 2; i++) {
-            System.out.print(' ');
-        }
-        System.out.print(texto);
-        for (int i = 0; i < tamanhoDaBarra - tamanhoDaBarra / 2; i++) {
-            System.out.print(' ');
-        }
-    }
-
-    private static void menuRegras(int tamanho) {
-        barra(tamanho, true);
-        textoSimples(tamanho, "Estilo de partida", true, true);
-        separador(tamanho, true);
-        novoItem(tamanho, "Rapida: 2 Baralhos", "1", true);
-        novoItem(tamanho, "Media: 4 Baralhos", "2", true);
-        novoItem(tamanho, "Demorada: 8 Baralhos", "3", true);
-        novoItem(tamanho, "Personalizado", "4", true);
-        separador(tamanho, true);
-        novoItem(tamanho, "Voltar", "5", true);
-        barra(tamanho, true);
-    }
-
-    private static void round(int tamanho, Jogador jogadorComVez) {
+    private static void lJogadores(int tamanho, Jogador jogadorComVez) {
         Jogador jogadorAtual;
         for (int info = 0; info < 6; info++) {
             Iterador lJogadores = blackJackFacade.jogadoresEmPartida();
@@ -494,18 +556,6 @@ public class View {
         }
     }
 
-    private static void menuFimPartida(int tamanho) {
-        barra(tamanho, true);
-        textoSimples(tamanho, "Fim de partida", true, true);
-        separador(tamanho, true);
-        novoItem(tamanho, "VER BARALHO USADO", "1", true);
-        novoItem(tamanho, "Repetir partida", "2", true);
-        novoItem(tamanho, "Nova partida", "3", true);
-        separador(tamanho, true);
-        novoItem(tamanho, "Menu Principal", "4", true);
-        barra(tamanho, true);
-    }
-
     private static void exibirHistorico(Jogador jogador, boolean duplo) {
         String opcao, log;
         int tamanho;
@@ -521,7 +571,7 @@ public class View {
         }
         barra(tamanho, true);
         for (int i = 9; i != -1; i--) {
-            log = (String) blackJackFacade.getInfoHistorico(i + 1);
+            log = duplo ? (String) blackJackFacade.getInfoHistorico(i + 1) : (String) blackJackFacade.getInfoHistorico(i);
             if (jogador.ehCroupier() && i <= 3) {
                 opcao = " ";
             } else {
@@ -544,7 +594,6 @@ public class View {
                         String cartas = "|";
                         while (cartasEmMao.hasNext()) {
                             Carta carta = (Carta) cartasEmMao.next();
-                            //carta.setStatus(true);
                             cartas = cartas.concat(carta + "|");
                         }
                         opcao = cartas;
@@ -588,20 +637,14 @@ public class View {
                     }
                 }
             }
-
             if (duplo) {
                 textoDuplo(tamanho, opcao, cTxt1, log, false);
             } else {
-                textoSimples(tamanho, log, false, true);
+                textoSimples(tamanho, log, true, true);
             }
             cTxt1 = false;
         }
         barra(tamanho, true);
-    }
-
-    private static void atualizarInterface(int tamanho, Jogador jogador, boolean duplo) {
-        round(tamanho, jogador);
-        exibirHistorico(jogador, duplo);
     }
 
     private static void partidaMecanica(int tamanho) {
@@ -617,6 +660,7 @@ public class View {
                 atualizarInterface(tamanho, jogadorAtual, true);
                 blackJackFacade.premiacao();
                 atualizarInterface(tamanho, jogadorAtual, true);
+                blackJackFacade.consideracoes();
                 exibirHistorico(jogadorAtual, false);
                 lerInt(false, 0, 0);
             } else {
@@ -624,7 +668,7 @@ public class View {
                     querCarta = false;
                     switch (lerInt(true, 1, 3)) {
                         case 1: {
-                           blackJackFacade.daCarta(jogadorAtual);
+                            blackJackFacade.daCarta(jogadorAtual);
                             if (jogadorAtual.estourou()) {
                                 blackJackFacade.addHistorico(jogadorAtual.getUser() + " Estorou com: " + jogadorAtual.pontosEmMao() + " Pontos");
                                 atualizarInterface(tamanho, jogadorAtual, true);
@@ -650,11 +694,26 @@ public class View {
         }
     }
 
+    private static void atualizarInterface(int tamanho, Jogador jogador, boolean duplo) {
+        lJogadores(tamanho, jogador);
+        exibirHistorico(jogador, duplo);
+    }
+
     /**
-     * Método responsavel por inserir uma barra de inicialização ou finalização de menu e ou mensagem.
-     *
-     * @param tamanho Define o tamanho da barra.
+     * *****************************************************************************************************************************************
+     *************************************** MÉTODOS DE UTILIZADOS PARA CRIAÇÃO DOS MENUS ******************************************************* ******************************************************************************************************************************************
      */
+    private static void texto(int tamanho, String texto) {
+        int tamanhoDaBarra = tamanho - texto.length();
+        for (int i = 0; i < tamanhoDaBarra / 2; i++) {
+            System.out.print(' ');
+        }
+        System.out.print(texto);
+        for (int i = 0; i < tamanhoDaBarra - tamanhoDaBarra / 2; i++) {
+            System.out.print(' ');
+        }
+    }
+
     private static void barra(int tamanho, boolean pulaLinha) {
         System.out.print("+");
         for (int i = 0; i < tamanho; i++) {
@@ -667,13 +726,6 @@ public class View {
         }
     }
 
-    /**
-     * Método responsavel por exibir um texto simples entre bordas.
-     *
-     * @param tamanho Define espaço disponivel para a inserção do texto.
-     * @param texto Mensagem que será exibida.
-     * @param centralizar Define se a mensagem terá o alinhamento centralizado ou a esquerda.
-     */
     private static void textoSimples(int tamanho, String texto, boolean centralizar, boolean pulaLinha) {
         int tamanhoDaBarra = tamanho - texto.length();
         int espacosDaEsquerda, espacosDaDireita;
@@ -684,28 +736,11 @@ public class View {
         fazTraco(espacosDaDireita, ' ', false, pulaLinha);
     }
 
-    /**
-     * Método responsavel por inserir exibir uma mensagem com dois conteudos separados de forma que o conteudo não utrapasse o espaço disponivel.
-     *
-     * PS: O espaço deve ser maior do que as mensagens.
-     *
-     * @param tamanho Determina o espaço disponivel para a adequação dos textos.
-     * @param txt1
-     * @param cTxt1
-     * @param txt2
-     * @param cTxt2
-     */
     public static void textoDuplo(int tamanho, String txt1, boolean cTxt1, String txt2, boolean cTxt2) {
         textoSimples(tamanho / 2 - 1, txt1, cTxt1, false);
         textoSimples(tamanho / 2, txt2, cTxt2, true);
     }
 
-    /**
-     * Método responsavel por separar uma opções de um menu ou mensagem.
-     *
-     * @param tamanho determina o tamanho do separador.
-     * @param comTraco Define a visibilidade do separador.
-     */
     private static void separador(int tamanho, boolean comTraco) {
         char lateral = '|', meio = ' ';
         if (comTraco == true) {
@@ -717,13 +752,6 @@ public class View {
         System.out.println(lateral);
     }
 
-    /**
-     * Método utilizado para inserir um novo item/opção em determinado menu seguindo a "formatação".
-     *
-     * @param tamanho Define o tamanho disponivel para a inserção do item e do peso.
-     * @param item Nome do item/opção que será inserido.
-     * @param pesoDoItem Valor correspondente ao peso do item inserido.
-     */
     private static void novoItem(int tamanho, String item, String pesoDoItem, boolean pulaLinha) {
 
         int qtdDeTracos = ((tamanho - item.length()) - (pesoDoItem.length() + 4));
@@ -756,13 +784,6 @@ public class View {
         return s;
     }
 
-    /**
-     * Método responsavel por exibir uma mensagem simples ou composta com duas escolhas (Sim ou Não) formatados.
-     *
-     * @param tamanho Determina o tamanho do limite das bordas.
-     * @param mensagem Mensagem a ser exibida.
-     * @param poemEscolha Determina se deve exitir opções na mensagem.
-     */
     private static void mensagem(int tamanho, String mensagem, boolean poemEscolha) {
         barra(tamanho, true);
         textoSimples(tamanho, mensagem, true, true);
@@ -773,14 +794,6 @@ public class View {
 
     }
 
-    /**
-     * Método responsavel por fazer um traço.
-     *
-     * @param tamanho Determina o tamanho do traço.
-     * @param estilo Determina o traço que deve ser utilizado.
-     * @param bordaE Determina se o traço deve ser inicado com uma "borda".
-     * @param bordaD Determina se o traço deve ser finalizado com uma "borda".
-     */
     private static String fazTraco(int tamanho, char estilo, boolean bordaE, boolean bordaD) {
         String s = "";
         if (bordaE) {
@@ -796,14 +809,6 @@ public class View {
         return s;
     }
 
-    /**
-     * Método utilizado para fazer leitura de valores inteiros, tratando as exeções e possiveis problemas gerados por causa do buffer do teclado.
-     *
-     * @param limite Define se o valor a ser lido deve está em uma determinada faixa de valores.
-     * @param min Valor minimo do intervalo de leitura caso limite = true;
-     * @param max Valor Máximo do intervalo de leitura caso limite = true;
-     * @return Valor inteiro.
-     */
     private static int lerInt(boolean limite, int min, int max) {
         Scanner input = new Scanner(System.in);
         int valor;
@@ -831,21 +836,5 @@ public class View {
             }
         } while (repetir);
         return 0;
-    }
-
-    
-    private static void regras(){
-        String mensagem = "BlackJack Rules:\n\n"+
-                         "O objetivo do BlackJack é vencer o croupier. Os jogadores ganham se tiverem uma mão de cartas \n" +
-                         "com numeração maior do que a mão de cartas do croupier só que sem estourar(a soma da \n" +
-                         "numeração das cartas não exceder 21). Os jogadores também ganham se o dealer estourar. O \n" +
-                         "baralho do BlackJack contém 52 cartas.As \n" +
-                         "cartas contém um naipe e número ou letra. Um naipe contém 13 cartas e eles não\n" +
-                         "influenciam nos valores das cartas. As cartas que contém números valem em pontos\n" +
-                         "seus respectivos números, as cartas que contém as letras K Q ou J valem 10. A carta que\n" +
-                         "contém a letra A tem um valor especial no jogo. Podem valer 1 ou 11, dependendo do\n" +
-                         "valor que irá fornecer vantagem a mão.";
-        
-        JOptionPane.showMessageDialog(null, mensagem);
     }
 }

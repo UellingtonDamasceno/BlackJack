@@ -3,6 +3,8 @@ package br.uefs.ecomp.blackjack.controller;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -107,10 +109,10 @@ public class ControllerArquivos {
         if (senha) {
             pr.print(jogador.getUser() + " : ");
             pr.print(jogador.getSenha() + " : ");
-            pr.print(100 + " : ");
+            pr.print(jogador.getScore() + " : ");
             pr.println(jogador.getPartidas());
         } else {
-            pr.print(jogador);
+            pr.println(jogador);
         }
         pr.close();
         arquivo.close();
@@ -137,30 +139,36 @@ public class ControllerArquivos {
         return null;
     }
 
-    /**
-     *
-     * @param users
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    public boolean atualizarArquivos() throws FileNotFoundException, IOException {
-        /* Comparable suporte[] = new Comparable[temp.tamanho()];
-        for(int i = 0; !temp.estaVazia(); i++){
+    public boolean atualizarArquivos() {
+        Comparable suporte[] = new Comparable[users.tamanho()];
+        for (int i = 0; !users.estaVazia(); i++) {
             suporte[i] = (Comparable) users.removeInicio();
         }
         QuickSort q = new QuickSort();
-        q.quickSort(suporte, 0, suporte.length-1);
-        for(int i = 0; i < suporte.length; i++){
-            temp.insereFinal(suporte[i]);
-        }*/
-        Iterador lJogadores = users.iterador();
-        while (lJogadores.hasNext()) {
-            Jogador jogadorObtido = (Jogador) lJogadores.next();
-            escreverEmArquivo(logins, jogadorObtido, true, false);
-            escreverEmArquivo(pontuacao, jogadorObtido, false, false);
+        q.quickSort(suporte, 0, suporte.length - 1);
+        try {
+            deletaRegistros(logins);
+            deletaRegistros(pontuacao);
+        for (Comparable jogadorObtido : suporte) {
+            escreverEmArquivo(logins, (Jogador) jogadorObtido, true, true);
+            escreverEmArquivo(pontuacao, (Jogador) jogadorObtido, false, true);
+            users.insereFinal(jogadorObtido);
+        }
+        } catch (IOException ex) {
+            return false;
         }
         return true;
+    }
+
+    /**
+     *
+     * @param registros
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public void deletaRegistros(File registros) throws FileNotFoundException, IOException {
+        Writer clean = new BufferedWriter(new FileWriter(registros));
+        clean.close();
     }
 
     /**

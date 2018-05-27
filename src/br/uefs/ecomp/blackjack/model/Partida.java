@@ -93,7 +93,6 @@ public class Partida {
      *
      */
     public void finalizar() {
-        jogadores.removeUltimo();
         zerarHistorico();
         zerarMaoJogadores();
     }
@@ -164,7 +163,54 @@ public class Partida {
         }
     }
 
+    public void consideracoes() {
+        zerarHistorico();
+        listarVencedores();
+        listarPerdedores();
+        listarEmpates();
+    }
+
+    private void listarVencedores() {
+        addHistorico("V- VENCEDORES -V");
+        if (vencedores.estaVazia()) {
+            addHistorico("!!!NÃO HOUVE VENCEDORES!!!");
+        } else {
+            Iterador lVencedores = vencedores.iterador();
+            while (lVencedores.hasNext()) {
+                Jogador jogadorAtual = (Jogador) lVencedores.next();
+                addHistorico(jogadorAtual.getUser());
+            }
+        }
+    }
+
+    private void listarPerdedores() {
+        addHistorico("V- Perdedores -V");
+        if (perdedores.estaVazia()) {
+            addHistorico("!!!NÃO HOUVE PERDEDORES!!!");
+        } else {
+            Iterador lPerdedores = perdedores.iterador();
+            while (lPerdedores.hasNext()) {
+                Jogador jogadorAtual = (Jogador) lPerdedores.next();
+                addHistorico(jogadorAtual.getUser());
+            }
+        }
+    }
+
+    private void listarEmpates() {
+        addHistorico("V- EMPATES -V");
+        if (empates.estaVazia()) {
+            addHistorico("!!!NÃO HOUVE EMPATE!!!");
+        } else {
+            Iterador lEmpates = empates.iterador();
+            while (lEmpates.hasNext()) {
+                Jogador jogadorAtual = (Jogador) lEmpates.next();
+                addHistorico(jogadorAtual.getUser());
+            }
+        }
+    }
+
     public void premiacao() {
+        jogadores.removeUltimo();
         Iterador lJogadores = jogadores.iterador();
         int pontosC = croupier.pontosEmMao();
         Jogador jogadorAtual;
@@ -173,26 +219,22 @@ public class Partida {
             int pontosJ = jogadorAtual.pontosEmMao();
             if (croupier.estourou() && jogadorAtual.estourou()) {
                 empates.insereFinal(jogadorAtual);
-            }
-            else if (croupier.estourou() && !jogadorAtual.estourou()) {
+            } else if (croupier.estourou() && !jogadorAtual.estourou()) {
                 jogadorAtual.setScore(10);
                 addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
                 vencedores.insereFinal(jogadorAtual);
-            } 
-            else if (!croupier.estourou() && jogadorAtual.estourou()) {
+            } else if (!croupier.estourou() && jogadorAtual.estourou()) {
                 jogadorAtual.setScore(-10);
                 perdedores.insereFinal(jogadorAtual);
-            }
-            else if (pontosJ < pontosC) {
+            } else if (pontosJ < pontosC) {
                 jogadorAtual.setScore(-10);
                 perdedores.insereFinal(jogadorAtual);
-            } 
-            else if (pontosJ > pontosC) {
+            } else if (pontosJ > pontosC) {
                 jogadorAtual.setScore(10);
                 addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
                 vencedores.insereFinal(jogadorAtual);
-            } 
-            else {
+            } else {
+                addHistorico("Entrou aki");
                 empates.insereFinal(jogadorAtual);
             }
             jogadorAtual.setPartidas(1);
