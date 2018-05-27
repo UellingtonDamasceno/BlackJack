@@ -1,8 +1,11 @@
 package br.uefs.ecomp.blackjack.model;
 
+import java.util.Objects;
+
 /**
  * Classe responsável por criar cartas que irão posteriormente para baralhos.
- *
+ * A classe implementa a interface Comparable para fins de ordenação.
+ * 
  * @author Uellington Damasceno e Anésio Sousa
  */
 public class Carta implements Comparable {
@@ -12,9 +15,9 @@ public class Carta implements Comparable {
     private boolean status;
     
     /**
-     *
-     * @param naipe
-     * @param face
+     * Construtor da classe Carta que recebe dois parametros que definem suas características.
+     * @param naipe - Símbolo gráfico distintivo que diz a que grupo de cartas essa carta pertence.
+     * @param face - Letra ou número que caracterizam o valor de pontuação da carta.
      */
     public Carta(String naipe, String face) {
         this.naipe = naipe;
@@ -30,38 +33,38 @@ public class Carta implements Comparable {
     }
 
     /**
-     *
-     * @param status
+     * Método que atribui um estado à carta.
+     * @param status - Atributo que identifica se a carta está virada para cima ou para baixo.
      */
     public void setStatus(boolean status){
         this.status = status;
     }
     /**
-     * Método para retorno do status da carta.
-     * @return status - Estado da carta(se está virada ou não).
+     * Método que retorna o estado da carta.
+     * @return status - Atributo que identifica se a carta está virada para cima ou para baixo.
      */
     public boolean getStatus(){
         return status;
     }
     
     /**
-     *
-     * @param naipe
+     * Método que atribui um naipe à carta.
+     * @param naipe - Símbolo identificador de um grupo de cartas. 
      */
     public void setNaipe(String naipe) {
         this.naipe = naipe;
     }
     /**
      * Método para retorno da face da carta.
-     * @return face - Pontuação da carta, sendo um número ou uma letra.
+     * @return face - Letra ou número que caracterizam o valor de pontuação da carta.
      */
     public String getFace() {
         return face;
     }
 
     /**
-     *
-     * @param face
+     * Método que atribui uma face à carta.
+     * @param face - Letra ou número que caracterizam o valor de pontuação da carta.
      */
     public void setFace(String face) {
         this.face = face;
@@ -79,8 +82,8 @@ public class Carta implements Comparable {
     }
 
     /**
-     *
-     * @return
+     * Método que verifica se a carta atual é um ás.
+     * @return true ou false, dependendo do valor da carta.
      */
     public boolean ehAs() {
         return face.equals("A");
@@ -98,7 +101,6 @@ public class Carta implements Comparable {
                 return opcao ? 10 : 12;
             case "J":
                 return opcao ? 10 : 11;
-            // Fazer do Ás.
             case "A":{
                 return 1;
             }   
@@ -124,6 +126,15 @@ public class Carta implements Comparable {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.naipe);
+        hash = 23 * hash + Objects.hashCode(this.face);
+        hash = 23 * hash + (this.status ? 1 : 0);
+        return hash;
+    }
+    
+    @Override
     public boolean equals(Object objeto) {
         if (objeto instanceof Carta){
             Carta outraCarta = (Carta) objeto;
@@ -131,5 +142,4 @@ public class Carta implements Comparable {
         }
        return false;
     }
-
 }

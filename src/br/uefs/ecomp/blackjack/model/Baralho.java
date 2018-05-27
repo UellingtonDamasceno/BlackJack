@@ -33,6 +33,7 @@ public class Baralho {
     }
     /**
      * Método responsável por gerar baralhos com 52 cartas cada, sendo que cada carta contém um naipe e um número ou face.  
+     * Ele é chamado no construtor da classe Baralho. Fazendo com que todo objeto Baralho comece com cartas.
      */
     private void gerarBaralho(){
         String[] nipes = {"♦", "♥", "♣", "♠"};

@@ -3,8 +3,9 @@ package br.uefs.ecomp.blackjack.model;
 import br.uefs.ecomp.blackjack.util.*;
 
 /**
- *
- * @author Uellington Damasceno
+ * Classe responsável por gerar a partida onde será jogado o BlackJack.
+ * 
+ * @author Uellington Damasceno e Anésio Sousa
  */
 public class Partida {
 
@@ -17,54 +18,63 @@ public class Partida {
     private ListaEncadeada historico;
 
     /**
-     *
-     * @param jogadores
-     * @param baralho
+     * Construtor da classe Partida que recebe uma lista de jogadores e o baralho a ser usado na partida.
+     * Aqui também é instanciado um croupier, e quatro listas encadeadas: 
+     * histórico - onde são armazenadas informações sobre o decorrer da partida.
+     * vencedores - lista de jogadores que venceram a partida.
+     * perdedores - lista de jogadores que perderam a partida.
+     * empates - lista de jogadores que empataram com o croupier na partida.
+     * 
+     * @param jogadores - lista de jogadores que jogarão a partida.
+     * @param baralho - baralho já na pilha, que será usado na partida.
      */
     public Partida(ListaEncadeada jogadores, Pilha baralho) {
         this.jogadores = jogadores;
         this.croupier = new Croupier();
         this.baralho = baralho;
         this.historico = new ListaEncadeada();
-        vencedores = new ListaEncadeada();
-        perdedores = new ListaEncadeada();
-        empates = new ListaEncadeada();
+        this.vencedores = new ListaEncadeada();
+        this.perdedores = new ListaEncadeada();
+        this.empates = new ListaEncadeada();
     }
 
     /**
-     *
-     * @return
+     * Método que retorna o baralho da partida.
+     * @return baralho - pilha contendo as cartas utilizadas em partida.
      */
     public Pilha getBaralho() {
         return baralho;
     }
 
     /**
-     *
-     * @return
+     * Método que retorna a lista de jogadores da partida.
+     * @return jogadores - lista de jogadores.
      */
     public ListaEncadeada getJogadores() {
         return jogadores;
     }
 
     /**
-     *
-     * @return
+     * Método que retorna o histórico da partida.
+     * @return historico - lista encadeada que contém as ações acontecidas na partida.
      */
     public ListaEncadeada getHistorico() {
         return historico;
     }
 
     /**
-     *
-     * @return
+     * Método que retorna o croupier da partida.
+     * @return croupier - adversário dos jogadores e responsável pela administração da partida.
      */
     public Croupier getCroupier() {
         return croupier;
     }
 
     /**
-     *
+     * Método realiza a ação inicial na partida, que é a distribuição de 2 cartas e registra as ações no histórico.
+     * O método percorre a lista dos jogadores dando a cada um duas cartas viradas para cima, e em seguida dá as mesmas
+     * duas cartas ao croupier, só que uma delas é virada para baixo. Após fazer a distribuição das cartas iniciais,
+     * o croupier é inserido por último na lista de jogador. As ações principais são registradas no histórico.
      */
     public void jogadaInicial() {
         addHistorico("Inicio de Partida");
@@ -90,7 +100,9 @@ public class Partida {
     }
 
     /**
-     *
+     * Método que limpa o histórico da partida, e a mão dos jogadores.
+     * Esse método chama dois outros métodos de limpeza, auxiliando
+     * o fim de cada partida.
      */
     public void finalizar() {
         zerarHistorico();
@@ -98,9 +110,9 @@ public class Partida {
     }
 
     /**
-     *
-     * @param jogador
-     * @return
+     * Método que pega uma carta removida pelo croupier do baralho e dá para um jogador.
+     * É adicionada ao histórico que jogador pediu a carta e qual carta ele recebeu.
+     * @param jogador - jogador que pediu e irá receber a carta.
      */
     public void daCarta(Jogador jogador) {
         Carta carta = croupier.daCarta(baralho);
@@ -109,7 +121,10 @@ public class Partida {
     }
 
     /**
-     *
+     * Método que realiza as ações de jogadas do croupier(dealer), da partida.
+     * A carta para baixo do croupier é virada, e é feita a soma dos pontos da sua mão,
+     * para verificar até quando ele pode pegar mais cartas. Se ele estourar ou parar,
+     * a vez dele acaba. Todas as principais ações são registradas no histórico da partida.
      */
     public void vezDoCroupier() {
         Carta carta;
@@ -129,7 +144,7 @@ public class Partida {
     }
 
     /**
-     *
+     * Método que limpa a mão de cartas dos dos participantes da partida.
      */
     public void zerarMaoJogadores() {
         Iterador lJogadores = jogadores.iterador();
@@ -141,74 +156,99 @@ public class Partida {
     }
 
     /**
-     *
-     * @param info
+     * Método que adiciona informações ao histórico da partida.
+     * @param info - informação a ser adicionada.
      */
     public void addHistorico(String info) {
         historico.insereInicio(info);
     }
 
     /**
-     *
+     * Método 
      * @param pos
      * @return
      */
     public Object getInfoHistorico(int pos) {
         return historico.tamanho() > pos ? historico.get(pos) : "";
     }
-
+    
+    /**
+     * Método que limpa o histórico da partida.
+     */
     private void zerarHistorico() {
         while (!historico.estaVazia()) {
             historico.removeInicio();
         }
     }
-
+    
+    /**
+     * Método que chama métodos que geram a tabela final que mostra os vencedores, perdedores e empates da partida.
+     */
     public void consideracoes() {
         zerarHistorico();
         listarVencedores();
         listarPerdedores();
         listarEmpates();
     }
-
+    
+    /**
+     * Método que percorre a lista de vencedores os adicionando junto com suas respectivas pontuações no histórico para exibição.
+     * Se a lista estiver vazia, quer dizer que não teve vencedores na partida, então adiciona essa informação ao histórico.
+     */
     private void listarVencedores() {
-        addHistorico("V- VENCEDORES -V");
+        addHistorico("♥    Pontos do Croupier = " + croupier.pontosEmMao() + "   ♥");
+        addHistorico("♦ VENCEDORES E SUAS PONTUAÇÕES ♦");
         if (vencedores.estaVazia()) {
             addHistorico("!!!NÃO HOUVE VENCEDORES!!!");
         } else {
             Iterador lVencedores = vencedores.iterador();
             while (lVencedores.hasNext()) {
                 Jogador jogadorAtual = (Jogador) lVencedores.next();
-                addHistorico(jogadorAtual.getUser());
+                addHistorico(jogadorAtual.getUser() + " = " + jogadorAtual.pontosEmMao());
             }
         }
     }
-
+    
+    /**
+     * Método que percorre a lista de perdedores os adicionando junto com suas respectivas pontuações no histórico para exibição.
+     * Se a lista estiver vazia, quer dizer que não teve perdedores na partida, então adiciona essa informação ao histórico.
+     */
     private void listarPerdedores() {
-        addHistorico("V- Perdedores -V");
+        addHistorico("♣ PERDEDORES E SUAS PONTUAÇÕES ♣");
         if (perdedores.estaVazia()) {
             addHistorico("!!!NÃO HOUVE PERDEDORES!!!");
         } else {
             Iterador lPerdedores = perdedores.iterador();
             while (lPerdedores.hasNext()) {
                 Jogador jogadorAtual = (Jogador) lPerdedores.next();
-                addHistorico(jogadorAtual.getUser());
+                addHistorico(jogadorAtual.getUser() + " = " + jogadorAtual.pontosEmMao());
             }
         }
     }
-
+    
+    /**
+     * Método que percorre a lista de empates adicionando os jogadores que empataram junto com suas respectivas pontuações no histórico para exibição.
+     * Se a lista estiver vazia, quer dizer que não teve empates na partida, então adiciona essa informação ao histórico.
+     */
     private void listarEmpates() {
-        addHistorico("V- EMPATES -V");
+        addHistorico("♠  EMPATES  E SUAS PONTUAÇÕES  ♠");
         if (empates.estaVazia()) {
-            addHistorico("!!!NÃO HOUVE EMPATE!!!");
+            addHistorico("!!!NÃO HOUVERAM EMPATES!!!");
         } else {
             Iterador lEmpates = empates.iterador();
             while (lEmpates.hasNext()) {
                 Jogador jogadorAtual = (Jogador) lEmpates.next();
-                addHistorico(jogadorAtual.getUser());
+                addHistorico(jogadorAtual.getUser() + " = " + jogadorAtual.pontosEmMao());
             }
         }
     }
-
+    
+    /**
+     * Método responsável por alterar a pontuação os jogadores e inserir cada jogador que venceu, perdeu e empatou, em listas.
+     * Esse método adiciona 10 pontos ao score dos jogadores que venceram, remove 10 pontos dos que perderam, não altera pontuação dos que empataram.
+     * Além de inserir cada jogador em uma das três listas os selecionando por suas pontuações.
+     * 
+     */
     public void premiacao() {
         jogadores.removeUltimo();
         Iterador lJogadores = jogadores.iterador();
@@ -236,7 +276,6 @@ public class Partida {
                 addHistorico(jogadorAtual.getUser() + " Ganhou: 10 pontos");
                 vencedores.insereFinal(jogadorAtual);
             } else {
-                addHistorico("Entrou aki");
                 empates.insereFinal(jogadorAtual);
             }
         }
@@ -245,7 +284,7 @@ public class Partida {
     /**
      * Método que retorna o iterador da lista de jogadores que estão em partida.
      *
-     * @return jogadores.iterador
+     * @return jogadores.iterador 
      */
     public Iterador jogadoresEmPartida() {
         return jogadores.iterador();
