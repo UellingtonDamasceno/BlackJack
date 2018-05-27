@@ -197,7 +197,6 @@ public class Partida {
      */
     private void listarVencedores() {
         addHistorico("♥    Pontos do Croupier = " + croupier.pontosEmMao() + "   ♥");
-        addHistorico("♦ VENCEDORES E SUAS PONTUAÇÕES ♦");
         if (vencedores.estaVazia()) {
             addHistorico("!!!NÃO HOUVE VENCEDORES!!!");
         } else {

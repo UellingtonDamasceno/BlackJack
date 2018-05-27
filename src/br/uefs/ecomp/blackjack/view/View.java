@@ -6,8 +6,6 @@ import br.uefs.ecomp.blackjack.util.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -374,7 +372,7 @@ public class View {
                 user = input.nextLine();
                 System.out.print("Senha: ");
                 senha = input.nextLine();
-                Jogador jogadorObtido = (Jogador) blackJackFacade.obterJogador(user, senha);
+                Jogador jogadorObtido = blackJackFacade.obterJogador(user, senha);
                 if (jogadorObtido == null) {
                     barra(tamanho, true);
                     textoSimples(tamanho, "!!!Erro!!!", true, true);
@@ -566,7 +564,7 @@ public class View {
         } else {
             tamanho = 45;
             barra(tamanho, true);
-            textoSimples(tamanho, "Historico", true, true);
+            textoSimples(tamanho, "♦ JOGADORES E SUAS PONTUAÇÕES ♦", true, true);
         }
         barra(tamanho, true);
         for (int i = 9; i != -1; i--) {
@@ -663,10 +661,9 @@ public class View {
                 exibirHistorico(jogadorAtual, false);
                 System.out.print("Digite qualquer numero para continuar...");
                 lerInt(false, 0, 0);
-                System.out.println("\n");
-                System.out.println("\n");
-                System.out.println("\n");
-                System.out.println("\n");
+                for(int i = 0; i < 4; i++){
+                    System.out.println("");
+                }
             } else {
                 do {
                     querCarta = false;
@@ -705,8 +702,8 @@ public class View {
 
     /**
      * *****************************************************************************************************************************************
-     *************************************** MÉTODOS DE UTILIZADOS PARA CRIAÇÃO DOS MENUS ******************************************************* ******************************************************************************************************************************************
-     */
+     *************************************** MÉTODOS DE UTILIZADOS PARA CRIAÇÃO DOS MENUS *******************************************************
+     *******************************************************************************************************************************************/
     private static void texto(int tamanho, String texto) {
         int tamanhoDaBarra = tamanho - texto.length();
         for (int i = 0; i < tamanhoDaBarra / 2; i++) {

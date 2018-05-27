@@ -15,11 +15,11 @@ import static org.junit.Assert.*;
  */
 public class CroupierTest {
     
-    public CroupierTest() {
-    }
+    Croupier c;
     
     @Before
     public void setUp() {
+        c = new Croupier();
     }
     
 }

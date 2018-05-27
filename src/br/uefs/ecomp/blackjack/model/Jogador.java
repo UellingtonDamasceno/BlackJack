@@ -213,7 +213,7 @@ public class Jogador implements  Comparable{
     @Override
     public boolean equals(Object obj) {
         final Jogador other = (Jogador) obj;
-        return Objects.equals(this.user, other.user);
+        return this.user.equals(other.user) && this.senha.equals(other.senha);
     }
 
     @Override

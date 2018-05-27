@@ -58,7 +58,7 @@ public class BlackJackFacade {
      * @param senha
      * @return
      */
-    public Object obterJogador(String user, String senha){
+    public Jogador obterJogador(String user, String senha){
         return controllerArquivo.obterJogador(user, senha);
     }
     

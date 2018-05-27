@@ -3,8 +3,7 @@ package br.uefs.ecomp.blackjack.controller;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -27,14 +26,6 @@ public class ControllerArquivos {
 
     /**
      *
-     * @param users
-     */
-    public void setUsers(ListaEncadeada users) {
-        this.users = users;
-    }
-
-    /**
-     *
      * @return
      */
     public ListaEncadeada getUsers() {
@@ -42,15 +33,14 @@ public class ControllerArquivos {
     }
 
     /**
-     * Dado um arquivo de layout (String : String : int : int) este método irá ler pegando as informações linha a linha e em seguida inserindo em uma lista encadeada.
+     * Método responsavel por ler as informações do arquivo padrão gerado pelo software. 
      *
      * @return return true caso a leitura tenha sido efetuada com sucesso e false caso contrario.
      * @throws IOException Exceções geradas com entrada e saidas de dados.
      */
     public boolean carregarUsers() throws IOException {
         if (!logins.exists()) {
-            boolean createNewFile = logins.createNewFile();
-            if (createNewFile) {
+            if (logins.createNewFile()) {
                 lerArquivo(logins);
             } else {
                 return false;
@@ -140,16 +130,13 @@ public class ControllerArquivos {
     }
 
     public boolean atualizarArquivos() {
-        Comparable suporte[] = new Comparable[users.tamanho()];
-        for (int i = 0; !users.estaVazia(); i++) {
-            suporte[i] = (Comparable) users.removeInicio();
-        }
+        Comparable[] arrayUsers = userParaArray();
         QuickSort q = new QuickSort();
-        q.quickSort(suporte, 0, suporte.length - 1);
+        q.quickSort(arrayUsers, 0, arrayUsers.length - 1);
         try {
             deletaRegistros(logins);
             deletaRegistros(pontuacao);
-            for (Comparable jogadorObtido : suporte) {
+            for (Comparable jogadorObtido : arrayUsers) {
                 escreverEmArquivo(logins, (Jogador) jogadorObtido, true, true);
                 escreverEmArquivo(pontuacao, (Jogador) jogadorObtido, false, true);
                 users.insereFinal(jogadorObtido);
@@ -159,14 +146,16 @@ public class ControllerArquivos {
         }
         return true;
     }
-
-    /**
-     *
-     * @param registros
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    public void deletaRegistros(File registros) throws FileNotFoundException, IOException {
+    
+    private Comparable[] userParaArray(){
+        Comparable suporte[] = new Comparable[users.tamanho()];
+        for (int i = 0; !users.estaVazia(); i++) {
+            suporte[i] = (Comparable) users.removeInicio();
+        }
+        return suporte;
+    }   
+    
+    private void deletaRegistros(File registros) throws FileNotFoundException, IOException {
         Writer clean = new BufferedWriter(new FileWriter(registros));
         clean.close();
     }
