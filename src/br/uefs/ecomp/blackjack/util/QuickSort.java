@@ -1,16 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.uefs.ecomp.blackjack.util;
 
 /**
- *
- * @author Uellington Damasceno
+ * Classe responsável por criar objetos capazes de ordenar dados.
+ * 
+ * @author Uellington Damasceno e Anésio Sousa
  */
 public class QuickSort {
     
+    /**
+     * 
+     * @param vetor
+     * @param inicio
+     * @param fim 
+     */
     public void quickSort(Comparable[] vetor, int inicio, int fim){
         if (inicio < fim) {
             int pe = inicio;
@@ -34,6 +36,13 @@ public class QuickSort {
             quickSort(vetor, pe + 1, fim);
         }
     }
+    
+    /**
+     * 
+     * @param c
+     * @param posUm
+     * @param posDois 
+     */
     public void swap(Object[] c, int posUm, int posDois) {
         Object carta = c[posUm];
         c[posUm] = c[posDois];

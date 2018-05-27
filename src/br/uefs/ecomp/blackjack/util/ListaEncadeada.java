@@ -5,7 +5,7 @@ package br.uefs.ecomp.blackjack.util;
  * Esta classe implementa a interface ILista. Sendo assim, ela sobrescreve as assinaturas
  * dos métodos de ILista, e dá um corpo a cada um desses métodos. 
  * 
- * @author Uellington Damasceno
+ * @author Uellington Damasceno e Anésio Sousa
  */
 
 public class ListaEncadeada implements ILista{
