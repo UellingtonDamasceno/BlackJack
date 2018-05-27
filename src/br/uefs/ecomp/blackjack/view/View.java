@@ -661,7 +661,12 @@ public class View {
                 atualizarInterface(tamanho, jogadorAtual, true);
                 blackJackFacade.consideracoes();
                 exibirHistorico(jogadorAtual, false);
+                System.out.print("Digite qualquer numero para continuar...");
                 lerInt(false, 0, 0);
+                System.out.println("\n");
+                System.out.println("\n");
+                System.out.println("\n");
+                System.out.println("\n");
             } else {
                 do {
                     querCarta = false;

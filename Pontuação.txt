@@ -1,6 +1,6 @@
-Zeus : 210 : 10
+Zeus : 170 : 12
 Hulk : 165 : 3
-Thor : 150 : 3
+Thor : 120 : 3
 Look : 120 : 8
 Thanos : 115 : 6
 Rex : 100 : 8

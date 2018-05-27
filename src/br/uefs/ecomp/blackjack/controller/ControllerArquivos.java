@@ -149,11 +149,11 @@ public class ControllerArquivos {
         try {
             deletaRegistros(logins);
             deletaRegistros(pontuacao);
-        for (Comparable jogadorObtido : suporte) {
-            escreverEmArquivo(logins, (Jogador) jogadorObtido, true, true);
-            escreverEmArquivo(pontuacao, (Jogador) jogadorObtido, false, true);
-            users.insereFinal(jogadorObtido);
-        }
+            for (Comparable jogadorObtido : suporte) {
+                escreverEmArquivo(logins, (Jogador) jogadorObtido, true, true);
+                escreverEmArquivo(pontuacao, (Jogador) jogadorObtido, false, true);
+                users.insereFinal(jogadorObtido);
+            }
         } catch (IOException ex) {
             return false;
         }
