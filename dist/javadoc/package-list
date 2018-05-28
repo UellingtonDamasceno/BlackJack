@@ -1,0 +1,5 @@
+br.uefs.ecomp.blackjack.controller
+br.uefs.ecomp.blackjack.facade
+br.uefs.ecomp.blackjack.model
+br.uefs.ecomp.blackjack.util
+br.uefs.ecomp.blackjack.view

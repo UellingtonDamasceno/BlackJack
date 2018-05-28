@@ -1,3 +1,11 @@
+/*
+ * Foi tomado como desnecessário comentar os métodos dos controllers, já que 
+ * os métodos do façade estão comentados e o façade chama esses métodos dos 
+ * controllers. Devido a isso, os comentários da classe Facade foram deixados 
+ * o mais indicativos possível sobre qual controller e quais métodos são 
+ * chamados pelo façade.
+ */
+
 package br.uefs.ecomp.blackjack.facade;
 
 import br.uefs.ecomp.blackjack.controller.*;

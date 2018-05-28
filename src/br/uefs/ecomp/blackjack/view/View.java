@@ -737,7 +737,7 @@ public class View {
         fazTraco(espacosDaDireita, ' ', false, pulaLinha);
     }
 
-    public static void textoDuplo(int tamanho, String txt1, boolean cTxt1, String txt2, boolean cTxt2) {
+    private static void textoDuplo(int tamanho, String txt1, boolean cTxt1, String txt2, boolean cTxt2) {
         textoSimples(tamanho / 2 - 1, txt1, cTxt1, false);
         textoSimples(tamanho / 2, txt2, cTxt2, true);
     }
