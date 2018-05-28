@@ -15,11 +15,11 @@ import static org.junit.Assert.*;
  */
 public class PartidaTest {
     
-    public PartidaTest() {
-    }
+    Partida p;
     
     @Before
-    public void setUp() {
+    public void setUp(){
+        
     }
     
 }

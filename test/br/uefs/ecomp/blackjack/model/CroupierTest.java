@@ -16,10 +16,18 @@ import static org.junit.Assert.*;
 public class CroupierTest {
     
     Croupier c;
+    Baralho b;
     
     @Before
     public void setUp() {
         c = new Croupier();
+        b = new Baralho(1);
+    }
+    
+    @Test
+    public void testeBasico(){
+        assertTrue(c.ehCroupier());
+        
     }
     
 }
