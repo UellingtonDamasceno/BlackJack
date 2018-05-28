@@ -14,20 +14,11 @@ public class ControllerPartida {
     private Baralho baralho;
     private final QuickSort ordena;
     
-    /**
-     *
-     */
     public ControllerPartida() {
         this.jogadoresEmEspera = new ListaEncadeada();
         this.ordena = new QuickSort();
     }
 
-
-    /**
-     *
-     * @param qtdBaralho
-     * @return
-     */
     public Baralho criaBaralho(int qtdBaralho) {
         baralho = new Baralho(qtdBaralho);
         return baralho;
@@ -38,13 +29,6 @@ public class ControllerPartida {
         partida.jogadaInicial();
     }
     
-    /**
-     *
-     * @param user
-     * @param senha
-     * @param listaDeUser
-     * @return
-     */
     public int salaDeEspera(String user, String senha, Iterador listaDeUser) {
         while (listaDeUser.hasNext()) {
             Jogador jogadorObtido = (Jogador) listaDeUser.next();
@@ -62,20 +46,12 @@ public class ControllerPartida {
         return 0;
     }
 
-    /**
-     *
-     */
     public void zerarSalaDeEspera(){
         while(!jogadoresEmEspera.estaVazia()){
             jogadoresEmEspera.removeInicio();
         }
     }
     
-    /**
-     *
-     * @param baralho
-     * @return
-     */
     public Pilha embaralha(Baralho baralho) {
         Random gerador = new Random();
         Pilha cartasDoBaralho = new Pilha();
@@ -91,18 +67,10 @@ public class ControllerPartida {
         return cartasDoBaralho;
     }
 
-    /**
-     *
-     * @param baralho
-     */
     public void ordena(Baralho baralho) {
         ordena.quickSort(baralho.getCartas(), 0, baralho.getCartas().length - 1);
     }
 
-    /**
-     *
-     * @return
-     */
     public Iterador jogadoresEmPartida() {
         return partida.jogadoresEmPartida();
     }

@@ -7,7 +7,7 @@ import java.io.*;
 
 /**
  *
- * @author Uellington Damasceno
+ * @author Uellington Damasceno e Anésio Sousa
  */
 public class ControllerArquivos {
 
@@ -135,10 +135,6 @@ public class ControllerArquivos {
         clean.close();
     }
 
-    /**
-     *
-     * @return
-     */
     public Iterador listaDeUsers() {
         return users.iterador();
     }
