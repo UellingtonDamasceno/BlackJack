@@ -22,14 +22,14 @@ public class ListaEncadeada implements ILista{
          * @param dados Corresponde ao objeto que será encapsulado e inserido 
          * posteriomente na lista.
          */
-        public Celula(Object dados) {
+        private Celula(Object dados) {
             this.dados = dados;
         }
         /**
          * Responsável por devolver o objeto que está envolvido na celula.
          * @return Objeto da celula.
          */
-        public Object getDados() {
+        private Object getDados() {
             return dados;
         }
         /**
@@ -38,14 +38,14 @@ public class ListaEncadeada implements ILista{
          * @param dados Valor que será utilizado para substituido/armazenado na
          * celula.
          */
-        public void setDados(Object dados) {
+        private void setDados(Object dados) {
             this.dados = dados;
         }
         /**
          * Responsavel por devolver endereço do proximo elemento na lista. 
          * @return O endereço do proximo elemento da lista. 
          */
-        public Celula getProximo() {
+        private Celula getProximo() {
             return Proximo;
         }
         /**
@@ -53,7 +53,7 @@ public class ListaEncadeada implements ILista{
          *
          * @param Proximo Endereço do proximo elemento da lista.
          */
-        public void setProximo(Celula Proximo) {
+        private void setProximo(Celula Proximo) {
             this.Proximo = Proximo;
         }
     }

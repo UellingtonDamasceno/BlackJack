@@ -20,19 +20,19 @@ public class Pilha implements IStack{
         private Object dados;
         private Celula proximo;
         
-        public Celula(Object dados){
+        private Celula(Object dados){
             this.dados = dados;
         }
-        public Object getDados(){
+        private Object getDados(){
             return dados;
         }
-        public Celula getProximo(){
+        private Celula getProximo(){
             return proximo;
         }
-        public void setDados(Object dados){
+        private void setDados(Object dados){
             this.dados = dados;
         }
-        public void setProximo(Celula proximo){
+        private void setProximo(Celula proximo){
             this.proximo = proximo;
         }
     }
