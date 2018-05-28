@@ -164,9 +164,9 @@ public class Partida {
     }
 
     /**
-     * Método 
-     * @param pos
-     * @return
+     * Método que recupera a informação no histórico da partida, dada uma posição.
+     * @param pos - posição da informação.
+     * @return informação na posição. 
      */
     public Object getInfoHistorico(int pos) {
         return historico.tamanho() > pos ? historico.get(pos) : "";
