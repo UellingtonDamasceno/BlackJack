@@ -24,20 +24,10 @@ public class ControllerArquivos {
         this.pontuacao = new File("Pontuação.txt");
     }
 
-    /**
-     *
-     * @return
-     */
     public ListaEncadeada getUsers() {
         return users;
     }
 
-    /**
-     * Método responsavel por ler as informações do arquivo padrão gerado pelo software. 
-     *
-     * @return return true caso a leitura tenha sido efetuada com sucesso e false caso contrario.
-     * @throws IOException Exceções geradas com entrada e saidas de dados.
-     */
     public boolean carregarUsers() throws IOException {
         if (!logins.exists()) {
             if (logins.createNewFile()) {
@@ -73,15 +63,6 @@ public class ControllerArquivos {
         buffer.close();
     }
 
-    /**
-     * Método responsavel por cadastrar um novo jogador inserido-o em uma lista e ao final colocando no arquivo de usuarios cadastrados.
-     *
-     * @param user Nome do usuario a ser cadastado.
-     * @param senha Senha do usuario.
-     * @return true para cadastro efetuado com sucesso e false caso contrario.
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
     public boolean cadastrarNovoJogador(String user, String senha) throws FileNotFoundException, IOException {
         Jogador jogador = new Jogador(user, senha, 100);
         if (users.contem(jogador)) {
@@ -108,12 +89,6 @@ public class ControllerArquivos {
         arquivo.close();
     }
 
-    /**
-     *
-     * @param user
-     * @param senha
-     * @return
-     */
     public Jogador obterJogador(String user, String senha) {
         if (users.estaVazia()) {
             return null;
