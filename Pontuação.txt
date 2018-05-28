@@ -1,7 +1,7 @@
-Zeus : 170 : 13
+Zeus : 170 : 14
 Hulk : 155 : 3
-Thanos : 125 : 8
-Look : 110 : 8
+Look : 130 : 10
+Thanos : 125 : 9
 Goku : 100 : 0
-Rex : 90 : 8
-Thor : 90 : 4
+Thor : 90 : 5
+Rex : 70 : 8
