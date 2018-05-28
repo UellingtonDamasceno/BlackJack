@@ -47,7 +47,7 @@ public class Croupier extends Jogador {
     }
 
     /**
-     * Método que faz com que o croupier retire uma carta de um baralho.
+     * Método que faz com que o croupier retire uma carta de um baralho e dê para sí mesmo.
      * @param baralho - baralho para os jogos armazenado em uma pilha.
      * @return carta - retorna a carta removida do topo da pilha.
      */
