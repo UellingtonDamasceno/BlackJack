@@ -55,16 +55,19 @@ public class CroupierTest {
     public void virarCartaTest(){
         ca3.setStatus(false);
         assertEquals(ca3.toString(), "X X");
-        p.push(ca4);
+        //p.push(ca4);
         
+        //c.pegarCarta(p);
         c.pegarCarta(p);
-        c.pegarCarta(p);
         
-        //System.out.println(c.getMaoDeCartas().getCartas().get(0)); 
+        System.out.println(c.getMaoDeCartas().getCartas().get(0)); 
         
-        Carta aux = c.virarCarta();
+        c.virarCarta();
         
-        System.out.println(aux);
+        System.out.println(c.getMaoDeCartas().getCartas().get(0)); 
+        
+        
+        //System.out.println(aux);
         
         //System.out.println(c.getMaoDeCartas().getCartas().get(1));
         
