@@ -1,6 +1,6 @@
 package br.uefs.ecomp.blackjack.view;
 
-import br.uefs.ecomp.blackjack.facade.BlackJackFacade;
+import br.uefs.ecomp.blackjack.facade.Facade;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class View {
 
-    static BlackJackFacade blackJackFacade = new BlackJackFacade();
+    static Facade blackJackFacade = new Facade();
 
     /**
      * Método principal, utilizado como referencia para execução do programa.
@@ -344,15 +344,15 @@ public class View {
 
     private static void regras() {
         String mensagem = "BlackJack Rules:\n\n"
-                + "O objetivo do BlackJack é vencer o croupier. Os jogadores ganham se tiverem uma mão de cartas \n"
-                + "com numeração maior do que a mão de cartas do croupier só que sem estourar(a soma da \n"
-                + "numeração das cartas não exceder 21). Os jogadores também ganham se o dealer estourar. O \n"
-                + "baralho do BlackJack contém 52 cartas.As \n"
-                + "cartas contém um naipe e número ou letra. Um naipe contém 13 cartas e eles não\n"
-                + "influenciam nos valores das cartas. As cartas que contém números valem em pontos\n"
-                + "seus respectivos números, as cartas que contém as letras K Q ou J valem 10. A carta que\n"
-                + "contém a letra A tem um valor especial no jogo. Podem valer 1 ou 11, dependendo do\n"
-                + "valor que irá fornecer vantagem a mão.";
+                + "O objetivo do BlackJack é vencer o croupier. Os jogadores ganham se tiverem uma mão \n"
+                + "de cartas com numeração maior do que a mão de cartas do croupier mas sem estourar \n"
+                + "(a soma da numeração das cartas não exceder 21). Os jogadores também ganham se o \n"
+                + "dealer estourar. O baralho do BlackJack contém 52 cartas.As cartas contém um naipe \n"
+                + " e número ou letra. Um naipe contém 13 cartas e eles não influenciam nos valores das \n"
+                + "cartas. As cartas que contém números valem em pontos seus respectivos números, as \n"
+                + "cartas que contém as letras K, Q ou J valem 10. A carta que contém a letra A tem um \n"
+                + "valor especial no jogo. Podem valer 1 ou 11, dependendo do valor que irá fornecer \n"
+                + "vantagem a mão.";
 
         JOptionPane.showMessageDialog(null, mensagem);
     }

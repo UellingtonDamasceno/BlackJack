@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Dell/Google%20Drive/UEFS/2º%20Semestre/MI%20de%20Programação/Problema%2002/BlackJack/Logins.bin</file>
             <file>file:/C:/Users/Dell/Google%20Drive/UEFS/2º%20Semestre/MI%20de%20Programação/Problema%2002/BlackJack/src/br/uefs/ecomp/blackjack/model/Croupier.java</file>
             <file>file:/C:/Users/Dell/Google%20Drive/UEFS/2º%20Semestre/MI%20de%20Programação/Problema%2002/BlackJack/test/br/uefs/ecomp/blackjack/model/CartaTest.java</file>
@@ -10,6 +11,13 @@
             <file>file:/C:/Users/Dell/Google%20Drive/UEFS/2º%20Semestre/MI%20de%20Programação/Problema%2002/BlackJack/test/br/uefs/ecomp/blackjack/model/PartidaTest.java</file>
             <file>file:/C:/Users/Dell/Google%20Drive/UEFS/2º%20Semestre/MI%20de%20Programação/Problema%2002/BlackJack/Pontuação.txt</file>
             <file>file:/C:/Users/Dell/Google%20Drive/UEFS/2º%20Semestre/MI%20de%20Programação/Problema%2002/BlackJack/src/br/uefs/ecomp/blackjack/model/Jogador.java</file>
+=======
+            <file>file:/home/anesio/Área%20de%20Trabalho/GitWorks/BlackJack/src/br/uefs/ecomp/blackjack/util/QuickSort.java</file>
+            <file>file:/home/anesio/Área%20de%20Trabalho/GitWorks/BlackJack/src/br/uefs/ecomp/blackjack/controller/ControllerArquivos.java</file>
+            <file>file:/home/anesio/Área%20de%20Trabalho/GitWorks/BlackJack/src/br/uefs/ecomp/blackjack/model/Carta.java</file>
+            <file>file:/home/anesio/Área%20de%20Trabalho/GitWorks/BlackJack/src/br/uefs/ecomp/blackjack/facade/Facade.java</file>
+            <file>file:/home/anesio/Área%20de%20Trabalho/GitWorks/BlackJack/src/br/uefs/ecomp/blackjack/view/View.java</file>
+>>>>>>> 58434ab3a2aad551156184d133ed2618d947cbba
         </group>
     </open-files>
 </project-private>

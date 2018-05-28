@@ -3,29 +3,30 @@ package br.uefs.ecomp.blackjack.facade;
 import br.uefs.ecomp.blackjack.controller.*;
 import br.uefs.ecomp.blackjack.model.*;
 import br.uefs.ecomp.blackjack.util.*;
-import java.io.File;
 import java.io.IOException;
 
 /**
- *
- * @author Uellington Damasceno
+ * Classe responsável por criar objetos que funcionam como facilitadores de acesso da View para os controllers.
+ * No objeto criado por essa classe são instânciados os controllers.
+ * 
+ * @author Uellington Damasceno e Anésio Sousa
  */
-public class BlackJackFacade {
+public class Facade {
 
     ControllerArquivos controllerArquivo;
     ControllerPartida controllerPartida;
 
     /**
-     *
+     * Construtor da classe Facade.
+     * Aqui são instânciados os controllers.
      */
-    public BlackJackFacade() {
+    public Facade() {
         this.controllerArquivo = new ControllerArquivos();
         this.controllerPartida = new ControllerPartida();
     }
 
     /**
-     *
-     * @param arquivo
+     * Método responsável por chamar o método do controller de arquivos responsável por carregar os usuários em 
      * @return
      * @throws IOException
      */

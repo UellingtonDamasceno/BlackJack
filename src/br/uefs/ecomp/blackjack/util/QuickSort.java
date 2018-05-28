@@ -8,10 +8,10 @@ package br.uefs.ecomp.blackjack.util;
 public class QuickSort {
     
     /**
-     * 
-     * @param vetor
-     * @param inicio
-     * @param fim 
+     * Método utilizado para ordenar coleções.
+     * @param vetor Comprable[] que será ordenado.
+     * @param inicio posição inicial que será utilizada para a ordenação 
+     * @param fim posição correspondente ao tamanho e ou posição final da ordenação. 
      */
     public void quickSort(Comparable[] vetor, int inicio, int fim){
         if (inicio < fim) {
@@ -38,14 +38,14 @@ public class QuickSort {
     }
     
     /**
-     * 
-     * @param c
-     * @param posUm
-     * @param posDois 
+     * Método capaz de trocar dois objetos de posição em um array.
+     * @param vetor Vetor que terá as os objetos trocas.  
+     * @param p1 Posição do primeiro objeto.
+     * @param p2 Posição do segundo objeto.
      */
-    public void swap(Object[] c, int posUm, int posDois) {
-        Object carta = c[posUm];
-        c[posUm] = c[posDois];
-        c[posDois] = carta;
+    public void swap(Object[] vetor, int p1, int p2) {
+        Object carta = vetor[p1];
+        vetor[p1] = vetor[p2];
+        vetor[p2] = carta;
     }
 }
