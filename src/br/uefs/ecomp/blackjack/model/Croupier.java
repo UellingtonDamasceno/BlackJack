@@ -22,21 +22,6 @@ public class Croupier extends Jogador {
         this.maoDeCarta = new MaoDeCarta();
     }
     
-    /**
-     *  Método que muda o estado da carta.
-     * @return carta ou null - se tiver cartas na mão do jogador, ele vira todas elas. Se não, ele retorna nulo.
-     */
-    public Carta virarCarta() {
-        Iterador lCartas = maoDeCarta.getCartas().iterador();
-        while (lCartas.hasNext()) {
-            Carta carta = (Carta) lCartas.next();
-            if (!carta.getStatus()) {
-                carta.setStatus(true);
-                return carta;
-            }
-        }
-        return null;
-    }
 
     /**
      * Método que verifica se ainda é possível os jogadores receberem mais cartas.

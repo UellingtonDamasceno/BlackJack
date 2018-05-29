@@ -3,5 +3,5 @@ Hulk : 155 : 3
 Look : 130 : 10
 Thanos : 125 : 9
 Goku : 100 : 0
-Thor : 90 : 5
+Thor : 70 : 5
 Rex : 70 : 8

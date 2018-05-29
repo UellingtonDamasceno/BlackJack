@@ -193,7 +193,23 @@ public class Jogador implements  Comparable{
     public boolean ehCroupier(){
         return this instanceof Croupier;
     }
-
+    
+    /**
+     *  Método que muda o estado da carta.
+     * @return carta ou null - se tiver cartas na mão do jogador, ele vira todas elas. Se não, ele retorna nulo.
+     */
+    public Carta virarCarta() {
+        Iterador lCartas = maoDeCartas.getCartas().iterador();
+        while (lCartas.hasNext()) {
+            Carta carta = (Carta) lCartas.next();
+            if (!carta.getStatus()) {
+                carta.setStatus(true);
+                return carta;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         final Jogador other = (Jogador) obj;
