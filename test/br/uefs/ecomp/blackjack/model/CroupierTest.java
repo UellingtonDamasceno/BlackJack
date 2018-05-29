@@ -21,7 +21,6 @@ public class CroupierTest {
         ca1 = new Carta("♣", "4");
         ca2 = new Carta("♦", "10");
         ca3 = new Carta("♥", "9");
-        ca4 = new Carta("♠", "3");
         
         c = new Croupier();
         p = new Pilha();
@@ -50,31 +49,5 @@ public class CroupierTest {
         assertEquals(ca1, c.pegarCarta(p));
          
     }
-    
-    @Test
-    public void virarCartaTest(){
-        ca3.setStatus(false);
-        assertEquals(ca3.toString(), "X X");
-        //p.push(ca4);
-        
-        //c.pegarCarta(p);
-        c.pegarCarta(p);
-        
-        System.out.println(c.getMaoDeCartas().getCartas().get(0)); 
-        
-        c.virarCarta();
-        
-        System.out.println(c.getMaoDeCartas().getCartas().get(0)); 
-        
-        
-        //System.out.println(aux);
-        
-        //System.out.println(c.getMaoDeCartas().getCartas().get(1));
-        
-        // 
-        
-        //System.out.println(aux.toString());
-        
-        //assertEquals("♠ 3", );
-    }
+  
 }
