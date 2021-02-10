@@ -1,5 +1,11 @@
 # BlackJack
-Implementação do famoso jogo blackjack (também chamado de 21). Utilizando uma intraface de linha de comando. 
+Essa implementação do famoso jogo de cartas blackjack (também chamado de 21) foi o segundo projeto solicitado na disciplina prática do módulo integrador
+de algoritmos e probramação II (MI de programação) no semestre 2018.1 do curso de 
+Engenharia da Computação da Universidade Estadual de Feira de Santana (UEFS).
+
+Este projeto foi desenvolvido em [dupla](https://github.com/AnesioSousa) tendo 
+como base a metodologia de aprendizgem baseada em problemas do inglês "Problem
+-Based Learning" (PBL).
 
 ## Sumário
 - [Descritivo do problema](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/Descritivo%20-%20Mi%20de%20programa%C3%A7%C3%A3o%20-%20P2.pdf)
