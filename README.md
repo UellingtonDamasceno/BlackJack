@@ -12,6 +12,7 @@ como base a metodologia de aprendizgem baseada em problemas do inglês "Problem
 - [Regras do jogo](#regras-do-jogo)
 - [Modelo Conceitual](#modelo-conceitual)
 - [User Stories](#user-stories)
+- [Objetivo de aprendizagem](#objetivo-de-aprendizagem)
 - [Melhorias](#melhorias)
 - [Extras](#extras)
 - [Relatórios]()
@@ -50,6 +51,15 @@ representado por esse [diagrama de classe](https://raw.githubusercontent.com/Uel
 | 05 | Listar cartas do baralho | Ver as cartas restantes do baralho do último jogo | ✅ |
 | 06 | Listar cartas do baralho ordenadas | Ver as cartas restantes do baralho do último jogo pelo numero e o nipe | ✅ |
 | 07 | Mostrar placar | Mostrar um arquivo ordenado por maior pontuação, contendo dados: *user*, pontuação total de cada jogador e a quantidade de jogos vencidos por jogador | ✅ |
+
+# Objetivo de aprendizagem
+
+Esse projeto tinha os seguintes assuntos como objetivo de aprendizagem: 
+- Maniuplação de arquivos (Leitura e escrita).
+- Estrutura de dados (Pilha - LIFO).
+- Algoritmos de ordenação (Quicksort).
+- Interface comparable e comparator.
+- Input de dados pelo usuário.
 
 # Melhorias
 A lista abaixo apresenta algumas melhorias que podem ser implementadas no algoritmo desse projeto para melhorar a qualidade do código sem fugir do conexto de aprendizagem esperado.
