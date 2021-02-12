@@ -15,7 +15,7 @@ como base a metodologia de aprendizgem baseada em problemas do inglês "Problem
 - [Objetivo de aprendizagem](#objetivo-de-aprendizagem)
 - [Melhorias](#melhorias)
 - [Extras](#extras)
-- [Relatórios]()
+- [Relatórios](https://github.com/UellingtonDamasceno/BlackJack/tree/master/resources/relat%C3%B3rios)
 
 # Regras do jogo
 
@@ -35,7 +35,7 @@ rainha, ou valete significa 21.
 
 # Modelo Conceitual
 O modelo conceitual abaixo demostra como as classes devem se relacionar.
-![Modelo conceitual](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/modelo-conceitual.png)
+![Modelo conceitual](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/modelo-conceitual.png)
 
 Tendo em mente esse modelo conceitual inicial desenvolvemos uma produto que é
 representado por esse [diagrama de classe](https://raw.githubusercontent.com/UellingtonDamasceno/BlackJack/master/resources/BlackJack_Diagrama.png).
@@ -44,13 +44,13 @@ representado por esse [diagrama de classe](https://raw.githubusercontent.com/Uel
 
 | User story nº | Título | Breve Descrição | Completa |
 | :-----------: | ------ | --------------- | :------: |
-| 01 | Manutenção Jogador | Cadastrar jogadores com *user* e senha. | ✅ |
-| 02 | Iniciar partida | Iniciar uma nova partida, indicar o número de jogadores e selecioná-los | ✅ |
-| 03 | Nova partida | Solicitar uma nova carta. | ✅ |
-| 04 | Parar as jogadas | parar de pedir cartas. | ✅ |
-| 05 | Listar cartas do baralho | Ver as cartas restantes do baralho do último jogo | ✅ |
-| 06 | Listar cartas do baralho ordenadas | Ver as cartas restantes do baralho do último jogo pelo numero e o nipe | ✅ |
-| 07 | Mostrar placar | Mostrar um arquivo ordenado por maior pontuação, contendo dados: *user*, pontuação total de cada jogador e a quantidade de jogos vencidos por jogador | ✅ |
+| 01 | Manutenção Jogador | Cadastrar jogadores com *user* e senha. | :white_check_mark: |
+| 02 | Iniciar partida | Iniciar uma nova partida, indicar o número de jogadores e selecioná-los | :white_check_mark: |
+| 03 | Nova partida | Solicitar uma nova carta. | :white_check_mark: |
+| 04 | Parar as jogadas | parar de pedir cartas. | :white_check_mark: |
+| 05 | Listar cartas do baralho | Ver as cartas restantes do baralho do último jogo | :white_check_mark: |
+| 06 | Listar cartas do baralho ordenadas | Ver as cartas restantes do baralho do último jogo pelo numero e o nipe | :white_check_mark: |
+| 07 | Mostrar placar | Mostrar um arquivo ordenado por maior pontuação, contendo dados: *user*, pontuação total de cada jogador e a quantidade de jogos vencidos por jogador | :white_check_mark: |
 
 # Objetivo de aprendizagem
 
