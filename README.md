@@ -13,8 +13,8 @@ como base a metodologia de aprendizgem baseada em problemas do inglês "Problem
 - [Modelo Conceitual](#modelo-conceitual)
 - [User Stories](#user-stories)
 - [Objetivo de aprendizagem](#objetivo-de-aprendizagem)
-- [Melhorias](#melhorias)
 - [Extras](#extras)
+- [Melhorias](#melhorias)
 - [Relatórios](https://github.com/UellingtonDamasceno/BlackJack/tree/master/resources/relat%C3%B3rios)
 
 # Regras do jogo
@@ -61,8 +61,84 @@ Esse projeto tinha os seguintes assuntos como objetivo de aprendizagem:
 - Interface comparable e comparator.
 - Input de dados pelo usuário.
 
+# Fluxo do algoritmo
+O jogo foi desenvolvido para ser executado em terminais de comando, permitido 
+a navegação entre menus utilizando números que correspondem a escolha do usuário.
+Vale ressaltar que cada menu possui um conjunto de entradas válidas. Caso o usuário digite um caractere ou valor inválido o programa irá ignorar e esperar
+até que o usuário digite algum valor válido. 
+
+## Menu Principal
+Ao iniciar o jogo o usuário verá um menu principal (Figura XX) composto por 6 
+opções.
+
+Para finalizar a execução do programa o usuário deverá digitar o valor 6, Após
+feito isso um menu de confirmação aparecerá e nele o usuário deverá digitar o
+valor 1 para confirmar o fim da execução ou 2 para retornar ao menu principal. 
+
+## Cadastrando jogador
+Ao digitar o valor 1 no menu principal o usuário deverá ser direcionado para 
+um menu de cadastro onde deverá digitar o nome do novo usuário e em seguida 
+a senha e a confirmação da senha. 
+
+Após preencher as informações de cadastro aparecerá um menu que permite ao 
+usuário que permite cadastrar um novo usuário sem ter que voltar ao menu 
+principal. Se a resposta for sim (Opção 1) o processo de cadastro se repetirá
+caso contrário uma mensagem de sucesso aparecerá e o fluxo de execução retornará
+ao menu principal.
+
+ > Partindo do menu de cadastro basta digitar ``sair`` no nome do usuário para 
+ > retornar ao menu principal. 
+
+## Configurando partida
+Cada partida pode ser jogada por no minímo 1 e no máximo 5 jogadores. A quantidade de jogadores deve ser definida no menu abaixo. 
+
+Em seguida o usuário deverá informar qual é o estilo de partida, podendo escolher 
+entre 3 estilos pré-definidos sendo eles: rápido, médio e demorado 
+(2, 4, 8 baralhos respectivamente). Além desses estilos o usuário pode optar
+pelo estilo personalizado no qual pode definir a quantidade baralhos.
+
+Após definir o número de participantes e a quantidade de baralhos os usuários
+deverão efetuar o __login__ preenchendo usuário e senha, caso esse jogador não 
+tenha fichas suficientes o menu de recarga será exibido. 
+
+
+## Partida
+A interface da partida é constituida pelos seguintes blocos: Lista de jogadores,
+jogador com a vez e hístórico. 
+Os nomes são auto explicativos, porém vale destacar que o jogador que está com a 
+vez é retirado da lista de jogadores e colocado na parte de "jogador com a vez".
+
+## Final da partida
+Após o termino da partida o programa exibe um painel informativo contendo a lista
+de vencedores, perdedores e jogadores que empataram. 
+
+Logo em seguido os jogadores poderão ter acesso ao baralho tanto ordenado quanto na ordem que estava durante a partida. 
+
+# Extras
+
+Como extra foi desenvolvido um sistema de fichas que simula um cassino real onde 
+um jogador pode apostar valores em fichas que podem ser recarregadas "comprando" 
+na loja. Neste sistema cada jogador recém cadastrado inicia com 100 pontos e 
+aposta 10 fichas para participar de uma partida. Para participar de uma partida o
+jogador deverá investir 10 pontos, caso ganhe receberá 20 pontos, perderá 5 
+pontos caso perca para o croupier e não ganhará nem perderá se empatar.
+
+Além do sistema de fichas, também foi implementado 4 estilos diferente de 
+partidas sendo o estilo rápido (2 Baralhos), médio (4 Baralhos), demorado (8 
+Baralhos) e o personalizado onde o usuário pode digitar a quantidade de baralhos.
+
+Os menus de múltipla escolha apresentados no algoritmo foram costruidos 
+utilizando uma serie de funções extras desenvolvidas para tornar a criação dos 
+menus mais simples para os desenvolvedores e agradáveis para o usuário. 
+
+A fim de melhorar a qualidade da experiência do usuário foi desenvolvido um 
+histórico de lançes no qual exibe detalhes da partida como qual carta 
+um jogador recebeu, se pediu uma carta e se finalizou a jogada. 
+
+
 # Melhorias
-A lista abaixo apresenta algumas melhorias que podem ser implementadas no algoritmo desse projeto para melhorar a qualidade do código sem fugir do conexto de aprendizagem esperado.
+A lista abaixo apresenta algumas melhorias que podem ser implementadas no algoritmo desse projeto para 
+melhorar a qualidade do código sem fugir do conexto de aprendizagem esperado.
 
 | Pacote | Classe | Melhoria |
 | ------ | ------ | -------- |
@@ -73,17 +149,5 @@ A lista abaixo apresenta algumas melhorias que podem ser implementadas no algori
 | controller | ControllerArquivos | Utilizar métodos que solicitam o nome dos arquivos ao invés de deixar definido na classe. |
 | facade | Facade | Tornar privado os atributos da classe. |
 | view | View | Criar classes de menu para reduzi a quantidade de código na classe. |
-| view | view | Mudar para uma interface gráfica em JavaFX |
-
-
-# Extras
-
-Como extra foi desenvolvido um sistema de fichas que simula um cassino real onde 
-um jogador pode apostar valores em fichas que podem ser recarregadas "comprando" 
-na loja. Neste sistema cada jogador recém cadastrado inicia com 100 pontos e 
-aposta 10 fichas para participar de uma partida. Para participar de uma partida o
-jogador deverá investir 10 pontos, caso ganhe receberá 20 pontos, perderá 5 pontos caso perca para o croupier e não ganhará nem perderá se empatar.
-
-Além do sistema de fichas, também foi implementado 4 estilos diferente de 
-partidas sendo o estilo rápido (2 Baralhos), médio (4 Baralhos), demorado (8 
-Baralhos) e o personalizado onde o usuário pode digitar a quantidade de baralhos.
+| view | View | Esconder a senha do usuário durante a digitação. |
+| view | View | Mudar para uma interface gráfica em JavaFX. |
