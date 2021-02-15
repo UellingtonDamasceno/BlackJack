@@ -68,12 +68,16 @@ Vale ressaltar que cada menu possui um conjunto de entradas válidas. Caso o usu
 até que o usuário digite algum valor válido. 
 
 ## Menu Principal
-Ao iniciar o jogo o usuário verá um menu principal (Figura XX) composto por 6 
+Ao iniciar o jogo o usuário verá um menu principal composto por 6 
 opções.
+
+![Figura 02: Menu principal](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/menu-principal "Figura 02: Menu principal")
 
 Para finalizar a execução do programa o usuário deverá digitar o valor 6, Após
 feito isso um menu de confirmação aparecerá e nele o usuário deverá digitar o
 valor 1 para confirmar o fim da execução ou 2 para retornar ao menu principal. 
+
+![Figura 03: Menu sair](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/menu-sair.png "Figura 03: Menu sair")
 
 ## Cadastrando jogador
 Ao digitar o valor 1 no menu principal o usuário deverá ser direcionado para 
@@ -86,21 +90,29 @@ principal. Se a resposta for sim (Opção 1) o processo de cadastro se repetirá
 caso contrário uma mensagem de sucesso aparecerá e o fluxo de execução retornará
 ao menu principal.
 
+![Figura 04: Menu cadastro](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/menu-cadastro.png "Figura 04: Menu cadastro")
+
  > Partindo do menu de cadastro basta digitar ``sair`` no nome do usuário para 
  > retornar ao menu principal. 
 
 ## Configurando partida
-Cada partida pode ser jogada por no minímo 1 e no máximo 5 jogadores. A quantidade de jogadores deve ser definida no menu abaixo. 
+Cada partida pode ser jogada por no minímo 1 e no máximo 5 jogadores. A 
+quantidade de jogadores deve ser definida no menu abaixo. 
+
+![Figura 05: Menu quantidade de jogadores](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/qtd-jogadores.png "Figura 05: Menu quantidade de jogadores")
 
 Em seguida o usuário deverá informar qual é o estilo de partida, podendo escolher 
 entre 3 estilos pré-definidos sendo eles: rápido, médio e demorado 
 (2, 4, 8 baralhos respectivamente). Além desses estilos o usuário pode optar
 pelo estilo personalizado no qual pode definir a quantidade baralhos.
 
+![Figura 06: Menu estilo de partida](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/menu-estilo-partida.png "Figura 06: Menu estilo de partida")
+
 Após definir o número de participantes e a quantidade de baralhos os usuários
 deverão efetuar o __login__ preenchendo usuário e senha, caso esse jogador não 
 tenha fichas suficientes o menu de recarga será exibido. 
 
+![Figura 07: Menu recarga](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/menu-recarga.png "Figura 07: Menu recarga")
 
 ## Partida
 A interface da partida é constituida pelos seguintes blocos: Lista de jogadores,
@@ -108,11 +120,17 @@ jogador com a vez e hístórico.
 Os nomes são auto explicativos, porém vale destacar que o jogador que está com a 
 vez é retirado da lista de jogadores e colocado na parte de "jogador com a vez".
 
+![Figura 08: Interface da partida](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/partida.png "Figura 08: Interface da partida")
+
 ## Final da partida
 Após o termino da partida o programa exibe um painel informativo contendo a lista
 de vencedores, perdedores e jogadores que empataram. 
 
+![Figura 09: Resultados](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/resultados.png "Figura 09: Resultados")
+
 Logo em seguido os jogadores poderão ter acesso ao baralho tanto ordenado quanto na ordem que estava durante a partida. 
+
+![Figura 10: Baralhos](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/imagens/screenshots/baralhos.png "Figura 10: Baralhos")
 
 # Extras
 
