@@ -368,9 +368,9 @@ public class View {
             do {
                 repetirRecarga = false;
                 mensagem(tamanho, "Faça login!", false);
-                System.out.print("User: ");
+                System.out.println("User: ");
                 user = input.nextLine();
-                System.out.print("Senha: ");
+                System.out.println("Senha: ");
                 senha = input.nextLine();
                 Jogador jogadorObtido = blackJackFacade.obterJogador(user, senha);
                 if (jogadorObtido == null) {
@@ -424,14 +424,14 @@ public class View {
         do {
             repetirCadastro = false;
             mensagem(tamanho, "Para voltar user = sair", false);
-            System.out.print("Usuario: ");
+            System.out.println("Usuario: ");
             user = input.nextLine();
             if (user.equals("sair")) {
                 return false;
             } else {
-                System.out.print("Senha: ");
+                System.out.println("Senha: ");
                 senha = input.nextLine();
-                System.out.print("Confirma Senha: ");
+                System.out.println("Confirma Senha: ");
                 confirmaSenha = input.nextLine();
                 if (senha.equals(confirmaSenha)) {
                     try {
@@ -472,9 +472,9 @@ public class View {
             repetirInserirUser = false;
             Iterador listaDeUser = blackJackFacade.listaDeUsers();
             System.out.println("Inserir em partida!");
-            System.out.print("User: ");
+            System.out.println("User: ");
             String user = input.nextLine();
-            System.out.print("Senha: ");
+            System.out.println("Senha: ");
             String senha = input.nextLine();
             switch (blackJackFacade.inserirJogadorEmPartida(user, senha, listaDeUser)) {
                 case -1: {
@@ -659,7 +659,7 @@ public class View {
                 atualizarInterface(tamanho, jogadorAtual, true);
                 blackJackFacade.consideracoes();
                 exibirHistorico(jogadorAtual, false);
-                System.out.print("Digite qualquer numero para continuar...");
+                System.out.println("Digite qualquer numero para continuar...");
                 lerInt(false, 0, 0);
                 for(int i = 0; i < 4; i++){
                     System.out.println("");
