@@ -169,3 +169,7 @@ melhorar a qualidade do código sem fugir do conexto de aprendizagem esperado.
 | view | View | Criar classes de menu para reduzi a quantidade de código na classe. |
 | view | View | Esconder a senha do usuário durante a digitação. |
 | view | View | Mudar para uma interface gráfica em JavaFX. |
+----------
+
+| :arrow_left: [Problema anterior](https://github.com/UellingtonDamasceno/BestFoliaSys) |............................... :arrow_up: [Voltar ao topo](#BlackJack) :arrow_up: ...............................| [Próximo problema](https://github.com/UellingtonDamasceno/BusKeyFX) :arrow_right: | 
+| :----: |-----| :-----:| 
