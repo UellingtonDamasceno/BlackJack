@@ -7,16 +7,6 @@ Este projeto foi desenvolvido em [dupla](https://github.com/AnesioSousa) tendo
 como base a metodologia de aprendizgem baseada em problemas do inglês "Problem
 -Based Learning" (PBL).
 
-## Sumário
-- [Descritivo do problema](https://github.com/UellingtonDamasceno/BlackJack/blob/master/resources/Descritivo%20-%20Mi%20de%20programa%C3%A7%C3%A3o%20-%20P2.pdf)
-- [Regras do jogo](#regras-do-jogo)
-- [Modelo Conceitual](#modelo-conceitual)
-- [User Stories](#user-stories)
-- [Objetivo de aprendizagem](#objetivo-de-aprendizagem)
-- [Extras](#extras)
-- [Melhorias](#melhorias)
-- [Relatórios](https://github.com/UellingtonDamasceno/BlackJack/tree/master/resources/relat%C3%B3rios)
-
 # Regras do jogo
 
 - Todas as cartas com 10 ou menos (2, 3, 4 ... , 10) têm um valor igual a seu número. 
